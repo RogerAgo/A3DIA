@@ -12,7 +12,7 @@
   <link rel="alternate icon" type="image/png" href="/assets/images/logo-a3dia.png" />
   <link rel="apple-touch-icon" href="/assets/images/logo-a3dia.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#050b1f" />
+  <meta name="theme-color" content="#000000" />
 
   <!-- Open Graph / Réseaux sociaux -->
   <meta property="og:type" content="website" />
@@ -31,6 +31,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/brutalist.css" />
 </head>
 <body>
 
@@ -98,11 +99,34 @@
     </div>
   </section>
 
+  <!-- STOCK TICKER : sociétés suivies -->
+  <div class="ticker" aria-label="Sociétés suivies par A3DIA">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="arrow"></span>XANDRIE<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>EUROBIO SCIENTIFIC<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>MAGILLEM<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>UV GERMI<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>INFOCLIP<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>TOURISME PARTICIPATIONS<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>COLIPAYS<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>SAINT PIERRE DE SERJAC<span class="sep">·</span></span>
+      <!-- duplicata pour boucle infinie sans saccade -->
+      <span class="ticker-item"><span class="arrow"></span>XANDRIE<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>EUROBIO SCIENTIFIC<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>MAGILLEM<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>UV GERMI<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>INFOCLIP<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>TOURISME PARTICIPATIONS<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>COLIPAYS<span class="sep">·</span></span>
+      <span class="ticker-item"><span class="arrow"></span>SAINT PIERRE DE SERJAC<span class="sep">·</span></span>
+    </div>
+  </div>
+
   <!-- MISSION / Qui sommes-nous -->
   <section class="section" id="mission">
     <div class="container">
       <div class="section-head reveal">
-        <span class="label">Qui sommes-nous</span>
+        <span class="label" data-num="01">Qui sommes-nous</span>
         <h2>Une association créée par et pour les investisseurs</h2>
         <p>A3DIA est une association à but non lucratif créée par des investisseurs eux-mêmes, impactés par la liquidation du groupe Arkéon en 2016.</p>
       </div>
@@ -176,7 +200,7 @@
   <section class="section actualites-section">
     <div class="container">
       <div class="section-head reveal">
-        <span class="label">Suivi en temps réel</span>
+        <span class="label" data-num="02">Suivi en temps réel</span>
         <h2>Actualités des participations</h2>
         <p>Retrouvez toutes les informations sur les sociétés suivies, les dividendes, les OPA/OVR, les retraits de cotation.</p>
       </div>

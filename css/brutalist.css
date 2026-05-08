@@ -1,0 +1,525 @@
+/* =========================================================
+   A3DIA — Module brutaliste financier
+   Override les sections clés pour une identité forte fidèle au logo
+   (carré noir + flèche diagonale ↗ en blanc).
+   Charger APRÈS styles.css.
+   ========================================================= */
+
+:root {
+  --black: #000000;
+  --black-2: #0a0a0a;
+  --cream-bg: #f4f1ec;
+  --gold-accent: #c9a961;
+}
+
+/* -------- Header : full black flat sur scroll, plus de blur -------- */
+.site-header {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.site-header.scrolled {
+  background: #000;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+.nav-cta {
+  background: #fff;
+  color: #000;
+  border-radius: 0;
+  border: 2px solid #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+}
+.nav-cta:hover {
+  background: var(--gold-accent);
+  border-color: var(--gold-accent);
+  color: #000;
+  transform: none;
+  box-shadow: none;
+}
+
+/* -------- HERO BRUTALISTE -------- */
+.hero {
+  background: #000;
+  color: #fff;
+  min-height: 92vh;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 80px;
+  display: flex;
+  align-items: center;
+}
+.hero-bg {
+  display: none; /* on remplace par notre fond brutaliste */
+}
+.hero::before {
+  /* Flèche XXL en watermark, prend toute la moitié droite */
+  content: "";
+  position: absolute;
+  right: -8%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+  width: 80vmin;
+  height: 80vmin;
+  max-width: 900px;
+  max-height: 900px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z' fill='%23ffffff' fill-opacity='0.06'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 0;
+  animation: hero-arrow-pulse 8s ease-in-out infinite;
+}
+.hero::after {
+  /* Grain léger pour texture */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(201, 169, 97, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(67, 89, 168, 0.10) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes hero-arrow-pulse {
+  0%, 100% { opacity: 1; transform: translateY(-50%) rotate(-45deg) scale(1); }
+  50%      { opacity: 0.7; transform: translateY(-50%) rotate(-45deg) scale(1.04); }
+}
+.hero .container { position: relative; z-index: 2; }
+.hero-content { max-width: 880px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  color: var(--gold-accent);
+  padding: 6px 0;
+  border: none;
+  border-radius: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  margin-bottom: 28px;
+}
+.hero-eyebrow .dot {
+  width: 24px; height: 1px; background: var(--gold-accent); border-radius: 0;
+  display: inline-block;
+}
+.hero-title {
+  font-size: clamp(3rem, 8.5vw, 7.5rem);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin: 0 0 32px;
+  color: #fff;
+}
+.hero-title .line-1, .hero-title .line-2 { display: block; }
+.hero-title em {
+  font-style: normal;
+  color: var(--gold-accent);
+  font-weight: 800;
+}
+.hero .lead {
+  font-size: 1.25rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 620px;
+  margin: 0 0 44px;
+  font-weight: 400;
+}
+.hero-cta {
+  display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 64px;
+}
+.hero-cta .btn {
+  border-radius: 0 !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 18px 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-cta .btn-light {
+  background: #fff;
+  color: #000;
+  border: 2px solid #fff;
+}
+.hero-cta .btn-light:hover {
+  background: var(--gold-accent);
+  border-color: var(--gold-accent);
+  color: #000;
+  transform: translateX(4px);
+  box-shadow: none;
+}
+.hero-cta .btn-hero-ghost {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+.hero-cta .btn-hero-ghost:hover {
+  border-color: #fff;
+  background: transparent;
+  transform: translateX(4px);
+}
+.hero-trust {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 32px;
+}
+.hero-trust li {
+  padding: 0 32px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hero-trust li:first-child { padding-left: 0; }
+.hero-trust li:last-child { border-right: none; }
+.hero-trust strong {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.02em;
+}
+.hero-trust span {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+@media (max-width: 720px) {
+  .hero { min-height: auto; padding: 100px 0 60px; }
+  .hero::before { right: -25%; width: 120vmin; height: 120vmin; opacity: 0.6; }
+  .hero-trust { grid-template-columns: 1fr; gap: 18px; padding-top: 24px; }
+  .hero-trust li { padding: 0 0 18px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .hero-trust li:last-child { border-bottom: none; padding-bottom: 0; }
+  .hero-trust strong { font-size: 2rem; }
+}
+
+/* -------- STOCK TICKER -------- */
+.ticker {
+  background: #000;
+  color: #fff;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: ticker-scroll 40s linear infinite;
+  white-space: nowrap;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 28px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.ticker-item .arrow {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z' fill='%23c9a961'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: rotate(-45deg);
+}
+.ticker-item .sep {
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 400;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* -------- Section heads numérotées -------- */
+.section-head {
+  text-align: left !important;
+  max-width: none;
+  margin-bottom: 56px;
+  position: relative;
+}
+.section-head .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-accent);
+  font-size: 0.75rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 24px;
+}
+.section-head .label::before {
+  content: attr(data-num);
+  font-size: 0.875rem;
+  color: var(--ink-900);
+  font-weight: 800;
+  letter-spacing: 0;
+  background: var(--gold-accent);
+  padding: 4px 10px;
+  border-radius: 0;
+}
+.section-head .label::after {
+  content: "";
+  display: inline-block;
+  width: 16px; height: 16px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z' fill='%23c9a961'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: rotate(-45deg);
+}
+.section-head h2 {
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--ink-900);
+  margin: 0 0 16px;
+  max-width: 18ch;
+}
+.section-head h2::after {
+  display: none; /* on désactive le séparateur doré du polish précédent */
+}
+.section-head p {
+  font-size: 1.125rem;
+  color: var(--ink-700);
+  max-width: 60ch;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* -------- Mission cards plus géométriques -------- */
+.mission-card {
+  border-radius: 0 !important;
+  border: 1px solid var(--line);
+  padding: 36px 28px;
+  background: #fff;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease);
+  position: relative;
+}
+.mission-card::before {
+  /* Petit numéro de carte en haut à droite */
+  content: counter(card-num);
+  counter-increment: card-num;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink-300);
+  letter-spacing: 0.15em;
+}
+.mission-grid {
+  counter-reset: card-num;
+}
+.mission-card:hover {
+  border-color: #000;
+  transform: translateY(-4px);
+  box-shadow: 8px 8px 0 #000;
+}
+.mission-card .mission-icon {
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  width: 48px; height: 48px;
+  margin-bottom: 24px;
+  color: #000;
+}
+.mission-card h3 {
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  font-weight: 700;
+  margin: 0 0 12px;
+  text-transform: none;
+  color: var(--ink-900);
+}
+
+/* -------- CTA "Adhérer" avec flèche -------- */
+.btn-primary {
+  border-radius: 0 !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 18px 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-primary::after {
+  content: "";
+  display: inline-block;
+  width: 14px; height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z' fill='%23ffffff'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transform: rotate(-45deg);
+  transition: transform 0.3s var(--ease);
+}
+.btn-primary:hover::after {
+  transform: rotate(-45deg) translateX(3px);
+}
+
+/* -------- Cards actualités sharper -------- */
+.actu-card {
+  border-radius: 0 !important;
+  border: 1px solid var(--line);
+}
+.actu-card-media {
+  border-radius: 0 !important;
+}
+.actu-card .badge {
+  border-radius: 0 !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  background: #000;
+  color: #fff;
+  padding: 6px 10px;
+}
+.actu-card-body h4 {
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+/* -------- Newsletter brutaliste -------- */
+.newsletter {
+  background: #000;
+  color: #fff;
+}
+.newsletter-inner {
+  text-align: left;
+}
+.newsletter-inner h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+.newsletter-inner p {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1.0625rem;
+  max-width: 620px;
+  margin-bottom: 28px;
+}
+.newsletter-form {
+  border-radius: 0 !important;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 8px 8px 18px;
+  display: flex;
+  align-items: center;
+  max-width: 520px;
+}
+.newsletter-form input {
+  background: transparent;
+  color: #fff;
+  border: none;
+  flex: 1;
+}
+.newsletter-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.newsletter-form button {
+  border-radius: 0 !important;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  padding: 14px 22px;
+}
+.newsletter-form button:hover {
+  background: var(--gold-accent);
+}
+
+/* -------- Footer pure black avec arrow watermark -------- */
+.site-footer {
+  background: #000;
+  color: rgba(255, 255, 255, 0.7);
+  position: relative;
+  overflow: hidden;
+}
+.site-footer::before {
+  content: "";
+  position: absolute;
+  bottom: -120px; right: -120px;
+  width: 480px; height: 480px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z' fill='%23ffffff' fill-opacity='0.04'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(-45deg);
+  pointer-events: none;
+}
+.site-footer h5 {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.site-footer a { color: rgba(255, 255, 255, 0.7); }
+.site-footer a:hover { color: var(--gold-accent); }
+.site-footer .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+/* -------- Suppression de l'ancien fade-in body : on est en design "stricte" -------- */
+body { animation: none; }
+
+/* -------- Boutons généraux : retirer les arrondis trop softs -------- */
+.btn { border-radius: 0; }
+
+/* -------- Section padding plus généreux pour respiration éditoriale -------- */
+.section { padding: 110px 0; }
+@media (max-width: 720px) { .section { padding: 70px 0; } }
