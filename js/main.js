@@ -10,7 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initForms();
   initReveal();
   initActiveLink();
+  initHeaderScroll();
 });
+
+/* -------- Header sticky : ajoute .scrolled après quelques px de scroll -------- */
+function initHeaderScroll() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+  const onScroll = () => {
+    if (window.scrollY > 16) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
 
 /* -------- Mobile nav toggle -------- */
 function initMobileNav() {

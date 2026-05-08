@@ -283,6 +283,11 @@ p { margin: 0; }
   transform-origin: left center;
 }
 
+/* Item "Connexion" cloné dans la liste pour le menu mobile - caché par défaut sur desktop */
+.nav-list .nav-link-cta {
+  display: none;
+}
+
 .nav-cta {
   background: var(--paper);
   color: var(--navy-900);
@@ -1554,3 +1559,102 @@ p { margin: 0; }
   }
   html { scroll-behavior: auto; }
 }
+
+/* =========================================================
+   Polish design — finitions
+   ========================================================= */
+
+/* Sélection texte aux couleurs de la marque */
+::selection {
+  background: var(--gold);
+  color: var(--ink-900);
+}
+
+/* Focus clavier visible et accessible partout */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Scrollbar discrète aux couleurs de la marque (Webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--navy-500);
+  border-radius: 5px;
+  border: 2px solid var(--cream);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--navy-700);
+}
+
+/* Header : effet sticky raffiné quand on scrolle (la classe .scrolled est ajoutée par JS) */
+.site-header {
+  transition: background-color 0.35s var(--ease), backdrop-filter 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.site-header.scrolled {
+  background: rgba(45, 61, 122, 0.92);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 4px 24px rgba(10, 19, 48, 0.18);
+}
+
+/* Fade-in subtil au chargement de la page */
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+body {
+  animation: page-fade-in 0.5s var(--ease-out) both;
+}
+
+/* Liaison hover plus vivante sur les liens du footer */
+.site-footer a {
+  position: relative;
+  transition: color 0.25s var(--ease);
+}
+.site-footer a:hover {
+  color: var(--gold);
+}
+
+/* Séparateurs dorés discrets sous les titres principaux pour renforcer la marque */
+.section-head h2 {
+  position: relative;
+}
+.section-head h2::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: 14px auto 0;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  border-radius: 2px;
+}
+
+/* Boutons : micro-interaction au clic */
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Lazy loading hint visuel pour les images du carousel */
+.actu-card-media {
+  transition: transform 0.5s var(--ease-out), filter 0.4s var(--ease);
+}
+.actu-card:hover .actu-card-media {
+  transform: scale(1.04);
+  filter: saturate(1.1) brightness(1.05);
+}
+.actu-card {
+  overflow: hidden;
+}
+
