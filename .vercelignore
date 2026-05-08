@@ -1,0 +1,4 @@
+# Fichiers ignorés par Vercel lors du déploiement (mais conservés dans git)
+*.php
+.htaccess
+BACKEND.md

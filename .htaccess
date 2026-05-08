@@ -1,0 +1,59 @@
+# =========================================================
+# A3DIA — Configuration Apache (.htaccess)
+# =========================================================
+
+# --- 1. Redirection /index.html → / pour des URLs propres ---
+RewriteEngine On
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /(.*)index\.html [NC]
+RewriteRule ^(.*)index\.html$ /$1 [R=301,L]
+
+# --- 2. Forcer HTTPS (si pas déjà actif côté Hostinger) ---
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- 3. Supprimer le www (a3dia-info.org au lieu de www.a3dia-info.org) ---
+# Décommentez ces deux lignes si vous voulez forcer "sans www" :
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+# --- 4. Pages d'erreur personnalisées (à créer plus tard) ---
+# ErrorDocument 404 /404.html
+
+# --- 5. Sécurité : empêcher l'accès aux fichiers sensibles ---
+<FilesMatch "(^\.|\.md$|\.git|README|BACKEND)">
+  Require all denied
+</FilesMatch>
+
+# Bloquer explicitement les fichiers de configuration sensibles
+<Files ".env">
+  Require all denied
+</Files>
+<Files ".gitignore">
+  Require all denied
+</Files>
+<Files "composer.json">
+  Require all denied
+</Files>
+
+# --- 6. Cache navigateur pour les assets (perf) ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# --- 7. Compression Gzip (perf) ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript text/xml application/xml image/svg+xml
+</IfModule>
+
+# --- 8. Headers de sécurité ---
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adhésion — A3DIA</title>
+  <meta name="description" content="Adhérer à l'association A3DIA. Cotisation annuelle 50 €. Formulaire d'inscription en ligne." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo" aria-label="A3DIA — Accueil">
+        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <ul class="nav-list">
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="adhesion.html" class="nav-link">Adhésion</a></li>
+          <li><a href="actualites.html" class="nav-link">Actualités</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="https://www.a3dia.org/817_p_50864/connexion.html" class="nav-link nav-link-cta" target="_blank" rel="noopener">Connexion</a></li>
+        </ul>
+        <a href="https://www.a3dia.org/817_p_50864/connexion.html" class="nav-cta" target="_blank" rel="noopener">Connexion</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <section class="page-title">
+    <div class="container">
+      <h1 class="reveal">Adhérer à l'Association A3DIA</h1>
+      <p class="reveal">Association de Défense des Investisseurs Arkéon<br />
+      A3DIA — Siège : 9 rue Anatole de La Forge, 75017 Paris</p>
+    </div>
+  </section>
+
+  <!-- INFOS COTISATION -->
+  <section style="padding-bottom: 56px;">
+    <div class="container">
+      <div class="adhesion-info">
+        <div class="info-card reveal">
+          <h3>Montant de l'adhésion</h3>
+          <div class="price">50 € <span>/ an</span></div>
+          <p>Paiement sécurisé en ligne par carte bancaire,<br />ou par chèque ou virement bancaire.</p>
+          <p class="small">Les instructions s'affichent après validation du formulaire.</p>
+        </div>
+        <div class="info-card reveal">
+          <h3>Renouvellement de cotisation</h3>
+          <p>Aucune nouvelle identification requise. Connectez-vous simplement à votre espace personnel avec vos identifiants.</p>
+          <p>En cas d'oubli, rendez-vous dans l'onglet <strong>Connexion</strong> puis cliquez sur « changer/oubli ? » ou contactez-nous par mail.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE -->
+  <section class="form-section">
+    <div class="container">
+      <form class="form-card reveal" data-form="adhesion" novalidate>
+        <h2>Formulaire d'adhésion</h2>
+        <p class="form-intro">
+          Les champs marqués d'un astérisque (<span style="color: var(--gold);">*</span>) sont obligatoires.<br />
+          Les informations collectées sont exclusivement destinées à A3DIA, dans le cadre du suivi de votre adhésion. Vous disposez d'un droit d'accès, de modification et de suppression de vos données à tout moment.
+        </p>
+
+        <div class="form-grid">
+          <div class="field full">
+            <label>Civilité <span class="req">*</span></label>
+            <div class="radio-group">
+              <label><input type="radio" name="civilite" value="Mr" required /> Mr</label>
+              <label><input type="radio" name="civilite" value="Mme" /> Mme</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="prenom">Prénom <span class="req">*</span></label>
+            <input id="prenom" type="text" name="prenom" required autocomplete="given-name" />
+          </div>
+          <div class="field">
+            <label for="nom">Nom <span class="req">*</span></label>
+            <input id="nom" type="text" name="nom" required autocomplete="family-name" />
+          </div>
+
+          <div class="field full">
+            <label for="email">Email <span class="req">*</span></label>
+            <input id="email" type="email" name="email" required autocomplete="email" />
+          </div>
+
+          <div class="field full">
+            <label for="societe">Société</label>
+            <input id="societe" type="text" name="societe" autocomplete="organization" />
+          </div>
+
+          <div class="field full">
+            <label for="adresse">Adresse <span class="req">*</span></label>
+            <input id="adresse" type="text" name="adresse" required autocomplete="street-address" />
+          </div>
+
+          <div class="field">
+            <label for="cp">Code Postal <span class="req">*</span></label>
+            <input id="cp" type="text" name="cp" required pattern="\d{5}" autocomplete="postal-code" />
+          </div>
+          <div class="field">
+            <label for="ville">Ville <span class="req">*</span></label>
+            <input id="ville" type="text" name="ville" required autocomplete="address-level2" />
+          </div>
+
+          <div class="field">
+            <label for="tel-fixe">Téléphone fixe</label>
+            <input id="tel-fixe" type="tel" name="tel_fixe" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="tel-mobile">Téléphone mobile <span class="req">*</span></label>
+            <input id="tel-mobile" type="tel" name="tel_mobile" required autocomplete="tel" />
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="field full">
+            <label style="font-size: 0.95rem; font-weight: 600;">Adhésion</label>
+            <label class="checkbox-row">
+              <input type="checkbox" required />
+              <span>Je suis investisseur de produits de défiscalisation Arkéon et souhaite devenir membre adhérent ou renouveler mon adhésion. <span class="req">*</span></span>
+            </label>
+          </div>
+
+          <div class="field full">
+            <p class="cotis-line">Cotisation fixe annuelle : 50 €</p>
+            <label class="checkbox-row">
+              <input type="checkbox" required />
+              <span>J'ai lu les statuts et les conditions d'adhésion. Ceci vaut signature de ma part. <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+
+        <p class="form-disclaimer">
+          Votre adhésion sera effective après réception de votre paiement par l'association.
+          Nous vous remercions de valider ci-dessous pour ouvrir la page suivante.
+          Le montant ci-dessous (50 €) s'affichera au cours de votre inscription.
+        </p>
+
+        <div class="form-submit">
+          <button type="submit" class="btn">Valider l'inscription</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-inner reveal">
+        <h2>Souscrivez à notre newsletter</h2>
+        <p>Découvrez les secrets d'une gestion de patrimoine réussie. Recevez régulièrement nos analyses, les actualités des participations et des conseils pratiques pour optimiser votre patrimoine.</p>
+        <form class="newsletter-form" data-form="newsletter" novalidate>
+          <input type="email" placeholder="Entrez votre email" required aria-label="Email" />
+          <button type="submit">Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
+          </div>
+          <p>Association de Défense des Investisseurs Arkéon. Siège : 9 rue Anatole de La Forge, 75017 Paris. RCS 838 794 550.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="adhesion.html">Adhésion</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Ressources</h5>
+          <ul>
+            <li><a href="#">Statuts</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="mailto:contact@a3dia.org">contact@a3dia.org</a></li>
+            <li><a href="contact.html">Formulaire de contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright © 2026 A3DIA</span>
+        <span>All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

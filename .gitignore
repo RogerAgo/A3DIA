@@ -1,0 +1,30 @@
+# Variables sensibles (mots de passe, clés API)
+.env
+.env.local
+*.env
+
+# Fichiers système Mac
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+error_log
+
+# Dossiers temporaires
+node_modules/
+tmp/
+temp/
+
+# Vercel
+.vercel/
+
+# Fichiers locaux uniquement
+local-test.html

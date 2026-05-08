@@ -1,0 +1,12 @@
+{
+  "name": "a3dia-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site institutionnel A3DIA",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
