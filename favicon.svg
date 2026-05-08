@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" fill="#000000"/>
+  <defs>
+    <linearGradient id="navy-grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2d3d7a"/>
+      <stop offset="1" stop-color="#1a2961"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="10" fill="url(#navy-grad)"/>
   <g transform="rotate(-45 32 32)">
     <path d="M10 27 L36 27 L36 17 L55 32 L36 47 L36 37 L10 37 Z" fill="#ffffff"/>
   </g>
