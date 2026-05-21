@@ -2312,6 +2312,7 @@ body {
   justify-content: center;
   padding: 24px;
 }
+.admin-modal[hidden] { display: none !important; }
 .admin-modal-backdrop {
   position: absolute;
   inset: 0;
