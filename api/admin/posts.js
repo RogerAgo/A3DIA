@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+const kv = Redis.fromEnv();
 import { requireAdmin } from '../_lib/auth.js';
 
 const TYPES = ['Communiqué', 'Document AG', 'OPA / OVR', 'Dividende', 'Info'];

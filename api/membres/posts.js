@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+const kv = Redis.fromEnv();
 import { requireAuth } from '../_lib/auth.js';
 
 export default async function handler(req, res) {

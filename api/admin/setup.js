@@ -6,7 +6,8 @@
  * Usage (une seule fois après déploiement) :
  *   POST /api/admin/setup  {}
  */
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+const kv = Redis.fromEnv();
 import bcrypt from 'bcryptjs';
 
 export default async function handler(req, res) {

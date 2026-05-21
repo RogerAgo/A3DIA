@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+const kv = Redis.fromEnv();
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { makeAuthCookie } from '../_lib/auth.js';
