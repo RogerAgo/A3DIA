@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Espace Adhérents — A3DIA</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="/assets/images/logo-a3dia.png" />
+  <link rel="apple-touch-icon" href="/assets/images/logo-a3dia.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#1a2961" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo" aria-label="A3DIA — Accueil">
+        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
+      </a>
+      <nav class="nav" aria-label="Navigation principale" id="main-nav">
+        <ul class="nav-list" id="nav-list">
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="adhesion.html" class="nav-link">Adhésion</a></li>
+          <li><a href="actualites.html" class="nav-link">Actualités</a></li>
+          <li><a href="espace-membres.html" class="nav-link active">Espace Membres</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li id="nav-admin-item" hidden><a href="admin.html" class="nav-link">Administration</a></li>
+          <li><button class="nav-link nav-logout-btn" id="nav-logout" style="background:none;border:none;cursor:pointer;padding:6px 0;">Déconnexion</button></li>
+        </ul>
+        <button class="btn-logout-cta" id="nav-logout-cta">Déconnexion</button>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <section class="membre-hero">
+    <div class="container">
+      <div class="membre-hero-inner">
+        <div class="membre-hero-text">
+          <span class="label">Réservé aux adhérents</span>
+          <h1>Espace Adhérents</h1>
+          <p id="welcome-msg">Bienvenue dans votre espace exclusif.</p>
+        </div>
+        <div class="membre-hero-badge" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="12" y="28" width="40" height="28" rx="4" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M20 28V20C20 15.582 23.582 12 28 12H36C40.418 12 44 15.582 44 20V28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="32" cy="42" r="4" fill="currentColor" opacity="0.8"/>
+            <path d="M32 46V50" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <span>Contenu exclusif</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTRES -->
+  <section class="section" style="padding-top: 40px; padding-bottom: 0;">
+    <div class="container">
+      <div class="posts-filters" id="posts-filters">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="Communiqué">Communiqués</button>
+        <button class="filter-btn" data-filter="Document AG">Documents AG</button>
+        <button class="filter-btn" data-filter="OPA / OVR">OPA / OVR</button>
+        <button class="filter-btn" data-filter="Dividende">Dividendes</button>
+        <button class="filter-btn" data-filter="Info">Infos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSTS GRID -->
+  <section class="section" style="padding-top: 32px;">
+    <div class="container">
+
+      <!-- Loading state -->
+      <div id="posts-loading" class="posts-loading">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <p>Chargement des communiqués…</p>
+      </div>
+
+      <!-- Empty state -->
+      <div id="posts-empty" class="posts-empty" hidden>
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="10" y="8" width="44" height="48" rx="4" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M20 22H44M20 30H44M20 38H36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+        <p>Aucun communiqué pour le moment.</p>
+      </div>
+
+      <!-- Posts grid -->
+      <div id="posts-grid" class="posts-grid" hidden></div>
+    </div>
+  </section>
+
+  <!-- POST DETAIL MODAL -->
+  <div class="post-modal" id="post-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="post-modal-backdrop" id="modal-backdrop"></div>
+    <div class="post-modal-content">
+      <div class="post-modal-header">
+        <div>
+          <span class="post-modal-type" id="modal-type"></span>
+          <h2 id="modal-title"></h2>
+          <p class="post-modal-meta" id="modal-meta"></p>
+        </div>
+        <button class="post-modal-close" id="modal-close" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="post-modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-inner reveal">
+        <h2>Souscrivez à notre newsletter</h2>
+        <p>Recevez en priorité toutes les actualités des participations Arkéon directement dans votre boîte mail.</p>
+        <form class="newsletter-form" data-form="newsletter" novalidate>
+          <input type="email" placeholder="Entrez votre email" required aria-label="Email" />
+          <button type="submit">Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
+          </div>
+          <p>Association de Défense des Investisseurs Arkéon. Siège : 9 rue Anatole de La Forge, 75017 Paris. RCS 838 794 550.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="adhesion.html">Adhésion</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="espace-membres.html">Espace Membres</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Ressources</h5>
+          <ul>
+            <li><a href="#">Statuts</a></li>
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></li>
+            <li><a href="contact.html">Formulaire de contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright © 2026 A3DIA</span>
+        <span>All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    const TYPE_COLORS = {
+      'Communiqué':  { bg: '#e4e9f7', color: '#2d3d7a' },
+      'Document AG': { bg: '#fef9ec', color: '#92610a' },
+      'OPA / OVR':   { bg: '#fde8e8', color: '#9b1c1c' },
+      'Dividende':   { bg: '#e8f5e9', color: '#155724' },
+      'Info':        { bg: '#f0f0f0', color: '#444' }
+    };
+
+    let allPosts = [];
+    let currentFilter = 'all';
+
+    async function init() {
+      // Guard : redirect to login if not authenticated
+      let user;
+      try {
+        const res = await fetch('/api/auth/me');
+        if (!res.ok) throw new Error();
+        ({ user } = await res.json());
+      } catch {
+        window.location.replace('/login?redirect=/espace-membres');
+        return;
+      }
+
+      // Welcome message
+      document.getElementById('welcome-msg').textContent =
+        `Bonjour ${user.prenom} ${user.nom}, bienvenue dans votre espace exclusif.`;
+
+      // Show admin link if admin
+      if (user.role === 'admin') {
+        document.getElementById('nav-admin-item').hidden = false;
+      }
+
+      // Logout buttons
+      document.getElementById('nav-logout').addEventListener('click', logout);
+      document.getElementById('nav-logout-cta').addEventListener('click', logout);
+
+      // Load posts
+      await loadPosts();
+
+      // Filters
+      document.getElementById('posts-filters').addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderPosts();
+      });
+
+      // Modal close
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('modal-backdrop').addEventListener('click', closeModal);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    }
+
+    async function loadPosts() {
+      try {
+        const res = await fetch('/api/membres/posts');
+        if (!res.ok) throw new Error();
+        ({ posts: allPosts } = await res.json());
+        document.getElementById('posts-loading').hidden = true;
+        renderPosts();
+      } catch {
+        document.getElementById('posts-loading').hidden = true;
+        document.getElementById('posts-empty').hidden = false;
+      }
+    }
+
+    function renderPosts() {
+      const grid = document.getElementById('posts-grid');
+      const empty = document.getElementById('posts-empty');
+
+      const filtered = currentFilter === 'all'
+        ? allPosts
+        : allPosts.filter(p => p.type === currentFilter);
+
+      if (!filtered.length) {
+        grid.hidden = true;
+        empty.hidden = false;
+        return;
+      }
+
+      empty.hidden = true;
+      grid.hidden = false;
+      grid.innerHTML = filtered.map(renderCard).join('');
+
+      grid.querySelectorAll('.post-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.id;
+          const post = allPosts.find(p => p.id === id);
+          if (post) openModal(post);
+        });
+        card.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') card.click();
+        });
+      });
+    }
+
+    function renderCard(post) {
+      const c = TYPE_COLORS[post.type] || TYPE_COLORS['Info'];
+      const date = formatDate(post.datePublication);
+      const excerpt = stripHtml(post.contenu).slice(0, 140) + '…';
+      return `
+        <article class="post-card" data-id="${post.id}" tabindex="0" role="button" aria-label="Lire ${esc(post.titre)}">
+          <div class="post-card-header">
+            <span class="post-type-badge" style="background:${c.bg};color:${c.color}">${esc(post.type)}</span>
+            <span class="post-date">${date}</span>
+          </div>
+          ${post.societe ? `<p class="post-societe">${esc(post.societe)}</p>` : ''}
+          <h3>${esc(post.titre)}</h3>
+          <p class="post-excerpt">${esc(excerpt)}</p>
+          <span class="post-read-more">Lire la suite →</span>
+        </article>`;
+    }
+
+    function openModal(post) {
+      const c = TYPE_COLORS[post.type] || TYPE_COLORS['Info'];
+      document.getElementById('modal-type').textContent = post.type;
+      document.getElementById('modal-type').style.cssText = `background:${c.bg};color:${c.color}`;
+      document.getElementById('modal-title').textContent = post.titre;
+      document.getElementById('modal-meta').textContent =
+        [post.societe, formatDate(post.datePublication)].filter(Boolean).join(' · ');
+      document.getElementById('modal-body').innerHTML = post.contenu;
+
+      const modal = document.getElementById('post-modal');
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('modal-close').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('post-modal').hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/';
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function stripHtml(html) {
+      const d = document.createElement('div');
+      d.innerHTML = html;
+      return d.textContent || d.innerText || '';
+    }
+
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    init();
+  </script>
+</body>
+</html>
