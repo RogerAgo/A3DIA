@@ -222,10 +222,16 @@
       <section class="admin-tab" id="tab-members" hidden>
         <div class="admin-tab-header">
           <h1>Gestion des adhérents</h1>
+          <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="btn-import-members">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Importer (CSV)
+          </button>
           <button class="btn btn-primary btn-sm" id="btn-add-member">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Ajouter un adhérent
           </button>
+          </div>
         </div>
         <div class="admin-search-row">
           <input type="search" id="member-search" placeholder="Rechercher par nom, email…" class="admin-search-input" />
@@ -528,6 +534,68 @@
     </div>
   </div>
 
+  <!-- ===== MODAL IMPORT CSV ===== -->
+  <div class="admin-modal" id="import-modal" hidden role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box admin-modal-box-lg" style="max-width:680px">
+      <div class="admin-modal-head">
+        <h2 id="import-modal-title">Importer des membres (anciens adhérents)</h2>
+        <button class="admin-modal-close" data-close="import-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div id="import-step-form">
+        <p style="color:var(--ink-600);font-size:0.875rem;margin:0 0 16px">
+          Collez ici la liste des anciens adhérents au format CSV.<br/>
+          <strong>Format attendu (une ligne par personne) :</strong><br/>
+          <code style="background:#f1f5f9;padding:4px 8px;border-radius:4px;font-size:0.8rem">email, prenom, nom, societe (optionnel)</code>
+        </p>
+        <div class="info-box info-box-blue" style="margin-bottom:16px">
+          📧 Un email de bienvenue avec les identifiants sera envoyé automatiquement à chaque adhérent (si SMTP configuré). Les comptes déjà existants seront ignorés.
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label for="import-csv">Données CSV</label>
+          <textarea id="import-csv" rows="10" placeholder="jean.dupont@email.com, Jean, Dupont, ACME SA&#10;marie.martin@email.fr, Marie, Martin&#10;paul.bernard@gmail.com, Paul, Bernard, Société BTP" style="font-family:monospace;font-size:0.82rem;resize:vertical"></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.875rem">
+            <input type="checkbox" id="import-send-emails" checked style="width:16px;height:16px;accent-color:var(--navy-700)" />
+            Envoyer les emails de bienvenue automatiquement
+          </label>
+        </div>
+        <div id="import-preview" hidden style="margin-bottom:16px">
+          <p style="font-size:0.85rem;font-weight:600;margin:0 0 8px;color:var(--ink-700)">Aperçu — <span id="import-preview-count">0</span> ligne(s) détectée(s) :</p>
+          <div style="max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+            <table class="admin-table" style="font-size:0.8rem">
+              <thead><tr><th>Email</th><th>Prénom</th><th>Nom</th><th>Société</th></tr></thead>
+              <tbody id="import-preview-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="import-form-error" class="admin-form-msg admin-form-msg-error" hidden></div>
+        <div class="admin-modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="import-modal">Annuler</button>
+          <button type="button" class="btn btn-ghost" id="import-preview-btn">Aperçu</button>
+          <button type="button" class="btn btn-primary" id="import-run-btn">Lancer l'import</button>
+        </div>
+      </div>
+
+      <div id="import-step-result" hidden>
+        <div id="import-result-summary" style="margin-bottom:20px"></div>
+        <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;margin-bottom:20px">
+          <table class="admin-table" style="font-size:0.8rem">
+            <thead><tr><th>Email</th><th>Prénom / Nom</th><th>Résultat</th><th>Mot de passe temp.</th></tr></thead>
+            <tbody id="import-result-tbody"></tbody>
+          </table>
+        </div>
+        <div class="admin-modal-actions">
+          <button type="button" class="btn btn-primary" id="import-done-btn">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== MODAL CONFIRMER SUPPRESSION ===== -->
   <div class="admin-modal" id="confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirm-title">
     <div class="admin-modal-backdrop"></div>
@@ -617,6 +685,12 @@
       document.getElementById('pay-filter-status').addEventListener('change', renderPayments);
       document.getElementById('payment-form').addEventListener('submit', savePayment);
       document.getElementById('pay-member-search').addEventListener('input', onMemberSearch);
+
+      // Import
+      document.getElementById('btn-import-members').addEventListener('click', openImportModal);
+      document.getElementById('import-preview-btn').addEventListener('click', showImportPreview);
+      document.getElementById('import-run-btn').addEventListener('click', runImport);
+      document.getElementById('import-done-btn').addEventListener('click', () => closeModal('import-modal'));
 
       // Members
       document.getElementById('btn-add-member').addEventListener('click', () => openMemberModal());
@@ -1302,6 +1376,104 @@
         msgBox.textContent = err.message || 'Erreur.';
         msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false;
       } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
+    }
+
+    // ---- Import ----
+    function parseCsvLine(line) {
+      const parts = line.split(',').map(s => s.trim());
+      return { email: parts[0] || '', prenom: parts[1] || '', nom: parts[2] || '', societe: parts[3] || '' };
+    }
+
+    function getCsvRows() {
+      return document.getElementById('import-csv').value
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 0)
+        .map(parseCsvLine)
+        .filter(r => r.email && r.prenom && r.nom);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {}, false);
+
+    function openImportModal() {
+      document.getElementById('import-csv').value = '';
+      document.getElementById('import-preview').hidden = true;
+      document.getElementById('import-form-error').hidden = true;
+      document.getElementById('import-step-form').hidden = false;
+      document.getElementById('import-step-result').hidden = true;
+      document.getElementById('import-send-emails').checked = true;
+      openModal('import-modal');
+    }
+
+    function showImportPreview() {
+      const rows = getCsvRows();
+      const errBox = document.getElementById('import-form-error');
+      if (!rows.length) {
+        errBox.textContent = 'Aucune ligne valide détectée. Vérifiez le format : email, prenom, nom';
+        errBox.hidden = false; return;
+      }
+      errBox.hidden = true;
+      document.getElementById('import-preview-count').textContent = rows.length;
+      document.getElementById('import-preview-tbody').innerHTML = rows.map(r =>
+        `<tr><td>${esc(r.email)}</td><td>${esc(r.prenom)}</td><td>${esc(r.nom)}</td><td>${esc(r.societe)}</td></tr>`
+      ).join('');
+      document.getElementById('import-preview').hidden = false;
+    }
+
+    async function runImport() {
+      const rows = getCsvRows();
+      const errBox = document.getElementById('import-form-error');
+      if (!rows.length) {
+        errBox.textContent = 'Aucune ligne valide. Vérifiez le format.';
+        errBox.hidden = false; return;
+      }
+      const sendEmails = document.getElementById('import-send-emails').checked;
+      const btn = document.getElementById('import-run-btn');
+      btn.disabled = true; btn.textContent = 'Import en cours…';
+      errBox.hidden = true;
+
+      try {
+        const res = await fetch('/api/admin/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ members: rows, sendEmails })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        const { summary, results } = data;
+        const allRows = [...(results.created || []), ...(results.skipped || []), ...(results.errors || [])];
+
+        document.getElementById('import-result-summary').innerHTML = `
+          <div class="info-box info-box-green" style="margin-bottom:8px">
+            ✅ Import terminé — <strong>${summary.created}</strong> créé(s),
+            <strong>${summary.skipped}</strong> ignoré(s) (déjà existant),
+            <strong>${summary.errors}</strong> erreur(s)
+          </div>
+          ${!sendEmails || summary.created === 0 ? '' : `<div class="info-box info-box-blue">📧 Emails de bienvenue envoyés aux nouveaux comptes.</div>`}
+        `;
+
+        document.getElementById('import-result-tbody').innerHTML = allRows.map(r => {
+          const isError = results.errors?.find(e => e.email === r.email);
+          const isSkipped = results.skipped?.find(s => s.email === r.email);
+          const statusColor = isError ? '#991b1b' : isSkipped ? '#92400e' : '#166534';
+          return `<tr>
+            <td>${esc(r.email)}</td>
+            <td>${esc(r.prenom || '')} ${esc(r.nom || '')}</td>
+            <td style="color:${statusColor};font-weight:600">${esc(r.status || r.reason || '—')}</td>
+            <td><code style="font-size:0.78rem">${esc(r.tempPassword || '—')}</code></td>
+          </tr>`;
+        }).join('');
+
+        document.getElementById('import-step-form').hidden = true;
+        document.getElementById('import-step-result').hidden = false;
+        await Promise.all([loadMembers(), loadStats()]);
+      } catch (err) {
+        errBox.textContent = err.message || 'Erreur lors de l\'import.';
+        errBox.hidden = false;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Lancer l\'import';
+      }
     }
 
     // ---- Modal helpers ----
