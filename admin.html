@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administration — A3DIA</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="/assets/images/logo-a3dia.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#1a2961" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-body">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <div class="admin-topbar-left">
+        <a href="/" class="logo" aria-label="A3DIA — Accueil">
+          <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
+        </a>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <div class="admin-topbar-right">
+        <span class="admin-user-label" id="admin-user-label">…</span>
+        <a href="espace-membres.html" class="admin-topbar-link">Espace Membres</a>
+        <a href="actualites.html" class="admin-topbar-link">Site public</a>
+        <button class="admin-topbar-btn" id="admin-logout">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <nav class="admin-sidenav" aria-label="Navigation admin">
+        <button class="admin-sidenav-item active" data-tab="members" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
+            <circle cx="9" cy="7" r="4"/><circle cx="17" cy="8" r="3"/>
+            <path d="M1 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          </svg>
+          Adhérents
+          <span class="admin-count" id="members-count">—</span>
+        </button>
+        <button class="admin-sidenav-item" data-tab="posts" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+          Communiqués
+          <span class="admin-count" id="posts-count">—</span>
+        </button>
+        <button class="admin-sidenav-item" data-tab="account" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>
+          </svg>
+          Mon compte
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- ===== ADHÉRENTS TAB ===== -->
+      <section class="admin-tab" id="tab-members">
+        <div class="admin-tab-header">
+          <h1>Gestion des adhérents</h1>
+          <button class="btn btn-primary btn-sm" id="btn-add-member">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un adhérent
+          </button>
+        </div>
+
+        <div class="admin-search-row">
+          <input type="search" id="member-search" placeholder="Rechercher par nom, email…" class="admin-search-input" />
+          <select id="member-filter-role" class="admin-select">
+            <option value="">Tous les rôles</option>
+            <option value="membre">Membres</option>
+            <option value="admin">Admins</option>
+          </select>
+          <select id="member-filter-actif" class="admin-select">
+            <option value="">Tous les statuts</option>
+            <option value="true">Actifs</option>
+            <option value="false">Inactifs</option>
+          </select>
+        </div>
+
+        <div class="admin-table-wrap" id="members-table-wrap">
+          <div class="admin-loading" id="members-loading">
+            <div class="loading-spinner"></div> Chargement…
+          </div>
+          <table class="admin-table" id="members-table" hidden>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Statut</th>
+                <th>Inscrit le</th>
+                <th>Dernière connexion</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-tbody"></tbody>
+          </table>
+          <p class="admin-empty" id="members-empty" hidden>Aucun adhérent trouvé.</p>
+        </div>
+      </section>
+
+      <!-- ===== COMMUNIQUÉS TAB ===== -->
+      <section class="admin-tab" id="tab-posts" hidden>
+        <div class="admin-tab-header">
+          <h1>Communiqués exclusifs</h1>
+          <button class="btn btn-primary btn-sm" id="btn-add-post">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouveau communiqué
+          </button>
+        </div>
+
+        <div class="admin-table-wrap" id="posts-table-wrap">
+          <div class="admin-loading" id="posts-loading">
+            <div class="loading-spinner"></div> Chargement…
+          </div>
+          <table class="admin-table" id="posts-table" hidden>
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Société</th>
+                <th>Type</th>
+                <th>Date publication</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="posts-tbody"></tbody>
+          </table>
+          <p class="admin-empty" id="posts-empty" hidden>Aucun communiqué.</p>
+        </div>
+      </section>
+
+      <!-- ===== MON COMPTE TAB ===== -->
+      <section class="admin-tab" id="tab-account" hidden>
+        <div class="admin-tab-header">
+          <h1>Mon compte</h1>
+        </div>
+        <div class="admin-account-card">
+          <h3>Changer le mot de passe</h3>
+          <div id="account-msg" class="admin-form-msg" hidden></div>
+          <form id="account-form" novalidate style="max-width: 440px;">
+            <div class="field" style="margin-bottom: 16px;">
+              <label for="new-password">Nouveau mot de passe</label>
+              <input type="password" id="new-password" minlength="8" required placeholder="8 caractères minimum" />
+            </div>
+            <div class="field" style="margin-bottom: 24px;">
+              <label for="confirm-password">Confirmer le mot de passe</label>
+              <input type="password" id="confirm-password" required placeholder="Répétez le mot de passe" />
+            </div>
+            <button type="submit" class="btn btn-primary" id="account-submit">Enregistrer</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== MODAL ADHÉRENT ===== -->
+  <div class="admin-modal" id="member-modal" hidden role="dialog" aria-modal="true" aria-labelledby="member-modal-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box">
+      <div class="admin-modal-head">
+        <h2 id="member-modal-title">Adhérent</h2>
+        <button class="admin-modal-close" data-close="member-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="member-modal-msg" class="admin-form-msg" hidden></div>
+      <form id="member-form" novalidate>
+        <input type="hidden" id="member-id" />
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 16px 20px;">
+          <div class="field">
+            <label for="m-civilite">Civilité</label>
+            <select id="m-civilite" class="admin-select" style="width:100%">
+              <option value="">—</option>
+              <option value="M.">M.</option>
+              <option value="Mme">Mme</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="m-role">Rôle <span class="req">*</span></label>
+            <select id="m-role" required class="admin-select" style="width:100%">
+              <option value="membre">Membre</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="m-prenom">Prénom <span class="req">*</span></label>
+            <input type="text" id="m-prenom" required />
+          </div>
+          <div class="field">
+            <label for="m-nom">Nom <span class="req">*</span></label>
+            <input type="text" id="m-nom" required />
+          </div>
+          <div class="field full" style="grid-column: 1/-1">
+            <label for="m-email">Email <span class="req">*</span></label>
+            <input type="email" id="m-email" required />
+          </div>
+          <div class="field full" style="grid-column: 1/-1">
+            <label for="m-password" id="m-password-label">Mot de passe <span class="req">*</span></label>
+            <input type="password" id="m-password" placeholder="Laisser vide pour ne pas modifier" />
+          </div>
+          <div class="field">
+            <label for="m-tel">Téléphone</label>
+            <input type="tel" id="m-tel" />
+          </div>
+          <div class="field">
+            <label for="m-societe">Société</label>
+            <input type="text" id="m-societe" />
+          </div>
+          <div class="field full" style="grid-column: 1/-1">
+            <label class="checkbox-row" style="flex-direction: row; align-items: center; gap: 10px; cursor: pointer;">
+              <input type="checkbox" id="m-actif" checked style="width:18px;height:18px;accent-color:var(--navy-700);" />
+              <span>Compte actif (peut se connecter)</span>
+            </label>
+          </div>
+        </div>
+        <div class="admin-modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="member-modal">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="member-submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL COMMUNIQUÉ ===== -->
+  <div class="admin-modal" id="post-modal" hidden role="dialog" aria-modal="true" aria-labelledby="post-modal-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box admin-modal-box-lg">
+      <div class="admin-modal-head">
+        <h2 id="post-modal-title">Communiqué</h2>
+        <button class="admin-modal-close" data-close="post-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="post-modal-msg" class="admin-form-msg" hidden></div>
+      <form id="post-form" novalidate>
+        <input type="hidden" id="post-id" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:16px;">
+          <div class="field full" style="grid-column:1/-1">
+            <label for="p-titre">Titre <span class="req">*</span></label>
+            <input type="text" id="p-titre" required />
+          </div>
+          <div class="field">
+            <label for="p-societe">Société concernée</label>
+            <input type="text" id="p-societe" placeholder="ex: XANDRIE" />
+          </div>
+          <div class="field">
+            <label for="p-type">Type</label>
+            <select id="p-type" class="admin-select" style="width:100%">
+              <option>Communiqué</option>
+              <option>Document AG</option>
+              <option>OPA / OVR</option>
+              <option>Dividende</option>
+              <option>Info</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="p-date">Date de publication <span class="req">*</span></label>
+            <input type="date" id="p-date" required />
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:20px;">
+          <label for="p-contenu">Contenu <span class="req">*</span> <small style="font-weight:400;color:var(--ink-500)">(HTML accepté)</small></label>
+          <textarea id="p-contenu" required rows="10" style="font-family:monospace;font-size:0.875rem;line-height:1.5;resize:vertical;"></textarea>
+        </div>
+        <div class="admin-modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="post-modal">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="post-submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== CONFIRM DELETE MODAL ===== -->
+  <div class="admin-modal" id="confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box" style="max-width:440px;">
+      <div class="admin-modal-head">
+        <h2 id="confirm-title">Confirmer la suppression</h2>
+      </div>
+      <p id="confirm-text" style="margin:0 0 24px;color:var(--ink-700);"></p>
+      <div class="admin-modal-actions">
+        <button class="btn btn-ghost" data-close="confirm-modal">Annuler</button>
+        <button class="btn" id="confirm-ok" style="background:var(--danger);color:#fff;">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    /* ============================================================
+       A3DIA — Admin Panel
+       ============================================================ */
+
+    let adminUser = null;
+    let allMembers = [];
+    let allPosts = [];
+    let pendingDelete = null;
+
+    // ---- Init ----
+    async function init() {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (!res.ok) throw new Error();
+        ({ user: adminUser } = await res.json());
+        if (adminUser.role !== 'admin') throw new Error('not admin');
+      } catch {
+        window.location.replace('/login?redirect=/admin');
+        return;
+      }
+
+      document.getElementById('admin-user-label').textContent =
+        `${adminUser.prenom} ${adminUser.nom}`;
+
+      document.getElementById('admin-logout').addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/';
+      });
+
+      // Tab navigation
+      document.querySelectorAll('.admin-sidenav-item').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Modal close buttons
+      document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.close));
+      });
+      document.querySelectorAll('.admin-modal-backdrop').forEach(bd => {
+        bd.addEventListener('click', () => {
+          bd.closest('.admin-modal')?.setAttribute('hidden', '');
+          document.body.style.overflow = '';
+        });
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.admin-modal:not([hidden])').forEach(m => {
+            m.hidden = true;
+          });
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Load data
+      await Promise.all([loadMembers(), loadPosts()]);
+
+      // Member form
+      document.getElementById('btn-add-member').addEventListener('click', () => openMemberModal());
+      document.getElementById('member-form').addEventListener('submit', saveMember);
+      document.getElementById('member-search').addEventListener('input', renderMembers);
+      document.getElementById('member-filter-role').addEventListener('change', renderMembers);
+      document.getElementById('member-filter-actif').addEventListener('change', renderMembers);
+
+      // Post form
+      document.getElementById('btn-add-post').addEventListener('click', () => openPostModal());
+      document.getElementById('post-form').addEventListener('submit', savePost);
+
+      // Account form
+      document.getElementById('account-form').addEventListener('submit', changePassword);
+
+      // Confirm delete
+      document.getElementById('confirm-ok').addEventListener('click', () => {
+        if (pendingDelete) { pendingDelete(); pendingDelete = null; }
+        closeModal('confirm-modal');
+      });
+    }
+
+    // ---- Tab switching ----
+    function switchTab(tab) {
+      document.querySelectorAll('.admin-tab').forEach(s => s.hidden = true);
+      document.querySelectorAll('.admin-sidenav-item').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+        b.setAttribute('aria-selected', b.dataset.tab === tab);
+      });
+      document.getElementById(`tab-${tab}`).hidden = false;
+    }
+
+    // ---- Members ----
+    async function loadMembers() {
+      try {
+        const res = await fetch('/api/admin/members');
+        ({ members: allMembers } = await res.json());
+        document.getElementById('members-loading').hidden = true;
+        document.getElementById('members-count').textContent = allMembers.length;
+        renderMembers();
+      } catch {
+        document.getElementById('members-loading').textContent = 'Erreur de chargement.';
+      }
+    }
+
+    function renderMembers() {
+      const q = document.getElementById('member-search').value.toLowerCase();
+      const role = document.getElementById('member-filter-role').value;
+      const actif = document.getElementById('member-filter-actif').value;
+
+      const filtered = allMembers.filter(m => {
+        const matchQ = !q || `${m.nom} ${m.prenom} ${m.email}`.toLowerCase().includes(q);
+        const matchRole = !role || m.role === role;
+        const matchActif = actif === '' || String(m.actif) === actif;
+        return matchQ && matchRole && matchActif;
+      });
+
+      const tbody = document.getElementById('members-tbody');
+      const table = document.getElementById('members-table');
+      const empty = document.getElementById('members-empty');
+
+      if (!filtered.length) {
+        table.hidden = true;
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      table.hidden = false;
+
+      tbody.innerHTML = filtered.map(m => `
+        <tr>
+          <td><strong>${esc(m.prenom)} ${esc(m.nom)}</strong>${m.societe ? `<br><small style="color:var(--ink-500)">${esc(m.societe)}</small>` : ''}</td>
+          <td>${esc(m.email)}</td>
+          <td><span class="role-badge role-${m.role}">${m.role}</span></td>
+          <td><span class="status-badge ${m.actif ? 'status-active' : 'status-inactive'}">${m.actif ? 'Actif' : 'Inactif'}</span></td>
+          <td class="date-cell">${fmtDate(m.createdAt)}</td>
+          <td class="date-cell">${m.lastLogin ? fmtDate(m.lastLogin) : '—'}</td>
+          <td class="actions-col">
+            <button class="action-btn" title="Modifier" onclick="openMemberModal('${m.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="action-btn action-btn-toggle" title="${m.actif ? 'Désactiver' : 'Activer'}" onclick="toggleMember('${m.id}', ${!m.actif})">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
+                ${m.actif
+                  ? '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>'
+                  : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
+              </svg>
+            </button>
+            <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeleteMember('${m.id}', '${esc(m.prenom)} ${esc(m.nom)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    function openMemberModal(id = null) {
+      const modal = document.getElementById('member-modal');
+      const form = document.getElementById('member-form');
+      const msgBox = document.getElementById('member-modal-msg');
+      msgBox.hidden = true;
+      form.reset();
+
+      if (id) {
+        const m = allMembers.find(x => x.id === id);
+        if (!m) return;
+        document.getElementById('member-modal-title').textContent = 'Modifier l\'adhérent';
+        document.getElementById('m-password-label').innerHTML = 'Nouveau mot de passe <small style="font-weight:400;color:var(--ink-500)">(laisser vide pour ne pas modifier)</small>';
+        document.getElementById('m-password').required = false;
+        document.getElementById('member-id').value = m.id;
+        document.getElementById('m-civilite').value = m.civilite || '';
+        document.getElementById('m-prenom').value = m.prenom;
+        document.getElementById('m-nom').value = m.nom;
+        document.getElementById('m-email').value = m.email;
+        document.getElementById('m-email').readOnly = true;
+        document.getElementById('m-tel').value = m.tel || '';
+        document.getElementById('m-societe').value = m.societe || '';
+        document.getElementById('m-role').value = m.role;
+        document.getElementById('m-actif').checked = m.actif;
+      } else {
+        document.getElementById('member-modal-title').textContent = 'Ajouter un adhérent';
+        document.getElementById('m-password-label').innerHTML = 'Mot de passe <span class="req">*</span>';
+        document.getElementById('m-password').required = true;
+        document.getElementById('member-id').value = '';
+        document.getElementById('m-email').readOnly = false;
+      }
+
+      openModal('member-modal');
+    }
+
+    async function saveMember(e) {
+      e.preventDefault();
+      const msgBox = document.getElementById('member-modal-msg');
+      const btn = document.getElementById('member-submit');
+      const id = document.getElementById('member-id').value;
+
+      const body = {
+        prenom: document.getElementById('m-prenom').value.trim(),
+        nom: document.getElementById('m-nom').value.trim(),
+        email: document.getElementById('m-email').value.trim(),
+        civilite: document.getElementById('m-civilite').value,
+        tel: document.getElementById('m-tel').value.trim(),
+        societe: document.getElementById('m-societe').value.trim(),
+        role: document.getElementById('m-role').value,
+        actif: document.getElementById('m-actif').checked
+      };
+      const pw = document.getElementById('m-password').value;
+      if (pw) body.password = pw;
+      if (id) body.id = id;
+
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement…';
+      msgBox.hidden = true;
+
+      try {
+        const res = await fetch('/api/admin/members', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        closeModal('member-modal');
+        await loadMembers();
+      } catch (err) {
+        msgBox.textContent = err.message || 'Erreur lors de l\'enregistrement.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enregistrer';
+      }
+    }
+
+    async function toggleMember(id, actif) {
+      await fetch('/api/admin/members', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, actif })
+      });
+      await loadMembers();
+    }
+
+    function confirmDeleteMember(id, name) {
+      document.getElementById('confirm-text').textContent =
+        `Supprimer définitivement l'adhérent « ${name} » ? Cette action est irréversible.`;
+      pendingDelete = async () => {
+        await fetch('/api/admin/members', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        await loadMembers();
+      };
+      openModal('confirm-modal');
+    }
+
+    // ---- Posts ----
+    async function loadPosts() {
+      try {
+        const res = await fetch('/api/admin/posts');
+        ({ posts: allPosts } = await res.json());
+        document.getElementById('posts-loading').hidden = true;
+        document.getElementById('posts-count').textContent = allPosts.length;
+        renderPosts();
+      } catch {
+        document.getElementById('posts-loading').textContent = 'Erreur de chargement.';
+      }
+    }
+
+    function renderPosts() {
+      const tbody = document.getElementById('posts-tbody');
+      const table = document.getElementById('posts-table');
+      const empty = document.getElementById('posts-empty');
+
+      if (!allPosts.length) {
+        table.hidden = true;
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      table.hidden = false;
+
+      tbody.innerHTML = allPosts.map(p => `
+        <tr>
+          <td><strong>${esc(p.titre)}</strong></td>
+          <td>${esc(p.societe || '—')}</td>
+          <td><span class="type-badge">${esc(p.type)}</span></td>
+          <td class="date-cell">${fmtDate(p.datePublication)}</td>
+          <td class="actions-col">
+            <button class="action-btn" title="Modifier" onclick="openPostModal('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeletePost('${p.id}', '${esc(p.titre)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    function openPostModal(id = null) {
+      const form = document.getElementById('post-form');
+      const msgBox = document.getElementById('post-modal-msg');
+      msgBox.hidden = true;
+      form.reset();
+      document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
+
+      if (id) {
+        const p = allPosts.find(x => x.id === id);
+        if (!p) return;
+        document.getElementById('post-modal-title').textContent = 'Modifier le communiqué';
+        document.getElementById('post-id').value = p.id;
+        document.getElementById('p-titre').value = p.titre;
+        document.getElementById('p-societe').value = p.societe || '';
+        document.getElementById('p-type').value = p.type;
+        document.getElementById('p-date').value = p.datePublication;
+        document.getElementById('p-contenu').value = p.contenu;
+      } else {
+        document.getElementById('post-modal-title').textContent = 'Nouveau communiqué';
+        document.getElementById('post-id').value = '';
+      }
+
+      openModal('post-modal');
+    }
+
+    async function savePost(e) {
+      e.preventDefault();
+      const msgBox = document.getElementById('post-modal-msg');
+      const btn = document.getElementById('post-submit');
+      const id = document.getElementById('post-id').value;
+
+      const body = {
+        titre: document.getElementById('p-titre').value.trim(),
+        societe: document.getElementById('p-societe').value.trim(),
+        type: document.getElementById('p-type').value,
+        datePublication: document.getElementById('p-date').value,
+        contenu: document.getElementById('p-contenu').value.trim()
+      };
+      if (id) body.id = id;
+
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement…';
+      msgBox.hidden = true;
+
+      try {
+        const res = await fetch('/api/admin/posts', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        closeModal('post-modal');
+        await loadPosts();
+      } catch (err) {
+        msgBox.textContent = err.message || 'Erreur lors de l\'enregistrement.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enregistrer';
+      }
+    }
+
+    function confirmDeletePost(id, titre) {
+      document.getElementById('confirm-text').textContent =
+        `Supprimer définitivement le communiqué « ${titre} » ?`;
+      pendingDelete = async () => {
+        await fetch('/api/admin/posts', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        await loadPosts();
+      };
+      openModal('confirm-modal');
+    }
+
+    // ---- Account ----
+    async function changePassword(e) {
+      e.preventDefault();
+      const msgBox = document.getElementById('account-msg');
+      const btn = document.getElementById('account-submit');
+      const pw = document.getElementById('new-password').value;
+      const confirm = document.getElementById('confirm-password').value;
+
+      if (pw !== confirm) {
+        msgBox.textContent = 'Les mots de passe ne correspondent pas.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+        return;
+      }
+      if (pw.length < 8) {
+        msgBox.textContent = 'Minimum 8 caractères.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement…';
+      msgBox.hidden = true;
+
+      try {
+        const res = await fetch('/api/admin/members', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: adminUser.id, password: pw })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        msgBox.textContent = 'Mot de passe mis à jour avec succès.';
+        msgBox.className = 'admin-form-msg admin-form-msg-success';
+        msgBox.hidden = false;
+        document.getElementById('account-form').reset();
+      } catch (err) {
+        msgBox.textContent = err.message || 'Erreur lors de la mise à jour.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enregistrer';
+      }
+    }
+
+    // ---- Modal helpers ----
+    function openModal(id) {
+      const m = document.getElementById(id);
+      m.hidden = false;
+      document.body.style.overflow = 'hidden';
+      m.querySelector('input, button, select, textarea')?.focus();
+    }
+    function closeModal(id) {
+      document.getElementById(id).hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    // ---- Utils ----
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    init();
+  </script>
+</body>
+</html>
