@@ -1,20 +1,24 @@
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import bcrypt from 'bcryptjs';
 import { requireAdmin } from '../_lib/auth.js';
+import { getDB } from '../_lib/db.js';
 
 export default async function handler(req, res) {
   const admin = requireAdmin(req, res);
   if (!admin) return;
 
-  if (req.method === 'GET') return getMembers(res);
-  if (req.method === 'POST') return createMember(req, res);
-  if (req.method === 'PUT') return updateMember(req, res);
-  if (req.method === 'DELETE') return deleteMember(req, res);
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+
+  if (req.method === 'GET') return getMembers(kv, res);
+  if (req.method === 'POST') return createMember(kv, req, res);
+  if (req.method === 'PUT') return updateMember(kv, req, res);
+  if (req.method === 'DELETE') return deleteMember(kv, req, res);
   return res.status(405).end();
 }
 
-async function getMembers(res) {
+async function getMembers(kv, res) {
   const ids = (await kv.smembers('users')) ?? [];
   const users = await Promise.all(ids.map(id => kv.get(`user:${id}`)));
   const list = users
@@ -24,7 +28,7 @@ async function getMembers(res) {
   return res.status(200).json({ success: true, members: list });
 }
 
-async function createMember(req, res) {
+async function createMember(kv, req, res) {
   const { email, password, prenom, nom, civilite = '', tel = '', societe = '', role = 'membre', actif = true } = req.body ?? {};
 
   if (!email || !password || !prenom || !nom) {
@@ -42,14 +46,10 @@ async function createMember(req, res) {
   const id = `usr_${crypto.randomUUID().replace(/-/g, '').slice(0, 16)}`;
   const passwordHash = await bcrypt.hash(password, 10);
   const user = {
-    id,
-    email: email.toLowerCase().trim(),
-    passwordHash,
-    civilite, prenom, nom, societe, tel,
-    role,
+    id, email: email.toLowerCase().trim(), passwordHash,
+    civilite, prenom, nom, societe, tel, role,
     actif: Boolean(actif),
-    createdAt: new Date().toISOString(),
-    lastLogin: null
+    createdAt: new Date().toISOString(), lastLogin: null
   };
 
   await kv.set(`user:${id}`, user);
@@ -59,7 +59,7 @@ async function createMember(req, res) {
   return res.status(201).json({ success: true, member: omit(user, ['passwordHash']) });
 }
 
-async function updateMember(req, res) {
+async function updateMember(kv, req, res) {
   const { id, prenom, nom, civilite, tel, societe, role, actif, password } = req.body ?? {};
   if (!id) return res.status(400).json({ success: false, error: 'id requis' });
 
@@ -82,7 +82,7 @@ async function updateMember(req, res) {
   return res.status(200).json({ success: true, member: omit(updated, ['passwordHash']) });
 }
 
-async function deleteMember(req, res) {
+async function deleteMember(kv, req, res) {
   const { id } = req.body ?? {};
   if (!id) return res.status(400).json({ success: false, error: 'id requis' });
 

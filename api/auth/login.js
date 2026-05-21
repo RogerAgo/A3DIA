@@ -1,14 +1,18 @@
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { makeAuthCookie } from '../_lib/auth.js';
+import { getDB } from '../_lib/db.js';
 
 const RATE_LIMIT = 5;
-const RATE_WINDOW = 15 * 60; // secondes
+const RATE_WINDOW = 15 * 60;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
 
   const { email = '', password = '' } = req.body ?? {};
   const ip = (req.headers['x-forwarded-for'] ?? 'unknown').split(',')[0].trim();
@@ -17,23 +21,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'Email et mot de passe requis' });
   }
 
-  // Rate limiting par IP
   const ratKey = `ratelimit:login:${ip}`;
   const attempts = await kv.incr(ratKey);
   if (attempts === 1) await kv.expire(ratKey, RATE_WINDOW);
   if (attempts > RATE_LIMIT) {
-    return res.status(429).json({
-      success: false,
-      error: 'Trop de tentatives. Réessayez dans 15 minutes.'
-    });
+    return res.status(429).json({ success: false, error: 'Trop de tentatives. Réessayez dans 15 minutes.' });
   }
 
   const userId = await kv.get(`idx:email:${email.toLowerCase().trim()}`);
   const user = userId ? await kv.get(`user:${userId}`) : null;
 
-  // Réponse identique si email inconnu ou mauvais mdp (timing-safe)
   if (!user || !user.actif) {
-    await bcrypt.hash('dummy', 10); // empêche timing attack
+    await bcrypt.hash('dummy', 10);
     return res.status(401).json({ success: false, error: 'Email ou mot de passe incorrect' });
   }
 

@@ -1,9 +1,13 @@
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import { requireAuth } from '../_lib/auth.js';
+import { getDB } from '../_lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end();
+
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
 
   const payload = requireAuth(req, res);
   if (!payload) return;
@@ -15,12 +19,6 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     success: true,
-    user: {
-      id: user.id,
-      email: user.email,
-      prenom: user.prenom,
-      nom: user.nom,
-      role: user.role
-    }
+    user: { id: user.id, email: user.email, prenom: user.prenom, nom: user.nom, role: user.role }
   });
 }

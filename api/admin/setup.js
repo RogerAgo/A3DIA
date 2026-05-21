@@ -4,14 +4,18 @@
  * Se désactive automatiquement si un admin existe déjà.
  *
  * Usage (une seule fois après déploiement) :
- *   POST /api/admin/setup  {}
+ *   POST /api/admin/setup
  */
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import bcrypt from 'bcryptjs';
+import { getDB } from '../_lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
 
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
@@ -19,11 +23,10 @@ export default async function handler(req, res) {
   if (!email || !password) {
     return res.status(500).json({
       success: false,
-      error: 'ADMIN_EMAIL et ADMIN_PASSWORD doivent être définis dans les variables d\'environnement'
+      error: 'Variables manquantes : ADMIN_EMAIL et/ou ADMIN_PASSWORD non définis dans Vercel > Settings > Environment Variables.'
     });
   }
 
-  // Vérifier qu'aucun admin n'existe déjà
   const existingId = await kv.get(`idx:email:${email.toLowerCase()}`);
   if (existingId) {
     return res.status(409).json({
@@ -38,13 +41,9 @@ export default async function handler(req, res) {
     id,
     email: email.toLowerCase().trim(),
     passwordHash,
-    civilite: '',
-    prenom: 'Administrateur',
-    nom: 'A3DIA',
-    societe: '',
-    tel: '',
-    role: 'admin',
-    actif: true,
+    civilite: '', prenom: 'Administrateur', nom: 'A3DIA',
+    societe: '', tel: '',
+    role: 'admin', actif: true,
     createdAt: new Date().toISOString(),
     lastLogin: null
   };
@@ -55,6 +54,6 @@ export default async function handler(req, res) {
 
   return res.status(201).json({
     success: true,
-    message: `Compte admin créé pour ${email}. Vous pouvez maintenant vous connecter sur /login.`
+    message: `Compte admin créé pour ${email}. Connectez-vous sur /login.`
   });
 }

@@ -1,6 +1,5 @@
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import { requireAdmin } from '../_lib/auth.js';
+import { getDB } from '../_lib/db.js';
 
 const TYPES = ['Communiqué', 'Document AG', 'OPA / OVR', 'Dividende', 'Info'];
 
@@ -8,14 +7,19 @@ export default async function handler(req, res) {
   const admin = requireAdmin(req, res);
   if (!admin) return;
 
-  if (req.method === 'GET') return getPosts(res);
-  if (req.method === 'POST') return createPost(req, res);
-  if (req.method === 'PUT') return updatePost(req, res);
-  if (req.method === 'DELETE') return deletePost(req, res);
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+
+  if (req.method === 'GET') return getPosts(kv, res);
+  if (req.method === 'POST') return createPost(kv, req, res);
+  if (req.method === 'PUT') return updatePost(kv, req, res);
+  if (req.method === 'DELETE') return deletePost(kv, req, res);
   return res.status(405).end();
 }
 
-async function getPosts(res) {
+async function getPosts(kv, res) {
   const ids = (await kv.smembers('posts')) ?? [];
   const posts = await Promise.all(ids.map(id => kv.get(`post:${id}`)));
   const list = posts
@@ -24,7 +28,7 @@ async function getPosts(res) {
   return res.status(200).json({ success: true, posts: list });
 }
 
-async function createPost(req, res) {
+async function createPost(kv, req, res) {
   const { titre, contenu, societe = '', type = 'Communiqué', datePublication } = req.body ?? {};
 
   if (!titre || !contenu) {
@@ -37,8 +41,7 @@ async function createPost(req, res) {
     id, titre, contenu, societe,
     type: TYPES.includes(type) ? type : 'Communiqué',
     datePublication: datePublication || now.split('T')[0],
-    createdAt: now,
-    updatedAt: now
+    createdAt: now, updatedAt: now
   };
 
   await kv.set(`post:${id}`, post);
@@ -47,7 +50,7 @@ async function createPost(req, res) {
   return res.status(201).json({ success: true, post });
 }
 
-async function updatePost(req, res) {
+async function updatePost(kv, req, res) {
   const { id, titre, contenu, societe, type, datePublication } = req.body ?? {};
   if (!id) return res.status(400).json({ success: false, error: 'id requis' });
 
@@ -67,7 +70,7 @@ async function updatePost(req, res) {
   return res.status(200).json({ success: true, post: updated });
 }
 
-async function deletePost(req, res) {
+async function deletePost(kv, req, res) {
   const { id } = req.body ?? {};
   if (!id) return res.status(400).json({ success: false, error: 'id requis' });
 

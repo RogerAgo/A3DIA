@@ -1,9 +1,13 @@
-import { Redis } from '@upstash/redis';
-const kv = Redis.fromEnv();
 import { requireAuth } from '../_lib/auth.js';
+import { getDB } from '../_lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end();
+
+  let kv;
+  try { kv = getDB(); } catch (e) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
 
   const auth = requireAuth(req, res);
   if (!auth) return;
