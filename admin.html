@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Administration — A3DIA</title>
   <meta name="robots" content="noindex, nofollow" />
-
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="alternate icon" type="image/png" href="/assets/images/logo-a3dia.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#1a2961" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -18,7 +16,6 @@
 </head>
 <body class="admin-body">
 
-  <!-- TOP BAR -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
       <div class="admin-topbar-left">
@@ -30,53 +27,199 @@
       <div class="admin-topbar-right">
         <span class="admin-user-label" id="admin-user-label">…</span>
         <a href="espace-membres.html" class="admin-topbar-link">Espace Membres</a>
-        <a href="actualites.html" class="admin-topbar-link">Site public</a>
+        <a href="/" class="admin-topbar-link">Site public</a>
         <button class="admin-topbar-btn" id="admin-logout">Déconnexion</button>
       </div>
     </div>
   </header>
 
-  <!-- LAYOUT -->
   <div class="admin-layout">
 
-    <!-- SIDEBAR -->
     <aside class="admin-sidebar">
       <nav class="admin-sidenav" aria-label="Navigation admin">
-        <button class="admin-sidenav-item active" data-tab="members" aria-selected="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
-            <circle cx="9" cy="7" r="4"/><circle cx="17" cy="8" r="3"/>
-            <path d="M1 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-          </svg>
+
+        <button class="admin-sidenav-item active" data-tab="dashboard" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </button>
+
+        <button class="admin-sidenav-item" data-tab="requests" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Demandes
+          <span class="admin-count" id="requests-count">—</span>
+        </button>
+
+        <button class="admin-sidenav-item" data-tab="payments" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Paiements
+          <span class="admin-count" id="payments-count">—</span>
+        </button>
+
+        <button class="admin-sidenav-item" data-tab="members" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="9" cy="7" r="4"/><circle cx="17" cy="8" r="3"/><path d="M1 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
           Adhérents
           <span class="admin-count" id="members-count">—</span>
         </button>
+
         <button class="admin-sidenav-item" data-tab="posts" aria-selected="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <line x1="10" y1="9" x2="8" y2="9"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           Communiqués
           <span class="admin-count" id="posts-count">—</span>
         </button>
+
         <button class="admin-sidenav-item" data-tab="account" aria-selected="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18" aria-hidden="true">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 20v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M4 20v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
           Mon compte
         </button>
+
       </nav>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="admin-main">
 
-      <!-- ===== ADHÉRENTS TAB ===== -->
-      <section class="admin-tab" id="tab-members">
+      <!-- ===== TABLEAU DE BORD ===== -->
+      <section class="admin-tab" id="tab-dashboard">
+        <div class="admin-tab-header">
+          <h1>Tableau de bord</h1>
+          <button class="btn btn-ghost btn-sm" id="btn-refresh-stats">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Actualiser
+          </button>
+        </div>
+
+        <div class="stat-cards" id="stat-cards">
+          <div class="stat-card stat-card-blue">
+            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><circle cx="9" cy="7" r="4"/><path d="M1 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/></svg></div>
+            <div class="stat-body"><div class="stat-val" id="s-membres-actifs">—</div><div class="stat-label">Adhérents actifs</div></div>
+          </div>
+          <div class="stat-card stat-card-orange">
+            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="stat-body"><div class="stat-val" id="s-demandes">—</div><div class="stat-label">Demandes en attente</div></div>
+          </div>
+          <div class="stat-card stat-card-green">
+            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div>
+            <div class="stat-body"><div class="stat-val" id="s-revenus-annee">—</div><div class="stat-label">Revenus <span id="s-annee-label"></span></div></div>
+          </div>
+          <div class="stat-card stat-card-gray">
+            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="stat-body"><div class="stat-val" id="s-paiements-attente">—</div><div class="stat-label">Paiements en attente</div></div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="dash-panel">
+            <div class="dash-panel-head">
+              <h3>Dernières demandes</h3>
+              <button class="btn-link" onclick="switchTab('requests')">Voir tout →</button>
+            </div>
+            <div id="dash-recent-requests"><div class="admin-loading"><div class="loading-spinner"></div></div></div>
+          </div>
+          <div class="dash-panel">
+            <div class="dash-panel-head">
+              <h3>Derniers paiements</h3>
+              <button class="btn-link" onclick="switchTab('payments')">Voir tout →</button>
+            </div>
+            <div id="dash-recent-payments"><div class="admin-loading"><div class="loading-spinner"></div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DEMANDES ===== -->
+      <section class="admin-tab" id="tab-requests" hidden>
+        <div class="admin-tab-header">
+          <h1>Demandes d'adhésion</h1>
+        </div>
+
+        <div class="filter-tabs" id="requests-filter-tabs">
+          <button class="filter-tab active" data-filter="">Toutes</button>
+          <button class="filter-tab" data-filter="en_attente">En attente</button>
+          <button class="filter-tab" data-filter="approuvee">Approuvées</button>
+          <button class="filter-tab" data-filter="payee">Payées</button>
+          <button class="filter-tab" data-filter="rejetee">Rejetées</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <div class="admin-loading" id="requests-loading"><div class="loading-spinner"></div> Chargement…</div>
+          <table class="admin-table" id="requests-table" hidden>
+            <thead>
+              <tr>
+                <th>Demandeur</th>
+                <th>Email</th>
+                <th>Société</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Paiement</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="requests-tbody"></tbody>
+          </table>
+          <p class="admin-empty" id="requests-empty" hidden>Aucune demande.</p>
+        </div>
+      </section>
+
+      <!-- ===== PAIEMENTS ===== -->
+      <section class="admin-tab" id="tab-payments" hidden>
+        <div class="admin-tab-header">
+          <h1>Trésorerie &amp; Paiements</h1>
+          <button class="btn btn-primary btn-sm" id="btn-add-payment">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un paiement
+          </button>
+        </div>
+
+        <div class="tresorerie-cards" id="tresorerie-cards">
+          <div class="treso-card treso-green">
+            <div class="treso-val" id="t-confirmes">—</div>
+            <div class="treso-label">Confirmés cette année</div>
+          </div>
+          <div class="treso-card treso-blue">
+            <div class="treso-val" id="t-total">—</div>
+            <div class="treso-label">Total confirmé (all time)</div>
+          </div>
+          <div class="treso-card treso-orange">
+            <div class="treso-val" id="t-attente">—</div>
+            <div class="treso-label">En attente</div>
+          </div>
+        </div>
+
+        <div class="admin-search-row">
+          <select id="pay-filter-type" class="admin-select">
+            <option value="">Tous les types</option>
+            <option value="stripe">Carte (Stripe)</option>
+            <option value="virement">Virement</option>
+            <option value="cheque">Chèque</option>
+          </select>
+          <select id="pay-filter-status" class="admin-select">
+            <option value="">Tous les statuts</option>
+            <option value="en_attente">En attente</option>
+            <option value="confirme">Confirmé</option>
+            <option value="annule">Annulé</option>
+          </select>
+        </div>
+
+        <div class="admin-table-wrap">
+          <div class="admin-loading" id="payments-loading"><div class="loading-spinner"></div> Chargement…</div>
+          <table class="admin-table" id="payments-table" hidden>
+            <thead>
+              <tr>
+                <th>Adhérent</th>
+                <th>Montant</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Référence</th>
+                <th>Date</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+          <p class="admin-empty" id="payments-empty" hidden>Aucun paiement enregistré.</p>
+        </div>
+      </section>
+
+      <!-- ===== ADHÉRENTS ===== -->
+      <section class="admin-tab" id="tab-members" hidden>
         <div class="admin-tab-header">
           <h1>Gestion des adhérents</h1>
           <button class="btn btn-primary btn-sm" id="btn-add-member">
@@ -84,7 +227,6 @@
             Ajouter un adhérent
           </button>
         </div>
-
         <div class="admin-search-row">
           <input type="search" id="member-search" placeholder="Rechercher par nom, email…" class="admin-search-input" />
           <select id="member-filter-role" class="admin-select">
@@ -98,21 +240,12 @@
             <option value="false">Inactifs</option>
           </select>
         </div>
-
-        <div class="admin-table-wrap" id="members-table-wrap">
-          <div class="admin-loading" id="members-loading">
-            <div class="loading-spinner"></div> Chargement…
-          </div>
+        <div class="admin-table-wrap">
+          <div class="admin-loading" id="members-loading"><div class="loading-spinner"></div> Chargement…</div>
           <table class="admin-table" id="members-table" hidden>
             <thead>
               <tr>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Rôle</th>
-                <th>Statut</th>
-                <th>Inscrit le</th>
-                <th>Dernière connexion</th>
-                <th class="actions-col">Actions</th>
+                <th>Nom</th><th>Email</th><th>Rôle</th><th>Statut</th><th>Inscrit le</th><th>Dernière connexion</th><th class="actions-col">Actions</th>
               </tr>
             </thead>
             <tbody id="members-tbody"></tbody>
@@ -121,7 +254,7 @@
         </div>
       </section>
 
-      <!-- ===== COMMUNIQUÉS TAB ===== -->
+      <!-- ===== COMMUNIQUÉS ===== -->
       <section class="admin-tab" id="tab-posts" hidden>
         <div class="admin-tab-header">
           <h1>Communiqués exclusifs</h1>
@@ -130,19 +263,12 @@
             Nouveau communiqué
           </button>
         </div>
-
-        <div class="admin-table-wrap" id="posts-table-wrap">
-          <div class="admin-loading" id="posts-loading">
-            <div class="loading-spinner"></div> Chargement…
-          </div>
+        <div class="admin-table-wrap">
+          <div class="admin-loading" id="posts-loading"><div class="loading-spinner"></div> Chargement…</div>
           <table class="admin-table" id="posts-table" hidden>
             <thead>
               <tr>
-                <th>Titre</th>
-                <th>Société</th>
-                <th>Type</th>
-                <th>Date publication</th>
-                <th class="actions-col">Actions</th>
+                <th>Titre</th><th>Société</th><th>Type</th><th>Date publication</th><th class="actions-col">Actions</th>
               </tr>
             </thead>
             <tbody id="posts-tbody"></tbody>
@@ -151,21 +277,19 @@
         </div>
       </section>
 
-      <!-- ===== MON COMPTE TAB ===== -->
+      <!-- ===== MON COMPTE ===== -->
       <section class="admin-tab" id="tab-account" hidden>
-        <div class="admin-tab-header">
-          <h1>Mon compte</h1>
-        </div>
+        <div class="admin-tab-header"><h1>Mon compte</h1></div>
         <div class="admin-account-card">
           <h3>Changer le mot de passe</h3>
           <div id="account-msg" class="admin-form-msg" hidden></div>
-          <form id="account-form" novalidate style="max-width: 440px;">
-            <div class="field" style="margin-bottom: 16px;">
+          <form id="account-form" novalidate style="max-width:440px">
+            <div class="field" style="margin-bottom:16px">
               <label for="new-password">Nouveau mot de passe</label>
               <input type="password" id="new-password" minlength="8" required placeholder="8 caractères minimum" />
             </div>
-            <div class="field" style="margin-bottom: 24px;">
-              <label for="confirm-password">Confirmer le mot de passe</label>
+            <div class="field" style="margin-bottom:24px">
+              <label for="confirm-password">Confirmer</label>
               <input type="password" id="confirm-password" required placeholder="Répétez le mot de passe" />
             </div>
             <button type="submit" class="btn btn-primary" id="account-submit">Enregistrer</button>
@@ -189,21 +313,14 @@
       <div id="member-modal-msg" class="admin-form-msg" hidden></div>
       <form id="member-form" novalidate>
         <input type="hidden" id="member-id" />
-        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 16px 20px;">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:16px 20px">
           <div class="field">
             <label for="m-civilite">Civilité</label>
-            <select id="m-civilite" class="admin-select" style="width:100%">
-              <option value="">—</option>
-              <option value="M.">M.</option>
-              <option value="Mme">Mme</option>
-            </select>
+            <select id="m-civilite" class="admin-select" style="width:100%"><option value="">—</option><option value="M.">M.</option><option value="Mme">Mme</option></select>
           </div>
           <div class="field">
             <label for="m-role">Rôle <span class="req">*</span></label>
-            <select id="m-role" required class="admin-select" style="width:100%">
-              <option value="membre">Membre</option>
-              <option value="admin">Admin</option>
-            </select>
+            <select id="m-role" required class="admin-select" style="width:100%"><option value="membre">Membre</option><option value="admin">Admin</option></select>
           </div>
           <div class="field">
             <label for="m-prenom">Prénom <span class="req">*</span></label>
@@ -213,11 +330,11 @@
             <label for="m-nom">Nom <span class="req">*</span></label>
             <input type="text" id="m-nom" required />
           </div>
-          <div class="field full" style="grid-column: 1/-1">
+          <div class="field full" style="grid-column:1/-1">
             <label for="m-email">Email <span class="req">*</span></label>
             <input type="email" id="m-email" required />
           </div>
-          <div class="field full" style="grid-column: 1/-1">
+          <div class="field full" style="grid-column:1/-1">
             <label for="m-password" id="m-password-label">Mot de passe <span class="req">*</span></label>
             <input type="password" id="m-password" placeholder="Laisser vide pour ne pas modifier" />
           </div>
@@ -229,9 +346,9 @@
             <label for="m-societe">Société</label>
             <input type="text" id="m-societe" />
           </div>
-          <div class="field full" style="grid-column: 1/-1">
-            <label class="checkbox-row" style="flex-direction: row; align-items: center; gap: 10px; cursor: pointer;">
-              <input type="checkbox" id="m-actif" checked style="width:18px;height:18px;accent-color:var(--navy-700);" />
+          <div class="field full" style="grid-column:1/-1">
+            <label class="checkbox-row" style="flex-direction:row;align-items:center;gap:10px;cursor:pointer">
+              <input type="checkbox" id="m-actif" checked style="width:18px;height:18px;accent-color:var(--navy-700)" />
               <span>Compte actif (peut se connecter)</span>
             </label>
           </div>
@@ -257,7 +374,7 @@
       <div id="post-modal-msg" class="admin-form-msg" hidden></div>
       <form id="post-form" novalidate>
         <input type="hidden" id="post-id" />
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:16px">
           <div class="field full" style="grid-column:1/-1">
             <label for="p-titre">Titre <span class="req">*</span></label>
             <input type="text" id="p-titre" required />
@@ -269,11 +386,7 @@
           <div class="field">
             <label for="p-type">Type</label>
             <select id="p-type" class="admin-select" style="width:100%">
-              <option>Communiqué</option>
-              <option>Document AG</option>
-              <option>OPA / OVR</option>
-              <option>Dividende</option>
-              <option>Info</option>
+              <option>Communiqué</option><option>Document AG</option><option>OPA / OVR</option><option>Dividende</option><option>Info</option>
             </select>
           </div>
           <div class="field">
@@ -281,9 +394,9 @@
             <input type="date" id="p-date" required />
           </div>
         </div>
-        <div class="field" style="margin-bottom:20px;">
+        <div class="field" style="margin-bottom:20px">
           <label for="p-contenu">Contenu <span class="req">*</span> <small style="font-weight:400;color:var(--ink-500)">(HTML accepté)</small></label>
-          <textarea id="p-contenu" required rows="10" style="font-family:monospace;font-size:0.875rem;line-height:1.5;resize:vertical;"></textarea>
+          <textarea id="p-contenu" required rows="10" style="font-family:monospace;font-size:0.875rem;line-height:1.5;resize:vertical"></textarea>
         </div>
         <div class="admin-modal-actions">
           <button type="button" class="btn btn-ghost" data-close="post-modal">Annuler</button>
@@ -293,17 +406,139 @@
     </div>
   </div>
 
-  <!-- ===== CONFIRM DELETE MODAL ===== -->
+  <!-- ===== MODAL APPROBATION DEMANDE ===== -->
+  <div class="admin-modal" id="approve-modal" hidden role="dialog" aria-modal="true" aria-labelledby="approve-modal-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box" style="max-width:520px">
+      <div class="admin-modal-head">
+        <h2 id="approve-modal-title">Approuver la demande</h2>
+        <button class="admin-modal-close" data-close="approve-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="approve-modal-msg" class="admin-form-msg" hidden></div>
+      <p id="approve-modal-name" style="font-weight:600;margin:0 0 20px;color:var(--ink-900)"></p>
+      <input type="hidden" id="approve-request-id" />
+      <div class="field" style="margin-bottom:20px">
+        <label style="font-weight:600;margin-bottom:10px;display:block">Méthode de paiement</label>
+        <div class="pay-method-options">
+          <label class="pay-method-opt">
+            <input type="radio" name="approve-method" value="stripe" />
+            <div class="pay-method-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span>Carte bancaire</span>
+              <small>Lien Stripe sécurisé</small>
+            </div>
+          </label>
+          <label class="pay-method-opt">
+            <input type="radio" name="approve-method" value="virement" checked />
+            <div class="pay-method-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              <span>Virement bancaire</span>
+              <small>Confirmation manuelle</small>
+            </div>
+          </label>
+          <label class="pay-method-opt">
+            <input type="radio" name="approve-method" value="cheque" />
+            <div class="pay-method-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+              <span>Chèque</span>
+              <small>Confirmation manuelle</small>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:20px">
+        <label for="approve-notes">Notes internes (optionnel)</label>
+        <textarea id="approve-notes" rows="2" placeholder="Remarques…" style="resize:vertical"></textarea>
+      </div>
+      <div class="admin-modal-actions">
+        <button type="button" class="btn btn-ghost" data-close="approve-modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="approve-confirm-btn">Approuver &amp; créer le compte</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL RÉSULTAT APPROBATION ===== -->
+  <div class="admin-modal" id="approve-result-modal" hidden role="dialog" aria-modal="true" aria-labelledby="approve-result-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box" style="max-width:560px">
+      <div class="admin-modal-head">
+        <h2 id="approve-result-title">Demande approuvée ✓</h2>
+        <button class="admin-modal-close" data-close="approve-result-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="approve-result-body"></div>
+      <div class="admin-modal-actions">
+        <button type="button" class="btn btn-primary" data-close="approve-result-modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL PAIEMENT MANUEL ===== -->
+  <div class="admin-modal" id="payment-modal" hidden role="dialog" aria-modal="true" aria-labelledby="payment-modal-title">
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-box" style="max-width:480px">
+      <div class="admin-modal-head">
+        <h2 id="payment-modal-title">Ajouter un paiement</h2>
+        <button class="admin-modal-close" data-close="payment-modal" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="payment-modal-msg" class="admin-form-msg" hidden></div>
+      <form id="payment-form" novalidate style="padding:0 0 4px">
+        <div class="field" style="margin-bottom:16px">
+          <label for="pay-member-search">Adhérent <span class="req">*</span></label>
+          <input type="text" id="pay-member-search" placeholder="Nom ou email…" autocomplete="off" />
+          <input type="hidden" id="pay-member-id" />
+          <div id="pay-member-results" class="autocomplete-results" hidden></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px">
+          <div class="field">
+            <label for="pay-montant">Montant (€) <span class="req">*</span></label>
+            <input type="number" id="pay-montant" min="1" step="0.01" placeholder="50.00" required />
+          </div>
+          <div class="field">
+            <label for="pay-type">Type <span class="req">*</span></label>
+            <select id="pay-type" class="admin-select" style="width:100%" required>
+              <option value="virement">Virement</option>
+              <option value="cheque">Chèque</option>
+              <option value="stripe">Carte (Stripe)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pay-annee">Année</label>
+            <input type="number" id="pay-annee" min="2020" max="2099" />
+          </div>
+          <div class="field">
+            <label for="pay-reference">Référence</label>
+            <input type="text" id="pay-reference" placeholder="Optionnel" />
+          </div>
+          <div class="field full" style="grid-column:1/-1">
+            <label for="pay-description">Description</label>
+            <input type="text" id="pay-description" placeholder="Cotisation annuelle A3DIA 2026" />
+          </div>
+        </div>
+        <div class="admin-modal-actions">
+          <button type="button" class="btn btn-ghost" data-close="payment-modal">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="payment-submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL CONFIRMER SUPPRESSION ===== -->
   <div class="admin-modal" id="confirm-modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirm-title">
     <div class="admin-modal-backdrop"></div>
-    <div class="admin-modal-box" style="max-width:440px;">
+    <div class="admin-modal-box" style="max-width:440px">
       <div class="admin-modal-head">
         <h2 id="confirm-title">Confirmer la suppression</h2>
       </div>
-      <p id="confirm-text" style="margin:0 0 24px;color:var(--ink-700);"></p>
+      <p id="confirm-text" style="margin:0 0 24px;color:var(--ink-700)"></p>
       <div class="admin-modal-actions">
         <button class="btn btn-ghost" data-close="confirm-modal">Annuler</button>
-        <button class="btn" id="confirm-ok" style="background:var(--danger);color:#fff;">Supprimer</button>
+        <button class="btn" id="confirm-ok" style="background:var(--danger);color:#fff">Supprimer</button>
       </div>
     </div>
   </div>
@@ -312,12 +547,12 @@
   <script>
     /* ============================================================
        A3DIA — Admin Panel
-       ============================================================ */
+    ============================================================ */
 
     let adminUser = null;
-    let allMembers = [];
-    let allPosts = [];
+    let allMembers = [], allPosts = [], allRequests = [], allPayments = [];
     let pendingDelete = null;
+    let requestsFilter = '';
 
     // ---- Init ----
     async function init() {
@@ -334,20 +569,19 @@
         return;
       }
 
-      document.getElementById('admin-user-label').textContent =
-        `${adminUser.prenom} ${adminUser.nom}`;
+      document.getElementById('admin-user-label').textContent = `${adminUser.prenom} ${adminUser.nom}`;
+      document.getElementById('s-annee-label').textContent = new Date().getFullYear();
+      document.getElementById('pay-annee').value = new Date().getFullYear();
 
       document.getElementById('admin-logout').addEventListener('click', async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
         window.location.href = '/';
       });
 
-      // Tab navigation
       document.querySelectorAll('.admin-sidenav-item').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
-      // Modal close buttons
       document.querySelectorAll('[data-close]').forEach(btn => {
         btn.addEventListener('click', () => closeModal(btn.dataset.close));
       });
@@ -359,28 +593,43 @@
       });
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-          document.querySelectorAll('.admin-modal:not([hidden])').forEach(m => {
-            m.hidden = true;
-          });
+          document.querySelectorAll('.admin-modal:not([hidden])').forEach(m => { m.hidden = true; });
           document.body.style.overflow = '';
         }
       });
 
-      // Load data
-      await Promise.all([loadMembers(), loadPosts()]);
+      document.getElementById('btn-refresh-stats').addEventListener('click', loadStats);
 
-      // Member form
+      // Requests
+      document.querySelectorAll('#requests-filter-tabs .filter-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#requests-filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          requestsFilter = btn.dataset.filter;
+          renderRequests();
+        });
+      });
+      document.getElementById('approve-confirm-btn').addEventListener('click', doApproveRequest);
+
+      // Payments
+      document.getElementById('btn-add-payment').addEventListener('click', openPaymentModal);
+      document.getElementById('pay-filter-type').addEventListener('change', renderPayments);
+      document.getElementById('pay-filter-status').addEventListener('change', renderPayments);
+      document.getElementById('payment-form').addEventListener('submit', savePayment);
+      document.getElementById('pay-member-search').addEventListener('input', onMemberSearch);
+
+      // Members
       document.getElementById('btn-add-member').addEventListener('click', () => openMemberModal());
       document.getElementById('member-form').addEventListener('submit', saveMember);
       document.getElementById('member-search').addEventListener('input', renderMembers);
       document.getElementById('member-filter-role').addEventListener('change', renderMembers);
       document.getElementById('member-filter-actif').addEventListener('change', renderMembers);
 
-      // Post form
+      // Posts
       document.getElementById('btn-add-post').addEventListener('click', () => openPostModal());
       document.getElementById('post-form').addEventListener('submit', savePost);
 
-      // Account form
+      // Account
       document.getElementById('account-form').addEventListener('submit', changePassword);
 
       // Confirm delete
@@ -388,6 +637,8 @@
         if (pendingDelete) { pendingDelete(); pendingDelete = null; }
         closeModal('confirm-modal');
       });
+
+      await Promise.all([loadStats(), loadRequests(), loadPayments(), loadMembers(), loadPosts()]);
     }
 
     // ---- Tab switching ----
@@ -398,6 +649,386 @@
         b.setAttribute('aria-selected', b.dataset.tab === tab);
       });
       document.getElementById(`tab-${tab}`).hidden = false;
+    }
+
+    // ---- Dashboard ----
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/admin/stats');
+        const data = await res.json();
+        if (!data.success) return;
+        const { stats, recentRequests, recentPayments } = data;
+
+        document.getElementById('s-membres-actifs').textContent = stats.membres.actifs;
+        document.getElementById('s-demandes').textContent = stats.demandes.en_attente;
+        document.getElementById('s-revenus-annee').textContent = fmtMoney(stats.paiements.revenueThisYear);
+        document.getElementById('s-paiements-attente').textContent = fmtMoney(stats.paiements.pendingRevenue);
+
+        document.getElementById('t-confirmes').textContent = fmtMoney(stats.paiements.revenueThisYear);
+        document.getElementById('t-total').textContent = fmtMoney(stats.paiements.revenueTotal);
+        document.getElementById('t-attente').textContent = fmtMoney(stats.paiements.pendingRevenue);
+
+        renderDashRecent('dash-recent-requests', recentRequests, 'request');
+        renderDashRecent('dash-recent-payments', recentPayments, 'payment');
+      } catch (e) { console.error('stats:', e); }
+    }
+
+    function renderDashRecent(containerId, items, type) {
+      const el = document.getElementById(containerId);
+      if (!items?.length) { el.innerHTML = '<p class="admin-empty" style="padding:16px 0">Aucun élément.</p>'; return; }
+      el.innerHTML = `<ul class="activity-list">${items.map(item => {
+        if (type === 'request') {
+          return `<li class="activity-item">
+            <div class="activity-name">${esc(item.prenom)} ${esc(item.nom)}</div>
+            <div class="activity-meta">${esc(item.email)} · ${fmtDate(item.createdAt)}</div>
+            <span class="req-status req-status-${item.status}">${reqStatusLabel(item.status)}</span>
+          </li>`;
+        } else {
+          return `<li class="activity-item">
+            <div class="activity-name">${esc(item.description || '—')}</div>
+            <div class="activity-meta">${fmtMoney(item.montant)} · ${esc(item.type)} · ${fmtDate(item.createdAt)}</div>
+            <span class="pay-status pay-status-${item.status}">${payStatusLabel(item.status)}</span>
+          </li>`;
+        }
+      }).join('')}</ul>`;
+    }
+
+    // ---- Requests ----
+    async function loadRequests() {
+      try {
+        const res = await fetch('/api/admin/requests');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        allRequests = data.requests;
+        document.getElementById('requests-loading').hidden = true;
+        const pending = allRequests.filter(r => r.status === 'en_attente').length;
+        document.getElementById('requests-count').textContent = pending || allRequests.length;
+        renderRequests();
+      } catch {
+        document.getElementById('requests-loading').textContent = 'Erreur de chargement.';
+      }
+    }
+
+    function renderRequests() {
+      const filtered = requestsFilter ? allRequests.filter(r => r.status === requestsFilter) : allRequests;
+      const tbody = document.getElementById('requests-tbody');
+      const table = document.getElementById('requests-table');
+      const empty = document.getElementById('requests-empty');
+
+      if (!filtered.length) { table.hidden = true; empty.hidden = false; return; }
+      empty.hidden = true; table.hidden = false;
+
+      tbody.innerHTML = filtered.map(r => `
+        <tr>
+          <td><strong>${esc(r.civilite)} ${esc(r.prenom)} ${esc(r.nom)}</strong></td>
+          <td>${esc(r.email)}</td>
+          <td>${esc(r.societe || '—')}</td>
+          <td class="date-cell">${fmtDate(r.createdAt)}</td>
+          <td><span class="req-status req-status-${r.status}">${reqStatusLabel(r.status)}</span></td>
+          <td>${r.paymentMethod ? `<span class="pay-type-badge pay-type-${r.paymentMethod}">${payTypeLabel(r.paymentMethod)}</span>` : '—'}</td>
+          <td class="actions-col">
+            ${r.status === 'en_attente' ? `
+              <button class="action-btn action-btn-success" title="Approuver" onclick="openApproveModal('${r.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              <button class="action-btn action-btn-warning" title="Rejeter" onclick="confirmRejectRequest('${r.id}', '${esc(r.prenom)}\\'${esc(r.nom)}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            ` : ''}
+            <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeleteRequest('${r.id}', '${esc(r.prenom)} ${esc(r.nom)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    function openApproveModal(id) {
+      const r = allRequests.find(x => x.id === id);
+      if (!r) return;
+      document.getElementById('approve-request-id').value = id;
+      document.getElementById('approve-modal-name').textContent = `${r.civilite} ${r.prenom} ${r.nom} — ${r.email}`;
+      document.getElementById('approve-notes').value = r.notes || '';
+      document.getElementById('approve-modal-msg').hidden = true;
+      openModal('approve-modal');
+    }
+
+    async function doApproveRequest() {
+      const id = document.getElementById('approve-request-id').value;
+      const method = document.querySelector('input[name="approve-method"]:checked')?.value || 'virement';
+      const notes = document.getElementById('approve-notes').value.trim();
+      const btn = document.getElementById('approve-confirm-btn');
+      const msgBox = document.getElementById('approve-modal-msg');
+
+      btn.disabled = true; btn.textContent = 'Traitement…'; msgBox.hidden = true;
+
+      try {
+        const res = await fetch('/api/admin/requests', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action: 'approuver', paymentMethod: method, notes })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        closeModal('approve-modal');
+        await Promise.all([loadRequests(), loadMembers(), loadPayments(), loadStats()]);
+
+        showApproveResult(data.request, method);
+      } catch (err) {
+        msgBox.textContent = err.message || 'Erreur lors de l\'approbation.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Approuver & créer le compte';
+      }
+    }
+
+    function showApproveResult(request, method) {
+      const body = document.getElementById('approve-result-body');
+      const ibanInfo = `<div class="info-box info-box-blue">
+        <strong>Instructions virement à communiquer :</strong><br/>
+        IBAN : <code>${escHtml(window.VIREMENT_IBAN || 'FR76 XXXX XXXX XXXX XXXX XXXX XXX')}</code><br/>
+        BIC : <code>${escHtml(window.VIREMENT_BIC || 'XXXXFRPP')}</code><br/>
+        Référence : <code>${escHtml(request.paymentId ? 'voir onglet Paiements' : '—')}</code>
+      </div>`;
+      const chequeInfo = `<div class="info-box info-box-blue">
+        <strong>Instructions chèque à communiquer :</strong><br/>
+        À l'ordre de : <strong>A3DIA</strong><br/>
+        À adresser au : 9 rue Anatole de La Forge, 75017 Paris
+      </div>`;
+      const stripeInfo = `<div class="info-box info-box-green">
+        <strong>Paiement en ligne :</strong> Allez dans l'onglet Paiements, trouvez ce paiement et cliquez "Lien Stripe" pour générer l'URL de paiement sécurisé à envoyer à l'adhérent.
+      </div>`;
+
+      body.innerHTML = `
+        <div class="info-box info-box-green" style="margin-bottom:16px">
+          Compte créé pour <strong>${escHtml(request.prenom)} ${escHtml(request.nom)}</strong> (${escHtml(request.email)}).
+          Le compte est <strong>inactif</strong> jusqu'à confirmation du paiement.
+        </div>
+        <div class="cred-box" style="margin-bottom:16px">
+          <div class="cred-row"><span>Email :</span><code>${escHtml(request.email)}</code></div>
+          <div class="cred-row"><span>Mot de passe temporaire :</span><code id="tmp-pw">${escHtml(request.tempPassword || '—')}</code>
+            <button class="btn-copy" onclick="copyText('${escHtml(request.tempPassword || '')}', this)">Copier</button>
+          </div>
+        </div>
+        ${method === 'virement' ? ibanInfo : method === 'cheque' ? chequeInfo : stripeInfo}
+        <p style="color:var(--ink-500);font-size:0.8rem;margin-top:12px">Notez le mot de passe temporaire — il ne sera plus affiché.</p>
+      `;
+      openModal('approve-result-modal');
+    }
+
+    function confirmRejectRequest(id, name) {
+      document.getElementById('confirm-text').textContent = `Rejeter la demande de « ${name} » ? Cette action est irréversible.`;
+      pendingDelete = async () => {
+        await fetch('/api/admin/requests', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action: 'rejeter' })
+        });
+        await Promise.all([loadRequests(), loadStats()]);
+      };
+      openModal('confirm-modal');
+    }
+
+    function confirmDeleteRequest(id, name) {
+      document.getElementById('confirm-text').textContent = `Supprimer définitivement la demande de « ${name} » ?`;
+      pendingDelete = async () => {
+        await fetch('/api/admin/requests', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        await Promise.all([loadRequests(), loadStats()]);
+      };
+      openModal('confirm-modal');
+    }
+
+    // ---- Payments ----
+    async function loadPayments() {
+      try {
+        const res = await fetch('/api/admin/payments');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        allPayments = data.payments;
+        document.getElementById('payments-loading').hidden = true;
+        const pending = allPayments.filter(p => p.status === 'en_attente').length;
+        document.getElementById('payments-count').textContent = pending || allPayments.length;
+        renderPayments();
+      } catch {
+        document.getElementById('payments-loading').textContent = 'Erreur de chargement.';
+      }
+    }
+
+    function renderPayments() {
+      const typeF = document.getElementById('pay-filter-type').value;
+      const statusF = document.getElementById('pay-filter-status').value;
+      const filtered = allPayments.filter(p => {
+        return (!typeF || p.type === typeF) && (!statusF || p.status === statusF);
+      });
+
+      const tbody = document.getElementById('payments-tbody');
+      const table = document.getElementById('payments-table');
+      const empty = document.getElementById('payments-empty');
+
+      if (!filtered.length) { table.hidden = true; empty.hidden = false; return; }
+      empty.hidden = true; table.hidden = false;
+
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td>
+            <strong>${esc(p.memberName)}</strong>
+            <br/><small style="color:var(--ink-500)">${esc(p.memberEmail)}</small>
+          </td>
+          <td><strong>${fmtMoney(p.montant)}</strong></td>
+          <td><span class="pay-type-badge pay-type-${p.type}">${payTypeLabel(p.type)}</span></td>
+          <td><span class="pay-status pay-status-${p.status}">${payStatusLabel(p.status)}</span></td>
+          <td><small>${esc(p.reference || '—')}</small></td>
+          <td class="date-cell">${fmtDate(p.confirmedAt || p.createdAt)}</td>
+          <td class="actions-col">
+            ${p.status === 'en_attente' ? `
+              <button class="action-btn action-btn-success" title="Confirmer le paiement" onclick="confirmPayment('${p.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+              ${p.type === 'virement' || p.type === 'cheque' || !p.stripeSessionId ? `
+              <button class="action-btn" title="Lien Stripe" onclick="generateStripeLink('${p.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>` : ''}
+              <button class="action-btn action-btn-warning" title="Annuler" onclick="cancelPayment('${p.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            ` : ''}
+            <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeletePayment('${p.id}', '${esc(p.memberName)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    async function confirmPayment(id) {
+      if (!confirm('Confirmer ce paiement ? Le compte adhérent sera activé.')) return;
+      try {
+        const res = await fetch('/api/admin/payments', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, status: 'confirme' })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        await Promise.all([loadPayments(), loadMembers(), loadRequests(), loadStats()]);
+      } catch (err) { alert('Erreur : ' + err.message); }
+    }
+
+    async function cancelPayment(id) {
+      if (!confirm('Annuler ce paiement ?')) return;
+      try {
+        const res = await fetch('/api/admin/payments', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, status: 'annule' })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        await loadPayments();
+      } catch (err) { alert('Erreur : ' + err.message); }
+    }
+
+    async function generateStripeLink(paymentId) {
+      try {
+        const res = await fetch('/api/stripe/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ paymentId })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        const url = data.url;
+        const copied = await navigator.clipboard.writeText(url).then(() => true).catch(() => false);
+        alert(`Lien Stripe généré${copied ? ' (copié dans le presse-papier)' : ''} :\n\n${url}`);
+        await loadPayments();
+      } catch (err) { alert('Erreur Stripe : ' + err.message); }
+    }
+
+    function confirmDeletePayment(id, name) {
+      document.getElementById('confirm-text').textContent = `Supprimer définitivement le paiement de « ${name} » ?`;
+      pendingDelete = async () => {
+        await fetch('/api/admin/payments', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        await Promise.all([loadPayments(), loadStats()]);
+      };
+      openModal('confirm-modal');
+    }
+
+    function openPaymentModal() {
+      document.getElementById('payment-form').reset();
+      document.getElementById('pay-member-id').value = '';
+      document.getElementById('pay-annee').value = new Date().getFullYear();
+      document.getElementById('payment-modal-msg').hidden = true;
+      document.getElementById('pay-member-results').hidden = true;
+      openModal('payment-modal');
+    }
+
+    function onMemberSearch() {
+      const q = document.getElementById('pay-member-search').value.toLowerCase().trim();
+      const results = document.getElementById('pay-member-results');
+      if (!q || q.length < 2) { results.hidden = true; return; }
+      const matches = allMembers.filter(m =>
+        `${m.nom} ${m.prenom} ${m.email}`.toLowerCase().includes(q)
+      ).slice(0, 6);
+      if (!matches.length) { results.hidden = true; return; }
+      results.innerHTML = matches.map(m =>
+        `<div class="autocomplete-item" onclick="selectPayMember('${m.id}', '${esc(m.prenom)} ${esc(m.nom)}', '${esc(m.email)}')">${esc(m.prenom)} ${esc(m.nom)} <small>${esc(m.email)}</small></div>`
+      ).join('');
+      results.hidden = false;
+    }
+
+    function selectPayMember(id, name, email) {
+      document.getElementById('pay-member-id').value = id;
+      document.getElementById('pay-member-search').value = `${name} (${email})`;
+      document.getElementById('pay-member-results').hidden = true;
+    }
+
+    async function savePayment(e) {
+      e.preventDefault();
+      const msgBox = document.getElementById('payment-modal-msg');
+      const btn = document.getElementById('payment-submit');
+      const memberId = document.getElementById('pay-member-id').value;
+      if (!memberId) {
+        msgBox.textContent = 'Sélectionnez un adhérent.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false; return;
+      }
+      const montantEur = parseFloat(document.getElementById('pay-montant').value);
+      if (!montantEur || montantEur <= 0) {
+        msgBox.textContent = 'Montant invalide.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false; return;
+      }
+      btn.disabled = true; btn.textContent = 'Enregistrement…'; msgBox.hidden = true;
+      try {
+        const res = await fetch('/api/admin/payments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            memberId,
+            montant: Math.round(montantEur * 100),
+            type: document.getElementById('pay-type').value,
+            annee: parseInt(document.getElementById('pay-annee').value),
+            reference: document.getElementById('pay-reference').value.trim(),
+            description: document.getElementById('pay-description').value.trim()
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        closeModal('payment-modal');
+        await Promise.all([loadPayments(), loadStats()]);
+      } catch (err) {
+        msgBox.textContent = err.message || 'Erreur.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error';
+        msgBox.hidden = false;
+      } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
     }
 
     // ---- Members ----
@@ -417,26 +1048,15 @@
       const q = document.getElementById('member-search').value.toLowerCase();
       const role = document.getElementById('member-filter-role').value;
       const actif = document.getElementById('member-filter-actif').value;
-
       const filtered = allMembers.filter(m => {
         const matchQ = !q || `${m.nom} ${m.prenom} ${m.email}`.toLowerCase().includes(q);
-        const matchRole = !role || m.role === role;
-        const matchActif = actif === '' || String(m.actif) === actif;
-        return matchQ && matchRole && matchActif;
+        return matchQ && (!role || m.role === role) && (actif === '' || String(m.actif) === actif);
       });
-
       const tbody = document.getElementById('members-tbody');
       const table = document.getElementById('members-table');
       const empty = document.getElementById('members-empty');
-
-      if (!filtered.length) {
-        table.hidden = true;
-        empty.hidden = false;
-        return;
-      }
-      empty.hidden = true;
-      table.hidden = false;
-
+      if (!filtered.length) { table.hidden = true; empty.hidden = false; return; }
+      empty.hidden = true; table.hidden = false;
       tbody.innerHTML = filtered.map(m => `
         <tr>
           <td><strong>${esc(m.prenom)} ${esc(m.nom)}</strong>${m.societe ? `<br><small style="color:var(--ink-500)">${esc(m.societe)}</small>` : ''}</td>
@@ -451,9 +1071,7 @@
             </button>
             <button class="action-btn action-btn-toggle" title="${m.actif ? 'Désactiver' : 'Activer'}" onclick="toggleMember('${m.id}', ${!m.actif})">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
-                ${m.actif
-                  ? '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>'
-                  : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
+                ${m.actif ? '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>' : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
               </svg>
             </button>
             <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeleteMember('${m.id}', '${esc(m.prenom)} ${esc(m.nom)}')">
@@ -464,12 +1082,9 @@
     }
 
     function openMemberModal(id = null) {
-      const modal = document.getElementById('member-modal');
       const form = document.getElementById('member-form');
-      const msgBox = document.getElementById('member-modal-msg');
-      msgBox.hidden = true;
       form.reset();
-
+      document.getElementById('member-modal-msg').hidden = true;
       if (id) {
         const m = allMembers.find(x => x.id === id);
         if (!m) return;
@@ -493,7 +1108,6 @@
         document.getElementById('member-id').value = '';
         document.getElementById('m-email').readOnly = false;
       }
-
       openModal('member-modal');
     }
 
@@ -502,7 +1116,6 @@
       const msgBox = document.getElementById('member-modal-msg');
       const btn = document.getElementById('member-submit');
       const id = document.getElementById('member-id').value;
-
       const body = {
         prenom: document.getElementById('m-prenom').value.trim(),
         nom: document.getElementById('m-nom').value.trim(),
@@ -516,11 +1129,7 @@
       const pw = document.getElementById('m-password').value;
       if (pw) body.password = pw;
       if (id) body.id = id;
-
-      btn.disabled = true;
-      btn.textContent = 'Enregistrement…';
-      msgBox.hidden = true;
-
+      btn.disabled = true; btn.textContent = 'Enregistrement…'; msgBox.hidden = true;
       try {
         const res = await fetch('/api/admin/members', {
           method: id ? 'PUT' : 'POST',
@@ -529,17 +1138,13 @@
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
-
         closeModal('member-modal');
-        await loadMembers();
+        await Promise.all([loadMembers(), loadStats()]);
       } catch (err) {
-        msgBox.textContent = err.message || 'Erreur lors de l\'enregistrement.';
+        msgBox.textContent = err.message || 'Erreur.';
         msgBox.className = 'admin-form-msg admin-form-msg-error';
         msgBox.hidden = false;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Enregistrer';
-      }
+      } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
     }
 
     async function toggleMember(id, actif) {
@@ -548,19 +1153,18 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, actif })
       });
-      await loadMembers();
+      await Promise.all([loadMembers(), loadStats()]);
     }
 
     function confirmDeleteMember(id, name) {
-      document.getElementById('confirm-text').textContent =
-        `Supprimer définitivement l'adhérent « ${name} » ? Cette action est irréversible.`;
+      document.getElementById('confirm-text').textContent = `Supprimer définitivement l'adhérent « ${name} » ? Cette action est irréversible.`;
       pendingDelete = async () => {
         await fetch('/api/admin/members', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id })
         });
-        await loadMembers();
+        await Promise.all([loadMembers(), loadStats()]);
       };
       openModal('confirm-modal');
     }
@@ -582,15 +1186,8 @@
       const tbody = document.getElementById('posts-tbody');
       const table = document.getElementById('posts-table');
       const empty = document.getElementById('posts-empty');
-
-      if (!allPosts.length) {
-        table.hidden = true;
-        empty.hidden = false;
-        return;
-      }
-      empty.hidden = true;
-      table.hidden = false;
-
+      if (!allPosts.length) { table.hidden = true; empty.hidden = false; return; }
+      empty.hidden = true; table.hidden = false;
       tbody.innerHTML = allPosts.map(p => `
         <tr>
           <td><strong>${esc(p.titre)}</strong></td>
@@ -602,7 +1199,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
             <button class="action-btn action-btn-danger" title="Supprimer" onclick="confirmDeletePost('${p.id}', '${esc(p.titre)}')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
             </button>
           </td>
         </tr>`).join('');
@@ -610,11 +1207,9 @@
 
     function openPostModal(id = null) {
       const form = document.getElementById('post-form');
-      const msgBox = document.getElementById('post-modal-msg');
-      msgBox.hidden = true;
       form.reset();
+      document.getElementById('post-modal-msg').hidden = true;
       document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
-
       if (id) {
         const p = allPosts.find(x => x.id === id);
         if (!p) return;
@@ -629,7 +1224,6 @@
         document.getElementById('post-modal-title').textContent = 'Nouveau communiqué';
         document.getElementById('post-id').value = '';
       }
-
       openModal('post-modal');
     }
 
@@ -638,7 +1232,6 @@
       const msgBox = document.getElementById('post-modal-msg');
       const btn = document.getElementById('post-submit');
       const id = document.getElementById('post-id').value;
-
       const body = {
         titre: document.getElementById('p-titre').value.trim(),
         societe: document.getElementById('p-societe').value.trim(),
@@ -647,11 +1240,7 @@
         contenu: document.getElementById('p-contenu').value.trim()
       };
       if (id) body.id = id;
-
-      btn.disabled = true;
-      btn.textContent = 'Enregistrement…';
-      msgBox.hidden = true;
-
+      btn.disabled = true; btn.textContent = 'Enregistrement…'; msgBox.hidden = true;
       try {
         const res = await fetch('/api/admin/posts', {
           method: id ? 'PUT' : 'POST',
@@ -660,22 +1249,17 @@
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
-
         closeModal('post-modal');
         await loadPosts();
       } catch (err) {
-        msgBox.textContent = err.message || 'Erreur lors de l\'enregistrement.';
+        msgBox.textContent = err.message || 'Erreur.';
         msgBox.className = 'admin-form-msg admin-form-msg-error';
         msgBox.hidden = false;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Enregistrer';
-      }
+      } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
     }
 
     function confirmDeletePost(id, titre) {
-      document.getElementById('confirm-text').textContent =
-        `Supprimer définitivement le communiqué « ${titre} » ?`;
+      document.getElementById('confirm-text').textContent = `Supprimer définitivement le communiqué « ${titre} » ?`;
       pendingDelete = async () => {
         await fetch('/api/admin/posts', {
           method: 'DELETE',
@@ -694,24 +1278,15 @@
       const btn = document.getElementById('account-submit');
       const pw = document.getElementById('new-password').value;
       const confirm = document.getElementById('confirm-password').value;
-
       if (pw !== confirm) {
         msgBox.textContent = 'Les mots de passe ne correspondent pas.';
-        msgBox.className = 'admin-form-msg admin-form-msg-error';
-        msgBox.hidden = false;
-        return;
+        msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false; return;
       }
       if (pw.length < 8) {
         msgBox.textContent = 'Minimum 8 caractères.';
-        msgBox.className = 'admin-form-msg admin-form-msg-error';
-        msgBox.hidden = false;
-        return;
+        msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false; return;
       }
-
-      btn.disabled = true;
-      btn.textContent = 'Enregistrement…';
-      msgBox.hidden = true;
-
+      btn.disabled = true; btn.textContent = 'Enregistrement…'; msgBox.hidden = true;
       try {
         const res = await fetch('/api/admin/members', {
           method: 'PUT',
@@ -720,19 +1295,13 @@
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
-
         msgBox.textContent = 'Mot de passe mis à jour avec succès.';
-        msgBox.className = 'admin-form-msg admin-form-msg-success';
-        msgBox.hidden = false;
+        msgBox.className = 'admin-form-msg admin-form-msg-success'; msgBox.hidden = false;
         document.getElementById('account-form').reset();
       } catch (err) {
-        msgBox.textContent = err.message || 'Erreur lors de la mise à jour.';
-        msgBox.className = 'admin-form-msg admin-form-msg-error';
-        msgBox.hidden = false;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Enregistrer';
-      }
+        msgBox.textContent = err.message || 'Erreur.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false;
+      } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
     }
 
     // ---- Modal helpers ----
@@ -740,7 +1309,7 @@
       const m = document.getElementById(id);
       m.hidden = false;
       document.body.style.overflow = 'hidden';
-      m.querySelector('input, button, select, textarea')?.focus();
+      m.querySelector('input:not([type=hidden]), button, select, textarea')?.focus();
     }
     function closeModal(id) {
       document.getElementById(id).hidden = true;
@@ -752,11 +1321,35 @@
       if (!iso) return '—';
       return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
+    function fmtMoney(cents) {
+      if (cents == null) return '—';
+      return (cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+    }
     function esc(str) {
       return String(str ?? '')
         .replace(/&/g, '&amp;').replace(/</g, '&lt;')
         .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
         .replace(/'/g, "\\'");
+    }
+    function escHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function reqStatusLabel(s) {
+      return { en_attente: 'En attente', approuvee: 'Approuvée', payee: 'Payée', rejetee: 'Rejetée' }[s] || s;
+    }
+    function payStatusLabel(s) {
+      return { en_attente: 'En attente', confirme: 'Confirmé', annule: 'Annulé' }[s] || s;
+    }
+    function payTypeLabel(t) {
+      return { stripe: 'Carte', virement: 'Virement', cheque: 'Chèque' }[t] || t;
+    }
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copié !';
+        setTimeout(() => btn.textContent = 'Copier', 2000);
+      });
     }
 
     init();

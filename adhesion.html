@@ -87,93 +87,121 @@
   <!-- FORMULAIRE -->
   <section class="form-section">
     <div class="container">
-      <form class="form-card reveal" data-form="adhesion" novalidate>
-        <h2>Formulaire d'adhésion</h2>
-        <p class="form-intro">
-          Les champs marqués d'un astérisque (<span style="color: var(--gold);">*</span>) sont obligatoires.<br />
-          Les informations collectées sont exclusivement destinées à A3DIA, dans le cadre du suivi de votre adhésion. Vous disposez d'un droit d'accès, de modification et de suppression de vos données à tout moment.
-        </p>
+      <!-- Formulaire (masqué après soumission) -->
+      <div id="adhesion-form-wrap">
+        <form class="form-card reveal" id="adhesion-form" novalidate>
+          <h2>Formulaire d'adhésion</h2>
+          <p class="form-intro">
+            Les champs marqués d'un astérisque (<span style="color: var(--gold);">*</span>) sont obligatoires.<br />
+            Les informations collectées sont exclusivement destinées à A3DIA, dans le cadre du suivi de votre adhésion.
+          </p>
 
-        <div class="form-grid">
-          <div class="field full">
-            <label>Civilité <span class="req">*</span></label>
-            <div class="radio-group">
-              <label><input type="radio" name="civilite" value="Mr" required /> Mr</label>
-              <label><input type="radio" name="civilite" value="Mme" /> Mme</label>
+          <div id="adhesion-error" style="display:none;background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px;color:#991b1b;font-size:0.875rem;"></div>
+
+          <div class="form-grid">
+            <div class="field full">
+              <label>Civilité <span class="req">*</span></label>
+              <div class="radio-group">
+                <label><input type="radio" name="civilite" value="M." required /> M.</label>
+                <label><input type="radio" name="civilite" value="Mme" /> Mme</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="prenom">Prénom <span class="req">*</span></label>
+              <input id="prenom" type="text" name="prenom" required autocomplete="given-name" />
+            </div>
+            <div class="field">
+              <label for="nom">Nom <span class="req">*</span></label>
+              <input id="nom" type="text" name="nom" required autocomplete="family-name" />
+            </div>
+
+            <div class="field full">
+              <label for="email">Email <span class="req">*</span></label>
+              <input id="email" type="email" name="email" required autocomplete="email" />
+            </div>
+
+            <div class="field full">
+              <label for="societe">Société</label>
+              <input id="societe" type="text" name="societe" autocomplete="organization" />
+            </div>
+
+            <div class="field full">
+              <label for="adresse">Adresse <span class="req">*</span></label>
+              <input id="adresse" type="text" name="adresse" required autocomplete="street-address" />
+            </div>
+
+            <div class="field">
+              <label for="cp">Code Postal <span class="req">*</span></label>
+              <input id="cp" type="text" name="cp" required pattern="\d{5}" autocomplete="postal-code" />
+            </div>
+            <div class="field">
+              <label for="ville">Ville <span class="req">*</span></label>
+              <input id="ville" type="text" name="ville" required autocomplete="address-level2" />
+            </div>
+
+            <div class="field full">
+              <label for="tel-mobile">Téléphone <span class="req">*</span></label>
+              <input id="tel-mobile" type="tel" name="tel" required autocomplete="tel" />
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field full">
+              <label class="checkbox-row">
+                <input type="checkbox" id="check-investisseur" required />
+                <span>Je suis investisseur de produits de défiscalisation Arkéon et souhaite devenir membre adhérent ou renouveler mon adhésion. <span class="req">*</span></span>
+              </label>
+            </div>
+
+            <div class="field full">
+              <p class="cotis-line">Cotisation fixe annuelle : <strong>50 €</strong></p>
+              <label class="checkbox-row">
+                <input type="checkbox" id="check-statuts" required />
+                <span>J'ai lu les statuts et les conditions d'adhésion. Ceci vaut signature de ma part. <span class="req">*</span></span>
+              </label>
             </div>
           </div>
 
-          <div class="field">
-            <label for="prenom">Prénom <span class="req">*</span></label>
-            <input id="prenom" type="text" name="prenom" required autocomplete="given-name" />
+          <div class="form-submit">
+            <button type="submit" class="btn" id="adhesion-submit-btn">Envoyer ma demande d'adhésion</button>
           </div>
-          <div class="field">
-            <label for="nom">Nom <span class="req">*</span></label>
-            <input id="nom" type="text" name="nom" required autocomplete="family-name" />
-          </div>
+        </form>
+      </div>
 
-          <div class="field full">
-            <label for="email">Email <span class="req">*</span></label>
-            <input id="email" type="email" name="email" required autocomplete="email" />
-          </div>
-
-          <div class="field full">
-            <label for="societe">Société</label>
-            <input id="societe" type="text" name="societe" autocomplete="organization" />
-          </div>
-
-          <div class="field full">
-            <label for="adresse">Adresse <span class="req">*</span></label>
-            <input id="adresse" type="text" name="adresse" required autocomplete="street-address" />
-          </div>
-
-          <div class="field">
-            <label for="cp">Code Postal <span class="req">*</span></label>
-            <input id="cp" type="text" name="cp" required pattern="\d{5}" autocomplete="postal-code" />
-          </div>
-          <div class="field">
-            <label for="ville">Ville <span class="req">*</span></label>
-            <input id="ville" type="text" name="ville" required autocomplete="address-level2" />
-          </div>
-
-          <div class="field">
-            <label for="tel-fixe">Téléphone fixe</label>
-            <input id="tel-fixe" type="tel" name="tel_fixe" autocomplete="tel" />
-          </div>
-          <div class="field">
-            <label for="tel-mobile">Téléphone mobile <span class="req">*</span></label>
-            <input id="tel-mobile" type="tel" name="tel_mobile" required autocomplete="tel" />
-          </div>
-
-          <div class="section-divider"></div>
-
-          <div class="field full">
-            <label style="font-size: 0.95rem; font-weight: 600;">Adhésion</label>
-            <label class="checkbox-row">
-              <input type="checkbox" required />
-              <span>Je suis investisseur de produits de défiscalisation Arkéon et souhaite devenir membre adhérent ou renouveler mon adhésion. <span class="req">*</span></span>
-            </label>
-          </div>
-
-          <div class="field full">
-            <p class="cotis-line">Cotisation fixe annuelle : 50 €</p>
-            <label class="checkbox-row">
-              <input type="checkbox" required />
-              <span>J'ai lu les statuts et les conditions d'adhésion. Ceci vaut signature de ma part. <span class="req">*</span></span>
-            </label>
-          </div>
+      <!-- Confirmation (affiché après soumission) -->
+      <div id="adhesion-success" style="display:none" class="form-card">
+        <div class="adhesion-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" width="48" height="48" style="margin-bottom:16px"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 9"/></svg>
+          <h3>Demande d'adhésion reçue !</h3>
+          <p>Merci <strong id="success-prenom"></strong>. Votre dossier est transmis à l'équipe A3DIA.<br />
+          Vous recevrez vos identifiants de connexion dès réception de votre paiement.</p>
         </div>
 
-        <p class="form-disclaimer">
-          Votre adhésion sera effective après réception de votre paiement par l'association.
-          Nous vous remercions de valider ci-dessous pour ouvrir la page suivante.
-          Le montant ci-dessous (50 €) s'affichera au cours de votre inscription.
-        </p>
-
-        <div class="form-submit">
-          <button type="submit" class="btn">Valider l'inscription</button>
+        <div style="margin-top:28px">
+          <h4 style="font-size:1rem;font-weight:600;margin-bottom:16px;color:var(--ink-900)">Choisissez votre mode de paiement (cotisation annuelle : 50 €)</h4>
+          <div class="pay-options-grid">
+            <div class="pay-option-card">
+              <h4>💳 Carte bancaire</h4>
+              <p>Paiement en ligne sécurisé par Stripe.<br />L'équipe A3DIA vous enverra un lien de paiement sécurisé par email dans les plus brefs délais.</p>
+            </div>
+            <div class="pay-option-card">
+              <h4>🏦 Virement bancaire</h4>
+              <p>Effectuez un virement de <strong>50 €</strong> à l'ordre de :<br />
+              <strong>A3DIA</strong><br />
+              IBAN : <code>FR76 XXXX XXXX XXXX XXXX XXXX XXX</code><br />
+              BIC : <code>XXXXFRPP</code><br />
+              Référence : votre nom + prénom</p>
+            </div>
+            <div class="pay-option-card">
+              <h4>📮 Chèque</h4>
+              <p>Envoyez un chèque de <strong>50 €</strong> à l'ordre de :<br />
+              <strong>A3DIA</strong><br />
+              9 rue Anatole de La Forge<br />75017 Paris</p>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 
@@ -235,5 +263,51 @@
 
   <script src="js/main.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    document.getElementById('adhesion-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('adhesion-submit-btn');
+      const errBox = document.getElementById('adhesion-error');
+      errBox.style.display = 'none';
+
+      if (!document.getElementById('check-investisseur').checked || !document.getElementById('check-statuts').checked) {
+        errBox.textContent = 'Veuillez cocher les deux cases obligatoires.';
+        errBox.style.display = 'block'; return;
+      }
+
+      btn.disabled = true; btn.textContent = 'Envoi en cours…';
+
+      const body = {
+        civilite: document.querySelector('input[name=civilite]:checked')?.value || '',
+        prenom: document.getElementById('prenom').value.trim(),
+        nom: document.getElementById('nom').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        societe: document.getElementById('societe').value.trim(),
+        adresse: document.getElementById('adresse').value.trim(),
+        cp: document.getElementById('cp').value.trim(),
+        ville: document.getElementById('ville').value.trim(),
+        tel: document.getElementById('tel-mobile').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/adhesion/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        document.getElementById('adhesion-form-wrap').style.display = 'none';
+        document.getElementById('success-prenom').textContent = body.prenom;
+        document.getElementById('adhesion-success').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        errBox.textContent = err.message || 'Une erreur est survenue. Veuillez réessayer.';
+        errBox.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Envoyer ma demande d\'adhésion';
+      }
+    });
+  </script>
 </body>
 </html>
