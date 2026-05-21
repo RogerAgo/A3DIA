@@ -321,6 +321,9 @@
 
     // ---- Init ----
     async function init() {
+      document.querySelectorAll('.admin-modal').forEach(m => { m.hidden = true; });
+      document.body.style.overflow = '';
+
       try {
         const res = await fetch('/api/auth/me');
         if (!res.ok) throw new Error();
@@ -752,7 +755,8 @@
     function esc(str) {
       return String(str ?? '')
         .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+        .replace(/'/g, "\\'");
     }
 
     init();
