@@ -1955,6 +1955,7 @@ body {
   justify-content: center;
   padding: 24px;
 }
+.post-modal[hidden] { display: none !important; }
 .post-modal-backdrop {
   position: absolute;
   inset: 0;
