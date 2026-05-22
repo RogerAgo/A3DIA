@@ -37,9 +37,9 @@
       navList.appendChild(adminItem);
     }
 
-    // Ajouter Déconnexion (mobile menu)
+    // Ajouter Déconnexion (mobile menu uniquement — caché sur desktop via .nav-link-cta)
     const logoutMobileItem = document.createElement('li');
-    logoutMobileItem.innerHTML = `<a href="#" class="nav-link nav-logout-trigger">Déconnexion</a>`;
+    logoutMobileItem.innerHTML = `<a href="#" class="nav-link nav-link-cta nav-logout-trigger">Déconnexion</a>`;
     navList.appendChild(logoutMobileItem);
 
     // Remplacer le bouton CTA "Connexion" par "Déconnexion"

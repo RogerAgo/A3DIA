@@ -33,7 +33,6 @@
           <li><a href="espace-membres.html" class="nav-link active">Espace Membres</a></li>
           <li><a href="contact.html" class="nav-link">Contact</a></li>
           <li id="nav-admin-item" hidden><a href="admin.html" class="nav-link">Administration</a></li>
-          <li><button class="nav-link nav-logout-btn" id="nav-logout" style="background:none;border:none;cursor:pointer;padding:6px 0;">Déconnexion</button></li>
         </ul>
         <button class="btn-logout-cta" id="nav-logout-cta">Déconnexion</button>
       </nav>
@@ -214,8 +213,7 @@
         document.getElementById('nav-admin-item').hidden = false;
       }
 
-      // Logout buttons
-      document.getElementById('nav-logout').addEventListener('click', logout);
+      // Logout button
       document.getElementById('nav-logout-cta').addEventListener('click', logout);
 
       // Load posts
