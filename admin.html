@@ -187,7 +187,10 @@
         </div>
 
         <div id="treso-chart-wrap" style="margin-bottom:28px">
-          <h3 style="font-size:0.9rem;font-weight:600;color:var(--ink-700);margin:0 0 14px">Revenus par année</h3>
+          <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:14px">
+            <h3 style="font-size:0.9rem;font-weight:600;color:var(--ink-700);margin:0">Revenus par année</h3>
+            <span id="treso-chart-total" style="font-size:0.82rem;color:var(--ink-400)"></span>
+          </div>
           <div id="treso-chart" class="treso-bar-chart"></div>
         </div>
 
@@ -207,11 +210,16 @@
         </div>
 
         <div class="admin-search-row">
+          <input type="search" id="pay-search" placeholder="Nom, email, référence…" class="admin-search-input" style="flex:2" />
+          <select id="pay-filter-year" class="admin-select" style="min-width:110px">
+            <option value="">Toutes les années</option>
+          </select>
           <select id="pay-filter-type" class="admin-select">
             <option value="">Tous les types</option>
             <option value="stripe">Carte (Stripe)</option>
             <option value="virement">Virement</option>
             <option value="cheque">Chèque</option>
+            <option value="autre">Autre</option>
           </select>
           <select id="pay-filter-status" class="admin-select">
             <option value="">Tous les statuts</option>
@@ -220,6 +228,7 @@
             <option value="annule">Annulé</option>
           </select>
         </div>
+        <p style="font-size:0.82rem;color:var(--ink-400);margin:0 0 12px" id="pay-count-label"></p>
 
         <div class="admin-table-wrap">
           <div class="admin-loading" id="payments-loading"><div class="loading-spinner"></div> Chargement…</div>
@@ -807,6 +816,8 @@
 
       // Payments
       document.getElementById('btn-add-payment').addEventListener('click', openPaymentModal);
+      document.getElementById('pay-search').addEventListener('input', renderPayments);
+      document.getElementById('pay-filter-year').addEventListener('change', renderPayments);
       document.getElementById('pay-filter-type').addEventListener('change', renderPayments);
       document.getElementById('pay-filter-status').addEventListener('change', renderPayments);
       document.getElementById('payment-form').addEventListener('submit', savePayment);
@@ -1103,6 +1114,11 @@
         document.getElementById('payments-loading').hidden = true;
         const pending = allPayments.filter(p => p.status === 'en_attente').length;
         document.getElementById('payments-count').textContent = pending || allPayments.length;
+        // Populate year filter
+        const years = [...new Set(allPayments.map(p => p.annee).filter(Boolean))].sort((a, b) => b - a);
+        const yearSel = document.getElementById('pay-filter-year');
+        yearSel.innerHTML = '<option value="">Toutes les années</option>' +
+          years.map(y => `<option value="${y}"${y === new Date().getFullYear() ? ' selected' : ''}>${y}</option>`).join('');
         renderPayments();
         renderTresoChart();
       } catch {
@@ -1111,11 +1127,16 @@
     }
 
     function renderPayments() {
+      const q = document.getElementById('pay-search').value.toLowerCase();
+      const yearF = document.getElementById('pay-filter-year').value;
       const typeF = document.getElementById('pay-filter-type').value;
       const statusF = document.getElementById('pay-filter-status').value;
       const filtered = allPayments.filter(p => {
-        return (!typeF || p.type === typeF) && (!statusF || p.status === statusF);
+        const matchQ = !q || `${p.memberName} ${p.memberEmail} ${p.reference}`.toLowerCase().includes(q);
+        const matchY = !yearF || String(p.annee) === yearF;
+        return matchQ && matchY && (!typeF || p.type === typeF) && (!statusF || p.status === statusF);
       });
+      document.getElementById('pay-count-label').textContent = `${filtered.length} paiement(s) affiché(s) sur ${allPayments.length} total`;
 
       const tbody = document.getElementById('payments-tbody');
       const table = document.getElementById('payments-table');
@@ -1629,6 +1650,7 @@
     // ---- Trésorerie chart ----
     function renderTresoChart() {
       const byYear = {};
+      const thisYear = new Date().getFullYear();
       allPayments.filter(p => p.status === 'confirme').forEach(p => {
         const y = p.annee || new Date(p.confirmedAt||p.createdAt).getFullYear();
         byYear[y] = (byYear[y]||0) + (p.montant||0);
@@ -1636,11 +1658,15 @@
       const years = Object.keys(byYear).sort();
       if (!years.length) return;
       const maxVal = Math.max(...Object.values(byYear));
+      const totalAll = Object.values(byYear).reduce((s, v) => s + v, 0);
       const chart = document.getElementById('treso-chart');
+      const totalEl = document.getElementById('treso-chart-total');
+      if (totalEl) totalEl.textContent = `Total : ${(totalAll/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}`;
       chart.innerHTML = years.map(y => {
         const pct = Math.round((byYear[y]/maxVal)*100);
         const euros = (byYear[y]/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
-        return `<div class="treso-bar-item">
+        const isCurrent = Number(y) === thisYear;
+        return `<div class="treso-bar-item${isCurrent?' treso-bar-current':''}">
           <div class="treso-bar-label">${y}</div>
           <div class="treso-bar-track"><div class="treso-bar-fill" style="width:${pct}%" title="${euros}"></div></div>
           <div class="treso-bar-val">${euros}</div>

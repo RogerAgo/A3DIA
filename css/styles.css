@@ -2747,6 +2747,9 @@ body {
   color: var(--ink-700);
   white-space: nowrap;
 }
+.treso-bar-current .treso-bar-label { color: var(--navy-700); font-weight: 700; }
+.treso-bar-current .treso-bar-fill  { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.treso-bar-current .treso-bar-val   { color: var(--navy-700); font-weight: 700; }
 
 /* ============================================================
    ANNUAIRE — Grid & card view
