@@ -648,58 +648,71 @@ async function importMembers(kv, req, res) {
 // ─── dedup-payments ─────────────────────────────────────────────────────────
 // POST /api/admin/dedup-payments
 // Removes duplicate historical payment records — keeps the oldest copy.
+// Accepts optional { offset } to process in pages (call repeatedly until done=true).
 async function dedupPayments(kv, req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const ids = (await kv.smembers('payments')) ?? [];
-  // Fetch in batches of 100 to stay within Redis limits
+  const { offset = 0, pageSize = 1500 } = req.body ?? {};
+
+  const allIds = (await kv.smembers('payments')) ?? [];
+
+  // Work on a page of IDs to stay within the 10s Vercel timeout
+  const pageIds = allIds.slice(offset, offset + pageSize);
   const CHUNK = 100;
-  const all = [];
-  for (let i = 0; i < ids.length; i += CHUNK) {
-    const chunk = ids.slice(i, i + CHUNK);
-    const rows = await Promise.all(chunk.map(id => kv.get(`payment:${id}`)));
-    all.push(...rows.filter(Boolean));
+  const page = [];
+  for (let i = 0; i < pageIds.length; i += CHUNK) {
+    const rows = await Promise.all(pageIds.slice(i, i + CHUNK).map(id => kv.get(`payment:${id}`)));
+    page.push(...rows.filter(Boolean));
   }
 
-  // Only deduplicate historique entries
-  const hist = all.filter(p => p.source === 'historique');
+  // Only deduplicate historique entries within this page
+  const hist = page.filter(p => p.source === 'historique');
 
-  // Build composite key
   const key = p => {
     const d = p.confirmedAt ? p.confirmedAt.slice(0, 10) : '';
     return `${p.memberId || p.memberName}|${p.annee}|${p.montant}|${p.type}|${p.reference || ''}|${d}`;
   };
 
-  const seen = new Map();
+  // We need global seen map — pass seen keys via body for paged operation
+  const seenKeys = new Set(req.body?.seenKeys ?? []);
   const toDelete = [];
 
-  // Sort all historique payments by createdAt ascending so we keep the oldest
   hist.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
 
   for (const p of hist) {
     const k = key(p);
-    if (seen.has(k)) {
+    if (seenKeys.has(k)) {
       toDelete.push(p.id);
     } else {
-      seen.set(k, p.id);
+      seenKeys.add(k);
     }
   }
 
-  // Delete duplicates
+  // Delete in parallel chunks of 100 (del + srem batched together)
+  const DEL_CHUNK = 100;
   let deleted = 0;
-  for (const id of toDelete) {
-    await kv.del(`payment:${id}`);
-    await kv.srem('payments', id);
-    deleted++;
+  for (let i = 0; i < toDelete.length; i += DEL_CHUNK) {
+    const batch = toDelete.slice(i, i + DEL_CHUNK);
+    await Promise.all([
+      ...batch.map(id => kv.del(`payment:${id}`)),
+      ...batch.map(id => kv.srem('payments', id))
+    ]);
+    deleted += batch.length;
   }
+
+  const nextOffset = offset + pageSize;
+  const done = nextOffset >= allIds.length;
 
   return res.status(200).json({
     success: true,
+    done,
+    nextOffset: done ? null : nextOffset,
+    seenKeys: [...seenKeys],  // pass back to next page call
     summary: {
-      total: all.length,
-      historique: hist.length,
-      duplicatesRemoved: deleted,
-      remaining: all.length - deleted
+      totalIds: allIds.length,
+      pageProcessed: page.length,
+      duplicatesRemovedThisPage: deleted,
+      offset
     }
   });
 }
