@@ -55,6 +55,17 @@
           <span class="admin-count" id="payments-count">—</span>
         </button>
 
+        <button class="admin-sidenav-item" data-tab="annuaire" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Annuaire
+        </button>
+
+        <button class="admin-sidenav-item" data-tab="mailbox" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Messagerie
+          <span class="admin-count" id="mailbox-count">—</span>
+        </button>
+
         <button class="admin-sidenav-item" data-tab="members" aria-selected="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="9" cy="7" r="4"/><circle cx="17" cy="8" r="3"/><path d="M1 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
           Adhérents
@@ -168,6 +179,18 @@
           </button>
         </div>
 
+        <div style="display:flex;gap:10px;margin-bottom:20px">
+          <button class="btn btn-ghost btn-sm" id="btn-export-payments">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter CSV
+          </button>
+        </div>
+
+        <div id="treso-chart-wrap" style="margin-bottom:28px">
+          <h3 style="font-size:0.9rem;font-weight:600;color:var(--ink-700);margin:0 0 14px">Revenus par année</h3>
+          <div id="treso-chart" class="treso-bar-chart"></div>
+        </div>
+
         <div class="tresorerie-cards" id="tresorerie-cards">
           <div class="treso-card treso-green">
             <div class="treso-val" id="t-confirmes">—</div>
@@ -215,6 +238,109 @@
             <tbody id="payments-tbody"></tbody>
           </table>
           <p class="admin-empty" id="payments-empty" hidden>Aucun paiement enregistré.</p>
+        </div>
+      </section>
+
+      <!-- ===== ANNUAIRE ===== -->
+      <section class="admin-tab" id="tab-annuaire" hidden>
+        <div class="admin-tab-header">
+          <h1>Annuaire des adhérents</h1>
+          <button class="btn btn-ghost btn-sm" id="btn-export-annuaire">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter CSV
+          </button>
+        </div>
+        <div class="admin-search-row">
+          <input type="search" id="annuaire-search" placeholder="Nom, email, ville, société…" class="admin-search-input" style="flex:2" />
+          <select id="annuaire-filter-actif" class="admin-select">
+            <option value="">Tous</option>
+            <option value="true">Actifs</option>
+            <option value="false">Inactifs</option>
+          </select>
+          <select id="annuaire-view" class="admin-select">
+            <option value="table">Vue tableau</option>
+            <option value="cards">Vue cartes</option>
+          </select>
+        </div>
+        <p style="font-size:0.82rem;color:var(--ink-400);margin:0 0 16px" id="annuaire-count-label"></p>
+        <div id="annuaire-table-wrap">
+          <div class="admin-loading" id="annuaire-loading"><div class="loading-spinner"></div> Chargement…</div>
+          <table class="admin-table" id="annuaire-table" hidden>
+            <thead><tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Société</th><th>Ville</th><th>Statut</th></tr></thead>
+            <tbody id="annuaire-tbody"></tbody>
+          </table>
+          <div id="annuaire-cards" hidden></div>
+          <p class="admin-empty" id="annuaire-empty" hidden>Aucun résultat.</p>
+        </div>
+      </section>
+
+      <!-- ===== MESSAGERIE ===== -->
+      <section class="admin-tab" id="tab-mailbox" hidden>
+        <div class="admin-tab-header"><h1>Messagerie</h1></div>
+        <div class="mailbox-layout">
+
+          <!-- Panel gauche : boîte de réception + envoyés -->
+          <div class="mailbox-sidebar">
+            <div class="mailbox-tabs">
+              <button class="mailbox-tab active" data-mtab="inbox">Boîte de réception</button>
+              <button class="mailbox-tab" data-mtab="sent">Envoyés</button>
+            </div>
+            <div id="mailbox-inbox-panel">
+              <div class="admin-loading" id="mailbox-loading"><div class="loading-spinner"></div></div>
+              <div id="mailbox-inbox-list"></div>
+              <p class="admin-empty" id="mailbox-inbox-empty" hidden>Aucun email.<br><small>Configurez IMAP_HOST dans Vercel pour activer la réception.</small></p>
+            </div>
+            <div id="mailbox-sent-panel" hidden>
+              <div id="mailbox-sent-list"></div>
+              <p class="admin-empty" id="mailbox-sent-empty" hidden>Aucun email envoyé.</p>
+            </div>
+          </div>
+
+          <!-- Panel droit : composition -->
+          <div class="mailbox-compose">
+            <h3 style="margin:0 0 20px;font-size:1rem;font-weight:600">Nouveau message</h3>
+            <div id="mailbox-send-msg" class="admin-form-msg" hidden></div>
+
+            <div class="field" style="margin-bottom:12px">
+              <label style="font-size:0.82rem;font-weight:600;margin-bottom:6px;display:block">Destinataires</label>
+              <div class="compose-to-options">
+                <label class="compose-to-opt">
+                  <input type="radio" name="compose-to-type" value="broadcast-actif" checked />
+                  <span>Tous les adhérents actifs</span>
+                </label>
+                <label class="compose-to-opt">
+                  <input type="radio" name="compose-to-type" value="broadcast-all" />
+                  <span>Tous les adhérents</span>
+                </label>
+                <label class="compose-to-opt">
+                  <input type="radio" name="compose-to-type" value="individual" />
+                  <span>Individuel</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field" id="compose-individual-field" style="margin-bottom:12px;display:none">
+              <input type="text" id="compose-to-search" placeholder="Rechercher un adhérent…" autocomplete="off" />
+              <input type="hidden" id="compose-to-email" />
+              <div id="compose-to-results" class="autocomplete-results" hidden></div>
+            </div>
+
+            <div class="field" style="margin-bottom:12px">
+              <label for="compose-subject" style="font-size:0.82rem;font-weight:600;margin-bottom:6px;display:block">Objet</label>
+              <input type="text" id="compose-subject" placeholder="Objet du message" />
+            </div>
+            <div class="field" style="margin-bottom:16px">
+              <label for="compose-body" style="font-size:0.82rem;font-weight:600;margin-bottom:6px;display:block">Message</label>
+              <textarea id="compose-body" rows="12" placeholder="Votre message…" style="resize:vertical"></textarea>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <button class="btn btn-primary" id="compose-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Envoyer
+              </button>
+              <span id="compose-send-status" style="font-size:0.82rem;color:var(--ink-500)"></span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -712,10 +838,45 @@
         closeModal('confirm-modal');
       });
 
+      // Annuaire
+      document.getElementById('annuaire-search').addEventListener('input', renderAnnuaire);
+      document.getElementById('annuaire-filter-actif').addEventListener('change', renderAnnuaire);
+      document.getElementById('annuaire-view').addEventListener('change', renderAnnuaire);
+      document.getElementById('btn-export-annuaire').addEventListener('click', exportAnnuaireCsv);
+
+      // Payments export
+      document.getElementById('btn-export-payments').addEventListener('click', exportPaymentsCsv);
+
+      // Messagerie tabs
+      document.querySelectorAll('.mailbox-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mailbox-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const panel = btn.dataset.mtab;
+          document.getElementById('mailbox-inbox-panel').hidden = panel !== 'inbox';
+          document.getElementById('mailbox-sent-panel').hidden = panel !== 'sent';
+        });
+      });
+
+      // Compose: destinataire type toggle
+      document.querySelectorAll('input[name="compose-to-type"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          document.getElementById('compose-individual-field').style.display =
+            radio.value === 'individual' ? 'block' : 'none';
+        });
+      });
+
+      // Compose: member autocomplete
+      document.getElementById('compose-to-search').addEventListener('input', onComposeMemberSearch);
+
+      // Send email button
+      document.getElementById('compose-send-btn').addEventListener('click', sendComposedEmail);
+
       await Promise.all([loadStats(), loadRequests(), loadPayments(), loadMembers(), loadPosts()]);
     }
 
     // ---- Tab switching ----
+    let mailboxLoaded = false;
     function switchTab(tab) {
       document.querySelectorAll('.admin-tab').forEach(s => s.hidden = true);
       document.querySelectorAll('.admin-sidenav-item').forEach(b => {
@@ -723,6 +884,21 @@
         b.setAttribute('aria-selected', b.dataset.tab === tab);
       });
       document.getElementById(`tab-${tab}`).hidden = false;
+
+      // Lazy load mailbox on first open
+      if (tab === 'mailbox' && !mailboxLoaded) {
+        mailboxLoaded = true;
+        loadMailbox();
+      }
+      // Refresh annuaire view when switching to it
+      if (tab === 'annuaire' && allMembers.length) {
+        document.getElementById('annuaire-loading').hidden = true;
+        renderAnnuaire();
+      }
+      // Render treso chart when switching to payments tab
+      if (tab === 'payments' && allPayments.length) {
+        renderTresoChart();
+      }
     }
 
     // ---- Dashboard ----
@@ -928,6 +1104,7 @@
         const pending = allPayments.filter(p => p.status === 'en_attente').length;
         document.getElementById('payments-count').textContent = pending || allPayments.length;
         renderPayments();
+        renderTresoChart();
       } catch {
         document.getElementById('payments-loading').textContent = 'Erreur de chargement.';
       }
@@ -1376,6 +1553,211 @@
         msgBox.textContent = err.message || 'Erreur.';
         msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false;
       } finally { btn.disabled = false; btn.textContent = 'Enregistrer'; }
+    }
+
+    // ---- Annuaire ----
+    function renderAnnuaire() {
+      const q = document.getElementById('annuaire-search').value.toLowerCase();
+      const actifF = document.getElementById('annuaire-filter-actif').value;
+      const view = document.getElementById('annuaire-view').value;
+
+      const filtered = allMembers.filter(m => {
+        const text = `${m.nom} ${m.prenom} ${m.email} ${m.tel||''} ${m.societe||''} ${m.ville||''}`.toLowerCase();
+        return (!q || text.includes(q)) && (actifF === '' || String(m.actif) === actifF);
+      });
+
+      document.getElementById('annuaire-loading').hidden = true;
+      document.getElementById('annuaire-count-label').textContent = `${filtered.length} adhérent(s) affiché(s)`;
+
+      const tableWrap = document.getElementById('annuaire-table');
+      const cardsWrap = document.getElementById('annuaire-cards');
+      const empty = document.getElementById('annuaire-empty');
+
+      if (!filtered.length) { tableWrap.hidden = true; cardsWrap.hidden = true; empty.hidden = false; return; }
+      empty.hidden = true;
+
+      if (view === 'table') {
+        cardsWrap.hidden = true; tableWrap.hidden = false;
+        document.getElementById('annuaire-tbody').innerHTML = filtered.map(m => `
+          <tr>
+            <td><strong>${esc(m.prenom)} ${esc(m.nom)}</strong></td>
+            <td><a href="mailto:${esc(m.email)}" style="color:var(--navy-600)">${esc(m.email)}</a></td>
+            <td>${esc(m.tel||'—')}</td>
+            <td>${esc(m.societe||'—')}</td>
+            <td>${esc(m.ville||'—')}</td>
+            <td><span class="status-badge ${m.actif?'status-active':'status-inactive'}">${m.actif?'Actif':'Inactif'}</span></td>
+          </tr>`).join('');
+      } else {
+        tableWrap.hidden = true; cardsWrap.hidden = false;
+        cardsWrap.innerHTML = `<div class="annuaire-grid">${filtered.map(m => `
+          <div class="annuaire-card">
+            <div class="annuaire-avatar">${esc(m.prenom[0]||'?')}${esc((m.nom[0]||''))}</div>
+            <div class="annuaire-info">
+              <div class="annuaire-name">${esc(m.prenom)} ${esc(m.nom)}</div>
+              ${m.societe ? `<div class="annuaire-company">${esc(m.societe)}</div>` : ''}
+              <a href="mailto:${esc(m.email)}" class="annuaire-email">${esc(m.email)}</a>
+              ${m.tel ? `<div class="annuaire-tel">${esc(m.tel)}</div>` : ''}
+              ${m.ville ? `<div class="annuaire-ville">${esc(m.ville)}</div>` : ''}
+            </div>
+            <span class="status-badge ${m.actif?'status-active':'status-inactive'}" style="margin-top:4px">${m.actif?'Actif':'Inactif'}</span>
+          </div>`).join('')}</div>`;
+      }
+    }
+
+    function exportAnnuaireCsv() {
+      const rows = [['Prénom','Nom','Email','Téléphone','Société','Adresse','CP','Ville','Statut']];
+      allMembers.forEach(m => rows.push([m.prenom,m.nom,m.email,m.tel||'',m.societe||'',m.adresse||'',m.cp||'',m.ville||'',m.actif?'Actif':'Inactif']));
+      const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `annuaire_a3dia_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+    }
+
+    function exportPaymentsCsv() {
+      const rows = [['Adhérent','Email','Montant (€)','Type','Statut','Référence','Année','Date confirmation','Description']];
+      allPayments.forEach(p => rows.push([
+        p.memberName||'',p.memberEmail||'',
+        (p.montant/100).toFixed(2),p.type,p.status,
+        p.reference||'',p.annee||'',p.confirmedAt||'',p.description||''
+      ]));
+      const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `tresorerie_a3dia_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+    }
+
+    // ---- Trésorerie chart ----
+    function renderTresoChart() {
+      const byYear = {};
+      allPayments.filter(p => p.status === 'confirme').forEach(p => {
+        const y = p.annee || new Date(p.confirmedAt||p.createdAt).getFullYear();
+        byYear[y] = (byYear[y]||0) + (p.montant||0);
+      });
+      const years = Object.keys(byYear).sort();
+      if (!years.length) return;
+      const maxVal = Math.max(...Object.values(byYear));
+      const chart = document.getElementById('treso-chart');
+      chart.innerHTML = years.map(y => {
+        const pct = Math.round((byYear[y]/maxVal)*100);
+        const euros = (byYear[y]/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+        return `<div class="treso-bar-item">
+          <div class="treso-bar-label">${y}</div>
+          <div class="treso-bar-track"><div class="treso-bar-fill" style="width:${pct}%" title="${euros}"></div></div>
+          <div class="treso-bar-val">${euros}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // ---- Messagerie ----
+    let mailboxData = { inbox: [], sent: [], imapConfigured: false };
+
+    function onComposeMemberSearch() {
+      const q = document.getElementById('compose-to-search').value.toLowerCase().trim();
+      const results = document.getElementById('compose-to-results');
+      if (!q || q.length < 2) { results.hidden = true; return; }
+      const matches = allMembers.filter(m =>
+        `${m.nom} ${m.prenom} ${m.email}`.toLowerCase().includes(q)
+      ).slice(0, 6);
+      if (!matches.length) { results.hidden = true; return; }
+      results.innerHTML = matches.map(m =>
+        `<div class="autocomplete-item" onclick="selectComposeTo('${esc(m.email)}', '${esc(m.prenom)} ${esc(m.nom)}')">${esc(m.prenom)} ${esc(m.nom)} <small>${esc(m.email)}</small></div>`
+      ).join('');
+      results.hidden = false;
+    }
+
+    function selectComposeTo(email, name) {
+      document.getElementById('compose-to-email').value = email;
+      document.getElementById('compose-to-search').value = `${name} (${email})`;
+      document.getElementById('compose-to-results').hidden = true;
+    }
+
+    async function loadMailbox() {
+      try {
+        const res = await fetch('/api/admin/mailbox');
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        mailboxData = data;
+        document.getElementById('mailbox-loading').hidden = true;
+        renderMailboxInbox();
+        renderMailboxSent();
+        const unread = data.inbox.filter(m => !m.seen).length;
+        document.getElementById('mailbox-count').textContent = unread || data.inbox.length || '—';
+      } catch (e) {
+        document.getElementById('mailbox-loading').textContent = 'Erreur de chargement.';
+      }
+    }
+
+    function renderMailboxInbox() {
+      const list = document.getElementById('mailbox-inbox-list');
+      const empty = document.getElementById('mailbox-inbox-empty');
+      if (!mailboxData.inbox.length) { list.innerHTML=''; empty.hidden=false; return; }
+      empty.hidden = true;
+      list.innerHTML = mailboxData.inbox.map(m => `
+        <div class="mail-item ${m.seen?'':'mail-unread'}">
+          <div class="mail-from">${esc(m.fromName||m.from)}</div>
+          <div class="mail-subject">${esc(m.subject)}</div>
+          <div class="mail-date">${m.date ? new Date(m.date).toLocaleDateString('fr-FR') : ''}</div>
+        </div>`).join('');
+    }
+
+    function renderMailboxSent() {
+      const list = document.getElementById('mailbox-sent-list');
+      const empty = document.getElementById('mailbox-sent-empty');
+      if (!mailboxData.sent.length) { list.innerHTML=''; empty.hidden=false; return; }
+      empty.hidden = true;
+      list.innerHTML = mailboxData.sent.map(m => `
+        <div class="mail-item">
+          <div class="mail-from" style="color:var(--ink-500)">${m.broadcast?'📢 Broadcast':'✉️ Individuel'} · ${m.recipients} dest.</div>
+          <div class="mail-subject">${esc(m.subject)}</div>
+          <div class="mail-date">${fmtDate(m.sentAt)}</div>
+          ${m.preview ? `<div class="mail-preview">${esc(m.preview)}</div>` : ''}
+        </div>`).join('');
+    }
+
+    async function sendComposedEmail() {
+      const type = document.querySelector('input[name="compose-to-type"]:checked')?.value;
+      const subject = document.getElementById('compose-subject').value.trim();
+      const body = document.getElementById('compose-body').value.trim();
+      const btn = document.getElementById('compose-send-btn');
+      const status = document.getElementById('compose-send-status');
+      const msgBox = document.getElementById('mailbox-send-msg');
+
+      if (!subject || !body) {
+        msgBox.textContent = 'Objet et message requis.';
+        msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false; return;
+      }
+
+      let payload = { subject, body };
+      if (type === 'broadcast-actif') { payload.broadcast = true; payload.memberFilter = 'actif'; }
+      else if (type === 'broadcast-all') { payload.broadcast = true; }
+      else {
+        const toEmail = document.getElementById('compose-to-email').value;
+        if (!toEmail) { msgBox.textContent = 'Sélectionnez un destinataire.'; msgBox.className='admin-form-msg admin-form-msg-error'; msgBox.hidden=false; return; }
+        payload.to = [{ email: toEmail }];
+      }
+
+      const count = type === 'individual' ? 1 : type === 'broadcast-actif'
+        ? allMembers.filter(m=>m.actif).length : allMembers.length;
+
+      if (count > 1 && !confirm(`Envoyer à ${count} adhérent(s) ?`)) return;
+
+      btn.disabled = true; btn.textContent = 'Envoi en cours…'; msgBox.hidden = true; status.textContent='';
+
+      try {
+        const res = await fetch('/api/admin/mailbox', {
+          method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        msgBox.textContent = `✅ ${data.sent} email(s) envoyé(s)${data.failed>0?` · ${data.failed} échec(s)`:''}`;
+        msgBox.className = 'admin-form-msg admin-form-msg-success'; msgBox.hidden = false;
+        document.getElementById('compose-subject').value = '';
+        document.getElementById('compose-body').value = '';
+        await loadMailbox();
+      } catch (err) {
+        msgBox.textContent = 'Erreur : ' + err.message;
+        msgBox.className = 'admin-form-msg admin-form-msg-error'; msgBox.hidden = false;
+      } finally { btn.disabled=false; btn.textContent='Envoyer ▸'; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer'; }
     }
 
     // ---- Import ----
