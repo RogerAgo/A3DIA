@@ -2,3 +2,5 @@
 *.php
 .htaccess
 BACKEND.md
+.claude
+pnpm-lock.yaml
