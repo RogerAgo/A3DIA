@@ -247,6 +247,7 @@
             <tbody id="payments-tbody"></tbody>
           </table>
           <p class="admin-empty" id="payments-empty" hidden>Aucun paiement enregistré.</p>
+          <div id="pay-pagination" class="table-pagination" hidden></div>
         </div>
       </section>
 
@@ -1126,26 +1127,36 @@
       }
     }
 
-    function renderPayments() {
+    const PAY_PAGE_SIZE = 50;
+    let payPage = 0;
+    let payFiltered = [];
+
+    function renderPayments(resetPage = true) {
       const q = document.getElementById('pay-search').value.toLowerCase();
       const yearF = document.getElementById('pay-filter-year').value;
       const typeF = document.getElementById('pay-filter-type').value;
       const statusF = document.getElementById('pay-filter-status').value;
-      const filtered = allPayments.filter(p => {
+      payFiltered = allPayments.filter(p => {
         const matchQ = !q || `${p.memberName} ${p.memberEmail} ${p.reference}`.toLowerCase().includes(q);
         const matchY = !yearF || String(p.annee) === yearF;
         return matchQ && matchY && (!typeF || p.type === typeF) && (!statusF || p.status === statusF);
       });
-      document.getElementById('pay-count-label').textContent = `${filtered.length} paiement(s) affiché(s) sur ${allPayments.length} total`;
+      if (resetPage) payPage = 0;
+      document.getElementById('pay-count-label').textContent =
+        `${payFiltered.length} paiement(s) — page ${payPage + 1} / ${Math.max(1, Math.ceil(payFiltered.length / PAY_PAGE_SIZE))}`;
 
       const tbody = document.getElementById('payments-tbody');
       const table = document.getElementById('payments-table');
       const empty = document.getElementById('payments-empty');
+      const pagEl = document.getElementById('pay-pagination');
 
-      if (!filtered.length) { table.hidden = true; empty.hidden = false; return; }
+      if (!payFiltered.length) { table.hidden = true; empty.hidden = false; pagEl.hidden = true; return; }
       empty.hidden = true; table.hidden = false;
 
-      tbody.innerHTML = filtered.map(p => `
+      const totalPages = Math.ceil(payFiltered.length / PAY_PAGE_SIZE);
+      const page = payFiltered.slice(payPage * PAY_PAGE_SIZE, (payPage + 1) * PAY_PAGE_SIZE);
+
+      tbody.innerHTML = page.map(p => `
         <tr>
           <td>
             <strong>${esc(p.memberName)}</strong>
@@ -1174,6 +1185,24 @@
             </button>
           </td>
         </tr>`).join('');
+
+      // Pagination controls
+      if (totalPages <= 1) { pagEl.hidden = true; return; }
+      pagEl.hidden = false;
+      pagEl.innerHTML = `
+        <button class="pag-btn" onclick="goPayPage(${payPage - 1})" ${payPage === 0 ? 'disabled' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <span class="pag-info">Page ${payPage + 1} / ${totalPages}</span>
+        <button class="pag-btn" onclick="goPayPage(${payPage + 1})" ${payPage >= totalPages - 1 ? 'disabled' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="m9 18 6-6-6-6"/></svg>
+        </button>`;
+    }
+
+    function goPayPage(n) {
+      payPage = n;
+      renderPayments(false);
+      document.getElementById('tab-payments').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     async function confirmPayment(id) {

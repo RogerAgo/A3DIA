@@ -2752,6 +2752,33 @@ body {
 .treso-bar-current .treso-bar-val   { color: var(--navy-700); font-weight: 700; }
 
 /* ============================================================
+   TABLE PAGINATION
+============================================================ */
+.table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 0 4px;
+}
+.pag-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  color: var(--ink-600);
+  transition: background 0.1s, border-color 0.1s;
+  font-family: inherit;
+}
+.pag-btn:hover:not(:disabled) { background: #f1f5f9; border-color: var(--navy-400); }
+.pag-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.pag-info { font-size: 0.84rem; color: var(--ink-500); }
+
+/* ============================================================
    ANNUAIRE — Grid & card view
 ============================================================ */
 .annuaire-grid {
