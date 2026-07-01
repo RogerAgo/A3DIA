@@ -2927,3 +2927,25 @@ body {
 }
 .pay-option-card p  { font-size: 0.82rem; color: var(--ink-600); margin: 0; line-height: 1.5; }
 .pay-option-card code { font-size: 0.78rem; background: #f0fdf4; padding: 2px 5px; border-radius: 3px; }
+
+/* ── Bannière cotisation (espace adhérents) ── */
+.coti-card {
+  display: flex; align-items: center; gap: 18px;
+  padding: 20px 24px; border-radius: 14px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #fff; box-shadow: 0 2px 12px rgba(15, 23, 42, .05);
+}
+.coti-card.coti-due {
+  justify-content: space-between; flex-wrap: wrap;
+  border-color: #fcd9b6; background: linear-gradient(180deg, #fffaf3, #fff);
+}
+.coti-card.coti-ok { border-color: #bbf7d0; background: linear-gradient(180deg, #f2fdf5, #fff); }
+.coti-ico { font-size: 1.4rem; line-height: 1; }
+.coti-txt { display: flex; flex-direction: column; gap: 3px; }
+.coti-txt strong { font-size: 1rem; color: var(--ink-900, #0f172a); }
+.coti-txt span { font-size: 0.88rem; color: var(--ink-600, #475569); }
+.coti-card .btn { white-space: nowrap; }
+@media (max-width: 560px) {
+  .coti-card.coti-due { gap: 14px; }
+  .coti-card .btn { width: 100%; }
+}

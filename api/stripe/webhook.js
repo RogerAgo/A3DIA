@@ -52,6 +52,11 @@ export default async function handler(req, res) {
           confirmedAt: now,
           updatedAt: now
         });
+        // Marque la cotisation de l'année comme réglée pour ce membre
+        if (payment.memberId && payment.annee) {
+          await kv.set(`cotisation:${payment.memberId}:${payment.annee}`, paymentId);
+          await kv.del(`cotisation_pending:${payment.memberId}:${payment.annee}`);
+        }
       }
     }
 

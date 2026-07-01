@@ -64,6 +64,13 @@
     </div>
   </section>
 
+  <!-- COTISATION -->
+  <section class="section" id="cotisation-wrap" style="padding-top: 32px; padding-bottom: 0;" hidden>
+    <div class="container">
+      <div id="cotisation-banner"></div>
+    </div>
+  </section>
+
   <!-- FILTRES -->
   <section class="section" style="padding-top: 40px; padding-bottom: 0;">
     <div class="container">
@@ -216,6 +223,9 @@
       // Logout button
       document.getElementById('nav-logout-cta').addEventListener('click', logout);
 
+      // Cotisation status + paiement
+      loadCotisation();
+
       // Load posts
       await loadPosts();
 
@@ -318,6 +328,60 @@
     async function logout() {
       await fetch('/api/auth/logout', { method: 'POST' });
       window.location.href = '/';
+    }
+
+    // ---- Cotisation ----
+    async function loadCotisation() {
+      const wrap = document.getElementById('cotisation-wrap');
+      const el = document.getElementById('cotisation-banner');
+      const params = new URLSearchParams(location.search);
+
+      if (params.get('cotisation') === 'success') {
+        el.innerHTML = `<div class="coti-card coti-ok">
+          <span class="coti-ico">✅</span>
+          <div class="coti-txt"><strong>Merci pour votre paiement !</strong>
+          <span>Votre cotisation est en cours de validation et sera confirmée sous peu.</span></div>
+        </div>`;
+        wrap.hidden = false;
+        history.replaceState(null, '', '/espace-membres');
+      }
+
+      try {
+        const res = await fetch('/api/membres/cotisation');
+        if (!res.ok) return;
+        const d = await res.json();
+        if (params.get('cotisation') === 'success') return; // déjà affiché
+        const euros = (d.montant / 100).toLocaleString('fr-FR');
+        if (d.aJour) {
+          el.innerHTML = `<div class="coti-card coti-ok">
+            <span class="coti-ico">✅</span>
+            <div class="coti-txt"><strong>Cotisation ${d.annee} à jour</strong>
+            <span>Merci de votre soutien à l'association.</span></div>
+          </div>`;
+        } else {
+          el.innerHTML = `<div class="coti-card coti-due">
+            <div class="coti-txt"><strong>Cotisation ${d.annee}</strong>
+            <span>Réglez votre cotisation annuelle de ${euros} € par carte bancaire.</span></div>
+            <button class="btn btn-primary" id="pay-coti-btn" onclick="payCotisation()">Payer ${euros} € par carte →</button>
+          </div>`;
+        }
+        wrap.hidden = false;
+      } catch { /* silencieux */ }
+    }
+
+    async function payCotisation() {
+      const btn = document.getElementById('pay-coti-btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Redirection sécurisée…'; }
+      try {
+        const res = await fetch('/api/membres/cotisation', { method: 'POST' });
+        const d = await res.json();
+        if (d.already) { alert('Votre cotisation est déjà à jour. Merci !'); location.reload(); return; }
+        if (d.url) { window.location.href = d.url; return; }
+        throw new Error(d.error || 'Erreur inattendue');
+      } catch (e) {
+        alert('Paiement indisponible pour le moment : ' + e.message);
+        if (btn) { btn.disabled = false; btn.textContent = 'Réessayer'; }
+      }
     }
 
     function formatDate(iso) {
