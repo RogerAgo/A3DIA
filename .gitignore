@@ -30,3 +30,9 @@ temp/
 local-test.html
 
 .vercel
+
+# Données personnelles adhérents (backup local — JAMAIS sur GitHub)
+data-backup/
+
+# Config locale Claude Code
+.claude/
