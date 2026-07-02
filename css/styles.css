@@ -2968,3 +2968,212 @@ body {
 .coti-alt-method code { font-size: 0.8rem; background: #f1f5f9; padding: 2px 5px; border-radius: 3px; }
 .coti-alt-note { grid-column: 1 / -1; margin: 0; font-size: 0.78rem; color: var(--ink-500, #64748b); }
 @media (max-width: 560px) { .coti-alt-body { grid-template-columns: 1fr; } }
+
+/* ═══════════════════════════════════════════════════════════════
+   SURCOUCHE GLASS iOS — épurée, mobile-first
+   (verre dépoli : blur + translucidité + bordure lumineuse)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+  --glass-blur: 18px;
+  --radius-glass: 20px;
+}
+
+/* Fond ambiant très léger pour donner de la matière au verre */
+body {
+  background-image:
+    radial-gradient(48rem 32rem at 85% -5%, rgba(26, 41, 97, 0.07), transparent 60%),
+    radial-gradient(40rem 28rem at -10% 30%, rgba(59, 91, 219, 0.05), transparent 55%),
+    radial-gradient(36rem 26rem at 110% 85%, rgba(197, 165, 90, 0.05), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* ── Header : verre navy ── */
+.site-header {
+  background: rgba(18, 29, 71, 0.82);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.8);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .site-header { background: var(--navy-900); }
+}
+
+/* ── Cartes en verre ── */
+.post-card,
+.coti-card,
+.coti-alt-method,
+.login-card,
+.info-card,
+.form-card,
+.annuaire-card,
+.pay-option-card {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-glass);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .post-card, .coti-card, .coti-alt-method, .login-card,
+  .info-card, .form-card, .annuaire-card, .pay-option-card { background: #fff; }
+}
+.post-card:hover, .post-card:focus-visible {
+  transform: translateY(-3px);
+  background: var(--glass-bg-strong);
+  border-color: rgba(26, 41, 97, 0.18);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ── Filtres : pilules segmentées iOS ── */
+.posts-filters {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 6px;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: var(--glass-shadow);
+  max-width: max-content;
+}
+.posts-filters::-webkit-scrollbar { display: none; }
+.filter-btn {
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+  min-height: 38px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+.filter-btn:hover { background: rgba(26, 41, 97, 0.07); border-color: transparent; }
+.filter-btn.active {
+  background: var(--navy-700, #1a2961);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(26, 41, 97, 0.35);
+}
+
+/* ── Bannière cotisation ── */
+.coti-card { padding: 22px 26px; }
+.coti-card .btn {
+  border-radius: 999px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.coti-card .btn:active { transform: scale(0.98); }
+.coti-ico-svg { width: 26px; height: 26px; flex-shrink: 0; color: #16a34a; }
+.coti-alt-toggle { min-height: 44px; }
+
+/* ── Modal : verre épais ── */
+.post-modal-backdrop {
+  background: rgba(15, 23, 42, 0.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.post-modal-content {
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-glass);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .post-modal-content { background: #fff; }
+}
+
+/* ── Newsletter : champ pilule verre ── */
+.newsletter-form input[type="email"] {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+}
+.newsletter-form button { border-radius: 999px; min-height: 48px; }
+
+/* ── Hero espace membre : halo doux ── */
+.membre-hero {
+  background-image:
+    radial-gradient(34rem 20rem at 80% 0%, rgba(197, 165, 90, 0.14), transparent 60%),
+    radial-gradient(30rem 22rem at 8% 100%, rgba(59, 91, 219, 0.18), transparent 55%);
+}
+.membre-hero-badge {
+  background: rgba(255, 255, 255, 0.09);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-glass);
+}
+
+/* ── États verrouillé / vide ── */
+.posts-empty {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-glass);
+  box-shadow: var(--glass-shadow);
+  padding: 48px 28px;
+}
+
+/* ── Accessibilité & confort ── */
+:focus-visible {
+  outline: 2px solid var(--navy-600, #2d3d7a);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Mobile (≤ 640px) : priorité espace membre ── */
+@media (max-width: 640px) {
+  .posts-filters {
+    max-width: 100%;
+    border-radius: 18px;
+  }
+  .filter-btn { min-height: 44px; }
+  .coti-card { padding: 18px; }
+  .coti-card.coti-due { flex-direction: column; align-items: stretch; }
+  .coti-card .btn { width: 100%; justify-content: center; }
+  .coti-alt-body { grid-template-columns: 1fr; }
+  .membre-hero-badge { display: none; }
+  .post-modal-content {
+    border-radius: 18px 18px 0 0;
+    margin-top: auto;
+    max-height: 88vh;
+  }
+  .posts-empty { padding: 36px 20px; }
+}
+
+/* Fix : l'attribut hidden doit toujours l'emporter (le reset img,svg{display:block} l'écrasait) */
+[hidden] { display: none !important; }
+
+/* ── Pages légales ── */
+.legal-content { max-width: 720px; }
+.legal-content h2 {
+  font-size: 1.15rem;
+  color: var(--ink-900, #0f172a);
+  margin: 32px 0 10px;
+}
+.legal-content h2:first-child { margin-top: 0; }
+.legal-content p, .legal-content li {
+  font-size: 0.95rem;
+  color: var(--ink-600, #475569);
+  line-height: 1.7;
+}
+.legal-content ul { padding-left: 22px; margin: 8px 0 16px; }
+.legal-content li { margin-bottom: 6px; }
+.legal-content a { color: var(--navy-600, #2d3d7a); text-decoration: underline; }
+.legal-content code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }

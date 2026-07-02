@@ -123,10 +123,6 @@
             </tbody>
           </table>
         </div>
-
-        <div class="load-more reveal">
-          <a href="#">Charger plus</a>
-        </div>
       </div>
     </div>
   </section>
@@ -137,8 +133,8 @@
       <div class="newsletter-inner reveal">
         <h2>Souscrivez à notre newsletter</h2>
         <p>Découvrez les secrets d'une gestion de patrimoine réussie. Recevez régulièrement nos analyses, les actualités des participations et des conseils pratiques pour optimiser votre patrimoine.</p>
-        <form class="newsletter-form" data-form="newsletter" novalidate>
-          <input type="email" placeholder="Entrez votre email" required aria-label="Email" />
+        <form class="newsletter-form" data-form="newsletter" action="/api/newsletter" novalidate>
+          <input type="email" name="email" placeholder="Entrez votre email" required aria-label="Email" />
           <button type="submit">Envoyer</button>
         </form>
       </div>
@@ -167,9 +163,8 @@
         <div class="footer-col">
           <h5>Ressources</h5>
           <ul>
-            <li><a href="#">Statuts</a></li>
-            <li><a href="#">Mentions légales</a></li>
-            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="confidentialite.html">Politique de confidentialité</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -182,7 +177,7 @@
       </div>
       <div class="footer-bottom">
         <span>Copyright © 2026 A3DIA</span>
-        <span>All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></span>
+        <span>Tous droits réservés | <a href="mentions-legales.html">Mentions légales</a> | <a href="confidentialite.html">Confidentialité</a></span>
       </div>
     </div>
   </footer>

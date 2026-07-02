@@ -147,8 +147,8 @@
       <div class="newsletter-inner reveal">
         <h2>Souscrivez à notre newsletter</h2>
         <p>Recevez en priorité toutes les actualités des participations Arkéon directement dans votre boîte mail.</p>
-        <form class="newsletter-form" data-form="newsletter" novalidate>
-          <input type="email" placeholder="Entrez votre email" required aria-label="Email" />
+        <form class="newsletter-form" data-form="newsletter" action="/api/newsletter" novalidate>
+          <input type="email" name="email" placeholder="Entrez votre email" required aria-label="Email" />
           <button type="submit">Envoyer</button>
         </form>
       </div>
@@ -178,9 +178,8 @@
         <div class="footer-col">
           <h5>Ressources</h5>
           <ul>
-            <li><a href="#">Statuts</a></li>
-            <li><a href="#">Mentions légales</a></li>
-            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="confidentialite.html">Politique de confidentialité</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -193,7 +192,7 @@
       </div>
       <div class="footer-bottom">
         <span>Copyright © 2026 A3DIA</span>
-        <span>All Rights Reserved | <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a></span>
+        <span>Tous droits réservés | <a href="mentions-legales.html">Mentions légales</a> | <a href="confidentialite.html">Confidentialité</a></span>
       </div>
     </div>
   </footer>
@@ -357,7 +356,7 @@
 
       if (params.get('cotisation') === 'success') {
         el.innerHTML = `<div class="coti-card coti-ok">
-          <span class="coti-ico">✅</span>
+          <svg class="coti-ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
           <div class="coti-txt"><strong>Merci pour votre paiement !</strong>
           <span>Votre cotisation est en cours de validation et sera confirmée sous peu.</span></div>
         </div>`;
@@ -373,7 +372,7 @@
         const euros = (d.montant / 100).toLocaleString('fr-FR');
         if (d.aJour) {
           el.innerHTML = `<div class="coti-card coti-ok">
-            <span class="coti-ico">✅</span>
+            <svg class="coti-ico-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             <div class="coti-txt"><strong>Cotisation ${d.annee} à jour</strong>
             <span>Merci de votre soutien à l'association.</span></div>
           </div>`;
@@ -382,20 +381,20 @@
           <div class="coti-card coti-due">
             <div class="coti-txt"><strong>Cotisation ${d.annee} — ${euros} €</strong>
             <span>Réglez votre cotisation annuelle. Choisissez le moyen qui vous convient.</span></div>
-            <button class="btn btn-primary" id="pay-coti-btn" onclick="payCotisation()">💳 Payer par carte <em style="font-style:normal;opacity:.75">(recommandé)</em></button>
+            <button class="btn btn-primary" id="pay-coti-btn" onclick="payCotisation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Payer par carte <em style="font-style:normal;opacity:.75">(recommandé)</em></button>
           </div>
           <div class="coti-alt">
             <button type="button" class="coti-alt-toggle" id="coti-alt-btn" onclick="toggleCotiAlt()">Autres moyens de paiement (virement, chèque) ▾</button>
             <div class="coti-alt-body" id="coti-alt-body" hidden>
               <div class="coti-alt-method">
-                <strong>🏦 Virement bancaire</strong>
+                <strong><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true" style="vertical-align:-2px"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg> Virement bancaire</strong>
                 À l'ordre de <strong>Association de Défense des Investisseurs Arkéon A3DIA</strong><br>
                 IBAN : <code>FR35 2004 1000 0169 1995 8Z02 084</code><br>
                 BIC : <code>PSSTFRPPPAR</code> — La Banque Postale<br>
                 Référence : votre nom + prénom
               </div>
               <div class="coti-alt-method">
-                <strong>📮 Chèque</strong>
+                <strong><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true" style="vertical-align:-2px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg> Chèque</strong>
                 À l'ordre de <strong>A3DIA</strong>, à envoyer au :<br>
                 9 rue Anatole de La Forge, 75017 Paris
               </div>
