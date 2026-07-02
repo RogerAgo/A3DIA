@@ -12,7 +12,7 @@
   <link rel="alternate icon" type="image/png" href="/assets/images/logo-a3dia.png" />
   <link rel="apple-touch-icon" href="/assets/images/logo-a3dia.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#1a2961" />
+  <meta name="theme-color" content="#101A45" />
 
   <!-- Open Graph / Réseaux sociaux -->
   <meta property="og:type" content="website" />
@@ -30,314 +30,350 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..650;1,9..144,400..650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/home.css" />
 </head>
-<body>
+<body class="x-home">
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="logo" aria-label="A3DIA — Accueil">
-        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
-      </a>
-      <nav class="nav" aria-label="Navigation principale">
-        <ul class="nav-list">
-          <li><a href="/" class="nav-link">Accueil</a></li>
-          <li><a href="adhesion.html" class="nav-link">Adhésion</a></li>
-          <li><a href="actualites.html" class="nav-link">Actualités</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-          <li><a href="login.html" class="nav-link nav-link-cta">Connexion</a></li>
-        </ul>
-        <a href="login.html" class="nav-cta">Connexion</a>
-      </nav>
-      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-        <span class="bar"></span>
-      </button>
-    </div>
+  <a class="x-skip" href="#contenu">Aller au contenu</a>
+
+  <!-- TOPBAR -->
+  <header class="x-topbar">
+    <a href="/" class="x-brand" aria-label="A3DIA — Accueil">
+      <span class="x-brand-word">A3DIA<i>.</i></span>
+    </a>
+    <nav class="x-nav" aria-label="Navigation principale">
+      <a href="adhesion.html">Adhésion</a>
+      <a href="actualites.html">Actualités</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="x-nav-cta">Espace adhérents</a>
+    </nav>
+    <button class="x-burger" id="x-burger" aria-label="Menu" aria-expanded="false" aria-controls="x-menu">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container">
-      <div class="hero-content">
-        <span class="hero-eyebrow reveal"><span class="dot"></span>Association loi 1901 — Depuis 2017</span>
-        <h1 class="hero-title reveal">
-          <span class="line-1">Reprenez le contrôle</span>
-          <span class="line-2">de vos participations <em>Arkéon</em></span>
-        </h1>
-        <p class="lead reveal">
-          Suite à la liquidation d'Arkéon Finance en 2016, A3DIA réunit les investisseurs
-          pour suivre, valoriser et défendre leurs titres — ensemble.
+  <!-- MENU OVERLAY -->
+  <div class="x-menu" id="x-menu" aria-hidden="true">
+    <nav aria-label="Menu">
+      <ul>
+        <li><a href="/"><i>01</i>Accueil</a></li>
+        <li><a href="adhesion.html"><i>02</i>Adhésion</a></li>
+        <li><a href="actualites.html"><i>03</i>Actualités</a></li>
+        <li><a href="login.html"><i>04</i>Espace adhérents</a></li>
+        <li><a href="contact.html"><i>05</i>Contact</a></li>
+      </ul>
+    </nav>
+    <p class="x-menu-meta">Association loi 1901 · Paris — <a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></p>
+  </div>
+
+  <main id="contenu">
+
+    <!-- HERO -->
+    <section class="x-hero" id="x-hero">
+      <div class="x-hero-meta">
+        <span>Association de défense des investisseurs Arkéon</span>
+        <span>Paris — <span class="gold">depuis 2017</span></span>
+      </div>
+
+      <h1 class="x-hero-title">
+        <span class="x-line-mask" style="--d:.05s"><span>Reprenez</span></span>
+        <span class="x-line-mask" style="--d:.15s"><span class="it">le contrôle,</span></span>
+        <span class="x-line-mask indent" style="--d:.25s"><span><span class="gold">ensemble</span>.</span></span>
+      </h1>
+
+      <div class="x-hero-row">
+        <p class="x-hero-lede" data-a style="--d:.45s">
+          Depuis la liquidation d'Arkéon Finance en 2016, des milliers de porteurs se retrouvent
+          seuls face à leurs participations. <strong>A3DIA les réunit</strong> pour suivre,
+          valoriser et défendre leurs titres — d'une seule voix.
         </p>
-        <div class="hero-cta reveal">
-          <a href="adhesion.html" class="btn btn-light">
-            Adhérer à l'association
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-left: 4px;"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        <div class="x-hero-actions" data-a style="--d:.55s">
+          <a href="adhesion.html" class="x-btn">
+            Adhérer
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
-          <a href="#mission" class="btn btn-hero-ghost">En savoir plus</a>
+          <a href="#mandat" class="x-link">Notre mandat</a>
         </div>
-        <ul class="hero-trust reveal">
-          <li>
-            <strong>1 100+</strong>
-            <span>adhérents</span>
-          </li>
-          <li>
-            <strong>30+</strong>
-            <span>sociétés suivies</span>
-          </li>
-          <li>
-            <strong>Depuis 2017</strong>
-            <span>à vos côtés</span>
-          </li>
+      </div>
+
+      <!-- Bandeau des sociétés suivies -->
+      <div class="x-ticker" aria-hidden="true">
+        <div class="x-ticker-track" id="x-ticker-track">
+          <span>BLUELINEA <i>·</i></span><span>EUROPLASMA <i>·</i></span><span>COLIPAYS <i>·</i></span><span>MAGILLEM <i>·</i></span><span>EUROBIO SCIENTIFIC <i>·</i></span><span>XANDRIE <i>·</i></span><span>UV GERMI <i>·</i></span><span>INFOCLIP <i>·</i></span><span>FOLIATEAM <i>·</i></span><span>I.CERAM <i>·</i></span><span>COMCABLE <i>·</i></span><span>HICAB <i>·</i></span><span>LOGELIS <i>·</i></span><span>MAYENCE <i>·</i></span><span>DEBFLEX <i>·</i></span><span>GALEO CONCEPT <i>·</i></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHIFFRES-PREUVES -->
+    <section class="x-section">
+      <p class="x-eyebrow" data-a>La force du collectif <span class="num">(01)</span></p>
+      <div class="x-stats">
+        <div data-a style="--d:.05s">
+          <strong><span data-count="1346">0</span></strong>
+          <em>Adhérents réunis</em>
+        </div>
+        <div data-a style="--d:.15s">
+          <strong><span data-count="30">0</span><span class="sup">+</span></strong>
+          <em>Sociétés suivies</em>
+        </div>
+        <div data-a style="--d:.25s">
+          <strong><span data-count="9">0</span><span class="sup">ans</span></strong>
+          <em>D'action continue</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANDAT -->
+    <section class="x-section x-mandat" id="mandat">
+      <p class="x-eyebrow" data-a>Notre mandat <span class="num">(02)</span></p>
+      <div class="x-mandat-head" data-a>
+        <h2>Une association créée <span class="it">par</span> et <span class="it">pour</span> les investisseurs.</h2>
+        <p>A3DIA est une association à but non lucratif fondée par des investisseurs eux-mêmes,
+        impactés par la liquidation du groupe Arkéon en 2016. Quatre engagements structurent son action.</p>
+      </div>
+
+      <ul class="x-mandat-list">
+        <li class="x-mandat-item" data-a>
+          <span class="no">(01)</span>
+          <h3>État des lieux juridique &amp; financier</h3>
+          <p>Analyser la situation de chaque participation issue des placements Arkéon.</p>
+          <span class="arr" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </li>
+        <li class="x-mandat-item" data-a style="--d:.08s">
+          <span class="no">(02)</span>
+          <h3>Information continue des porteurs</h3>
+          <p>OPA, OVR, dividendes, retraits de cotation : nos adhérents savent, en premier.</p>
+          <span class="arr" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </li>
+        <li class="x-mandat-item" data-a style="--d:.16s">
+          <span class="no">(03)</span>
+          <h3>Conditions de cession collectives</h3>
+          <p>Négocier des solutions concertées dans l'intérêt de l'ensemble des porteurs.</p>
+          <span class="arr" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </li>
+        <li class="x-mandat-item" data-a style="--d:.24s">
+          <span class="no">(04)</span>
+          <h3>Valorisation mutualisée</h3>
+          <p>Une expertise partagée et une force de négociation que nul ne porte seul.</p>
+          <span class="arr" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="17" height="17"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- OPÉRATIONS RÉCENTES -->
+    <section class="x-section x-ops">
+      <p class="x-eyebrow" data-a>Dernières opérations <span class="num">(03)</span></p>
+      <ul class="x-ops-list">
+        <li class="x-ops-item" data-a>
+          <a href="actualites.html">
+            <time>Avr — Juin 2026</time>
+            <h3>Xandrie</h3>
+            <p>Offre de rachat des actions du 23 avril au 5 juin 2026.</p>
+            <span class="arr">lire la suite →</span>
+          </a>
+        </li>
+        <li class="x-ops-item" data-a style="--d:.06s">
+          <a href="actualites.html">
+            <time>Février 2026</time>
+            <h3>UV Germi</h3>
+            <p>Lancement d'une offre publique de rachat (OPRA).</p>
+            <span class="arr">lire la suite →</span>
+          </a>
+        </li>
+        <li class="x-ops-item" data-a style="--d:.12s">
+          <a href="actualites.html">
+            <time>Avril 2025</time>
+            <h3>Tourisme Participations</h3>
+            <p>Offre de rachat finalisée à 60 € par action.</p>
+            <span class="arr">lire la suite →</span>
+          </a>
+        </li>
+        <li class="x-ops-item" data-a style="--d:.18s">
+          <a href="actualites.html">
+            <time>Avril 2025</time>
+            <h3>Infoclip</h3>
+            <p>Offre Volontaire de Rachat en cours à 2 € par action.</p>
+            <span class="arr">lire la suite →</span>
+          </a>
+        </li>
+        <li class="x-ops-item" data-a style="--d:.24s">
+          <a href="actualites.html">
+            <time>Décembre 2024</time>
+            <h3>Eurobio Scientific</h3>
+            <p>Résultat de l'OPA à 25,30 € par action.</p>
+            <span class="arr">lire la suite →</span>
+          </a>
+        </li>
+      </ul>
+      <p class="x-ops-foot" data-a>
+        <a class="x-link" href="actualites.html">Toutes les actualités</a>
+      </p>
+    </section>
+
+    <!-- APPEL -->
+    <section class="x-call">
+      <p class="x-eyebrow" data-a>Rejoindre le collectif <span class="num">(04)</span></p>
+      <h2 data-a style="--d:.1s">Vous détenez encore des titres Arkéon ? <span class="it">Ne restez pas seul.</span></h2>
+      <p data-a style="--d:.2s">
+        Rejoignez une structure indépendante, animée par des investisseurs comme vous,
+        pour assurer un suivi dans la durée et défendre vos droits.
+      </p>
+      <div data-a style="--d:.3s">
+        <a href="adhesion.html" class="x-btn x-btn--gold">
+          Adhérer à l'association
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <span class="x-price">Cotisation annuelle — 50 €</span>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="x-news">
+      <div class="x-news-row" data-a>
+        <h2>Recevez les actualités <span class="it">en premier</span>.</h2>
+        <div style="flex:1;max-width:520px">
+          <form id="x-news-form" novalidate>
+            <input type="email" name="email" placeholder="Votre adresse email" required aria-label="Email" />
+            <button type="submit">
+              S'inscrire
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+          <p class="x-news-msg" id="x-news-msg" hidden></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="x-footer">
+    <div class="x-footer-grid">
+      <div class="x-footer-brand">
+        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" height="30" style="height:30px;width:auto" />
+        <p>Association de Défense des Investisseurs Arkéon.<br />
+        9 rue Anatole de La Forge, 75017 Paris · RCS 838 794 550.</p>
+      </div>
+      <div>
+        <h5>Navigation</h5>
+        <ul>
+          <li><a href="/">Accueil</a></li>
+          <li><a href="adhesion.html">Adhésion</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Adhérents</h5>
+        <ul>
+          <li><a href="login.html">Connexion</a></li>
+          <li><a href="espace-membres.html">Espace adhérents</a></li>
+          <li><a href="adhesion.html">Cotisation 50 €/an</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Légal</h5>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></li>
         </ul>
       </div>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span></span>
-    </div>
-  </section>
 
-  <!-- MISSION / Qui sommes-nous -->
-  <section class="section" id="mission">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="label">Qui sommes-nous</span>
-        <h2>Une association créée par et pour les investisseurs</h2>
-        <p>A3DIA est une association à but non lucratif créée par des investisseurs eux-mêmes, impactés par la liquidation du groupe Arkéon en 2016.</p>
-      </div>
+    <div class="x-footer-word" aria-hidden="true">A3DIA</div>
 
-      <div class="mission-grid">
-        <article class="mission-card reveal">
-          <div class="mission-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="21" cy="21" r="11" stroke="currentColor" stroke-width="2.2"/>
-              <path d="M29 29L40 40" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-              <path d="M21 16V26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
-              <path d="M16 21H26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
-            </svg>
-          </div>
-          <h3>Réaliser un état des lieux juridique et financier</h3>
-          <p>Analyser la situation de chaque participation issue des placements Arkéon.</p>
-        </article>
-
-        <article class="mission-card reveal">
-          <div class="mission-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M10 14C10 11.7909 11.7909 10 14 10H34C36.2091 10 38 11.7909 38 14V28C38 30.2091 36.2091 32 34 32H20L13 38V32H14C11.7909 32 10 30.2091 10 28V14Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-              <circle cx="18" cy="21" r="1.6" fill="currentColor"/>
-              <circle cx="24" cy="21" r="1.6" fill="currentColor"/>
-              <circle cx="30" cy="21" r="1.6" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3>Communiquer sur l'évolution des titres</h3>
-          <p>Tenir nos adhérents informés en continu : OPA, OVR, dividendes, retraits de cotation.</p>
-        </article>
-
-        <article class="mission-card reveal">
-          <div class="mission-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M8 40V8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-              <path d="M8 40H40" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-              <rect x="13" y="28" width="5" height="9" rx="1" stroke="currentColor" stroke-width="2"/>
-              <rect x="22" y="22" width="5" height="15" rx="1" stroke="currentColor" stroke-width="2"/>
-              <rect x="31" y="14" width="5" height="23" rx="1" stroke="currentColor" stroke-width="2"/>
-              <path d="M13 21L22 16L29 19L36 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
-              <path d="M32 11H36V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
-            </svg>
-          </div>
-          <h3>Proposer des conditions de cession collectives</h3>
-          <p>Négocier des solutions concertées dans l'intérêt de l'ensemble des porteurs.</p>
-        </article>
-
-        <article class="mission-card reveal">
-          <div class="mission-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="17" cy="15" r="4.5" stroke="currentColor" stroke-width="2.2"/>
-              <circle cx="31" cy="15" r="4.5" stroke="currentColor" stroke-width="2.2"/>
-              <path d="M9 36V34C9 30 13 26 17 26C21 26 25 30 25 34V36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-              <path d="M23 36V34C23 30 27 26 31 26C35 26 39 30 39 34V36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-              <path d="M19 41H29" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
-            </svg>
-          </div>
-          <h3>Mutualiser la valorisation des participations</h3>
-          <p>Bénéficier d'une expertise mutualisée et d'une force de négociation collective.</p>
-        </article>
-      </div>
-
-      <div class="mission-cta reveal">
-        <p>Vous êtes encore détenteur d'actions issues des placements Arkéon ? Ne restez pas seul·e. Rejoignez une structure indépendante pour assurer un suivi dans la durée et défendre vos droits.</p>
-        <a href="adhesion.html" class="btn btn-primary">Adhérer dès maintenant</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACTUALITÉS -->
-  <section class="section actualites-section">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="label">Suivi en temps réel</span>
-        <h2>Actualités des participations</h2>
-        <p>Retrouvez toutes les informations sur les sociétés suivies, les dividendes, les OPA/OVR, les retraits de cotation.</p>
-      </div>
-    </div>
-
-    <div class="container" style="position: relative;">
-      <div class="carousel-shell reveal">
-        <button class="carousel-nav prev" aria-label="Précédent">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <button class="carousel-nav next" aria-label="Suivant">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </button>
-
-        <div class="carousel-wrapper">
-          <div class="carousel-track">
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/xandrie.jpg');">
-              <span class="badge">Avr–Juin 2026</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>XANDRIE</h4>
-              <p>Offre de rachat des actions du 23 avril au 5 juin 2026.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/uv-germi.jpg');">
-              <span class="badge">Févr 2026</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>UV GERMI</h4>
-              <p>Lancement d'une offre publique de rachat (OPRA).</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/tourisme.jpg');">
-              <span class="badge">Avril 2025</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>TOURISME PARTICIPATIONS</h4>
-              <p>Offre de rachat finalisée à 60 €/action.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/infoclip.jpg');">
-              <span class="badge">Avril 2025</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>INFOCLIP</h4>
-              <p>Offre Volontaire de Rachat en cours à 2 €/action.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/eurobio.jpg');">
-              <span class="badge">Déc 2024</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>EUROBIO SCIENTIFIC</h4>
-              <p>Résultat de l'OPA à 25,30 €/action.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/magillem.jpg');">
-              <span class="badge">Déc 2023</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>MAGILLEM</h4>
-              <p>Distribution d'un dividende brut de 15,13 €/action.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/colipays.jpg');">
-              <span class="badge">Juin 2024</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>COLIPAYS</h4>
-              <p>Augmentation de capital avec DPS.</p>
-            </div>
-          </article>
-
-          <article class="actu-card">
-            <div class="actu-card-media" style="background-image: url('assets/images/actu/serjac.jpg');">
-              <span class="badge">Juill 2023</span>
-            </div>
-            <div class="actu-card-body">
-              <h4>SAINT PIERRE DE SERJAC</h4>
-              <p>Offre à 4 €, paiement en deux échéances.</p>
-            </div>
-          </article>
-        </div>
-        </div>
-      </div>
-
-      <div class="carousel-more reveal">
-        <a href="actualites.html">Voir plus</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- NEWSLETTER -->
-  <section class="newsletter">
-    <div class="container">
-      <div class="newsletter-inner reveal">
-        <h2>Souscrivez à notre newsletter</h2>
-        <p>Découvrez les secrets d'une gestion de patrimoine réussie. Recevez régulièrement nos analyses, les actualités des participations et des conseils pratiques pour optimiser votre patrimoine.</p>
-        <form class="newsletter-form" data-form="newsletter" action="/api/newsletter" novalidate>
-          <input type="email" name="email" placeholder="Entrez votre email" required aria-label="Email" />
-          <button type="submit">Envoyer</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo">
-            <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
-          </div>
-          <p>Association de Défense des Investisseurs Arkéon. Siège : 9 rue Anatole de La Forge, 75017 Paris. RCS 838 794 550.</p>
-        </div>
-        <div class="footer-col">
-          <h5>Navigation</h5>
-          <ul>
-            <li><a href="/">Accueil</a></li>
-            <li><a href="adhesion.html">Adhésion</a></li>
-            <li><a href="actualites.html">Actualités</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Ressources</h5>
-          <ul>
-            <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="confidentialite.html">Politique de confidentialité</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Contact</h5>
-          <ul>
-            <li><a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></li>
-            <li><a href="contact.html">Formulaire de contact</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>Copyright © 2026 A3DIA</span>
-        <span>Tous droits réservés | <a href="mentions-legales.html">Mentions légales</a> | <a href="confidentialite.html">Confidentialité</a></span>
-      </div>
+    <div class="x-footer-legal">
+      <span>© 2026 A3DIA — Tous droits réservés</span>
+      <span>Association loi 1901 · Paris</span>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
-  <script src="js/auth.js"></script>
+  <script>
+    (() => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Menu overlay */
+      const burger = document.getElementById('x-burger');
+      const menu = document.getElementById('x-menu');
+      burger.addEventListener('click', () => {
+        const open = document.body.classList.toggle('x-menu-open');
+        burger.setAttribute('aria-expanded', open);
+        menu.setAttribute('aria-hidden', !open);
+      });
+      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        document.body.classList.remove('x-menu-open');
+      }));
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && document.body.classList.contains('x-menu-open')) burger.click();
+      });
+
+      /* Duplication du ticker pour la boucle infinie */
+      const track = document.getElementById('x-ticker-track');
+      track.innerHTML += track.innerHTML;
+
+      /* Révélations */
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.16 });
+      document.querySelectorAll('[data-a], .x-hero').forEach(el => io.observe(el));
+
+      /* Compteurs */
+      const fmt = new Intl.NumberFormat('fr-FR');
+      const animCount = el => {
+        const target = parseInt(el.dataset.count, 10);
+        if (reduced) { el.textContent = fmt.format(target); return; }
+        const dur = 1400, t0 = performance.now();
+        const tick = now => {
+          const p = Math.min((now - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 4);
+          el.textContent = fmt.format(Math.round(target * eased));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const ioCount = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) { animCount(en.target); ioCount.unobserve(en.target); }
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach(el => ioCount.observe(el));
+
+      /* Newsletter */
+      const form = document.getElementById('x-news-form');
+      const msg = document.getElementById('x-news-msg');
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const email = form.email.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          msg.textContent = 'Adresse email invalide.'; msg.className = 'x-news-msg err'; msg.hidden = false; return;
+        }
+        const btn = form.querySelector('button');
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/newsletter', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const d = await res.json();
+          if (!d.success) throw new Error(d.error || 'Erreur');
+          msg.textContent = 'Merci — vous êtes inscrit.'; msg.className = 'x-news-msg'; msg.hidden = false;
+          form.reset();
+        } catch (err) {
+          msg.textContent = err.message; msg.className = 'x-news-msg err'; msg.hidden = false;
+        } finally { btn.disabled = false; }
+      });
+    })();
+  </script>
 </body>
 </html>
