@@ -76,3 +76,54 @@ export async function sendWelcomeEmail({ to, prenom, nom, email, tempPassword, b
     text: `Bonjour ${prenom} ${nom},\n\nVotre espace adhérent A3DIA est prêt.\n\nEmail : ${email}\nMot de passe temporaire : ${tempPassword}\n\nConnectez-vous sur : ${loginUrl}\n\nA3DIA`
   });
 }
+
+// Email de bienvenue avec lien de création de mot de passe (à usage unique).
+export async function sendWelcomeSetPassword({ to, prenom, nom, setUrl, baseUrl }) {
+  const mailer = getMailer();
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Inter,Arial,sans-serif">
+  <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.08)">
+    <div style="background:#1a2961;padding:28px 32px;text-align:center">
+      <img src="${baseUrl}/assets/images/logo-a3dia-white.png" alt="A3DIA" height="40" style="height:40px" />
+    </div>
+    <div style="padding:32px">
+      <h1 style="margin:0 0 8px;font-size:1.25rem;color:#0f172a">Bienvenue sur le nouveau site A3DIA</h1>
+      <p style="margin:0 0 24px;color:#475569;font-size:0.95rem">
+        Bonjour ${prenom} ${nom},<br><br>
+        L'association A3DIA a lancé son <strong>nouveau site adhérents</strong>. Votre compte a été créé —
+        il ne vous reste qu'à choisir votre mot de passe pour accéder à votre espace personnel
+        (communiqués, documents, et paiement de votre cotisation en ligne).
+      </p>
+
+      <div style="text-align:center;margin-bottom:28px">
+        <a href="${setUrl}" style="display:inline-block;background:#1a2961;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem">
+          Créer mon mot de passe →
+        </a>
+      </div>
+
+      <p style="margin:0 0 20px;color:#94a3b8;font-size:0.8rem">
+        Ce lien est personnel et valable 14 jours. Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br>
+        <span style="color:#1a2961;word-break:break-all">${setUrl}</span>
+      </p>
+
+      <hr style="border:none;border-top:1px solid #e2e8f0;margin:0 0 20px">
+      <p style="margin:0;font-size:0.8rem;color:#94a3b8;text-align:center">
+        A3DIA — Association de Défense des Investisseurs Arkéon<br>
+        9 rue Anatole de La Forge, 75017 Paris
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await mailer.sendMail({
+    from: fromAddress(),
+    to,
+    subject: 'Bienvenue sur le nouveau site A3DIA — créez votre mot de passe',
+    html,
+    text: `Bonjour ${prenom} ${nom},\n\nL'association A3DIA a lancé son nouveau site adhérents. Votre compte a été créé.\n\nCréez votre mot de passe ici (lien valable 14 jours) :\n${setUrl}\n\nA3DIA`
+  });
+}
