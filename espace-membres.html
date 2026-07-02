@@ -104,6 +104,18 @@
         <p>Aucun communiqué pour le moment.</p>
       </div>
 
+      <!-- Locked state : cotisation non réglée -->
+      <div id="posts-locked" class="posts-empty" hidden>
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="14" y="28" width="36" height="26" rx="4" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M22 28V20a10 10 0 0 1 20 0v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="32" cy="40" r="3.5" fill="currentColor" opacity="0.8"/>
+        </svg>
+        <p><strong>Contenu réservé aux adhérents à jour de cotisation.</strong><br>
+        Réglez votre cotisation annuelle ci-dessus pour accéder aux communiqués,
+        documents d'assemblées générales et informations sur les sociétés.</p>
+      </div>
+
       <!-- Posts grid -->
       <div id="posts-grid" class="posts-grid" hidden></div>
     </div>
@@ -223,8 +235,8 @@
       // Logout button
       document.getElementById('nav-logout-cta').addEventListener('click', logout);
 
-      // Cotisation status + paiement
-      loadCotisation();
+      // Cotisation status + paiement (pas pour le compte admin)
+      if (user.role !== 'admin') loadCotisation();
 
       // Load posts
       await loadPosts();
@@ -248,9 +260,16 @@
     async function loadPosts() {
       try {
         const res = await fetch('/api/membres/posts');
+        document.getElementById('posts-loading').hidden = true;
+
+        if (res.status === 403) {
+          // Cotisation non réglée → contenu verrouillé
+          document.getElementById('posts-locked').hidden = false;
+          document.getElementById('posts-filters').style.display = 'none';
+          return;
+        }
         if (!res.ok) throw new Error();
         ({ posts: allPosts } = await res.json());
-        document.getElementById('posts-loading').hidden = true;
         renderPosts();
       } catch {
         document.getElementById('posts-loading').hidden = true;

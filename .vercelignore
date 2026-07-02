@@ -4,3 +4,8 @@
 BACKEND.md
 .claude
 pnpm-lock.yaml
+scripts
+data-backup
+CLAUDE.md
+README.md
+.env.example
