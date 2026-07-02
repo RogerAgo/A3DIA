@@ -3347,3 +3347,31 @@ body:not(.admin-body) .info-card h3 {
     margin: 0 8px;
   }
 }
+
+/* ── Cartes mission : titres serif + icônes éditoriales (hairline + filet or) ── */
+body:not(.admin-body) .mission-card h3 {
+  font-family: var(--font-serif);
+  font-weight: 560;
+  font-size: 1.2rem;
+  letter-spacing: -0.008em;
+}
+.mission-card { border-color: var(--hairline); border-radius: var(--radius-glass); }
+.mission-icon {
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  color: var(--navy-700);
+  position: relative;
+}
+.mission-icon::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 0 0 2px 2px;
+}
