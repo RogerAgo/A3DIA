@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { requireAdmin } from '../_lib/auth.js';
 import { getDB } from '../_lib/db.js';
-import { sendWelcomeEmail } from '../_lib/mail.js';
+import { sendWelcomeEmail, sendWelcomeSetPassword } from '../_lib/mail.js';
 
 const POST_TYPES = ['Communiqué', 'Document AG', 'OPA / OVR', 'Dividende', 'Info'];
 
@@ -392,15 +392,15 @@ async function requestsUpdate(kv, req, res, admin) {
       return res.status(400).json({ success: false, error: 'Cette demande ne peut plus être approuvée.' });
     }
 
-    const method = paymentMethod || 'virement';
+    const method = paymentMethod || 'stripe'; // carte recommandée par défaut ; l'adhérent choisit ensuite
     updates.status = 'approuvee';
     updates.paymentMethod = method;
     updates.approvedAt = now;
     updates.approvedBy = admin.sub;
 
     if (!request.memberId) {
-      const tempPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 10);
-      const passwordHash = await bcrypt.hash(tempPassword, 10);
+      // Mot de passe jetable : l'adhérent définit le sien via le lien de bienvenue
+      const passwordHash = await bcrypt.hash(crypto.randomUUID(), 10);
       const memberId = `usr_${crypto.randomUUID().replace(/-/g, '').slice(0, 16)}`;
 
       const user = {
@@ -421,9 +421,7 @@ async function requestsUpdate(kv, req, res, admin) {
       await kv.set(`user:${memberId}`, user);
       await kv.set(`idx:email:${request.email}`, memberId);
       await kv.sadd('users', memberId);
-
       updates.memberId = memberId;
-      updates.tempPassword = tempPassword;
 
       const payId = `pay_${crypto.randomUUID().replace(/-/g, '').slice(0, 16)}`;
       const annee = new Date().getFullYear();
@@ -446,7 +444,25 @@ async function requestsUpdate(kv, req, res, admin) {
 
       await kv.set(`payment:${payId}`, payment);
       await kv.sadd('payments', payId);
+      // Réutilisable par le paiement carte self-service (/api/membres/cotisation)
+      await kv.set(`cotisation_pending:${memberId}:${annee}`, payId);
       updates.paymentId = payId;
+
+      // Email de bienvenue avec lien "créer mon mot de passe" (14 j)
+      try {
+        const host = req.headers['x-forwarded-host'] || req.headers.host;
+        const proto = req.headers['x-forwarded-proto'] || 'https';
+        const baseUrl = `${proto}://${host}`;
+        const token = `${crypto.randomUUID().replace(/-/g, '')}${crypto.randomUUID().replace(/-/g, '')}`;
+        await kv.set(`pwset:${token}`, memberId, { ex: 14 * 24 * 3600 });
+        await sendWelcomeSetPassword({
+          to: request.email, prenom: request.prenom, nom: request.nom,
+          setUrl: `${baseUrl}/nouveau-mot-de-passe?token=${token}`, baseUrl
+        });
+        updates.welcomeEmailSent = true;
+      } catch {
+        updates.welcomeEmailSent = false;
+      }
     }
 
   } else if (action === 'rejeter') {

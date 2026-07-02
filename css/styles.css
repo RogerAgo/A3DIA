@@ -2949,3 +2949,22 @@ body {
   .coti-card.coti-due { gap: 14px; }
   .coti-card .btn { width: 100%; }
 }
+.coti-alt { margin-top: 10px; }
+.coti-alt-toggle {
+  background: none; border: none; cursor: pointer;
+  font-size: 0.85rem; color: var(--navy-600, #2d3d7a); font-weight: 600;
+  padding: 6px 2px;
+}
+.coti-alt-toggle:hover { text-decoration: underline; }
+.coti-alt-body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;
+}
+.coti-alt-method {
+  padding: 14px 16px; border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px; background: #fff;
+  font-size: 0.85rem; color: var(--ink-600, #475569); line-height: 1.6;
+}
+.coti-alt-method strong { display: block; margin-bottom: 4px; color: var(--ink-900, #0f172a); }
+.coti-alt-method code { font-size: 0.8rem; background: #f1f5f9; padding: 2px 5px; border-radius: 3px; }
+.coti-alt-note { grid-column: 1 / -1; margin: 0; font-size: 0.78rem; color: var(--ink-500, #64748b); }
+@media (max-width: 560px) { .coti-alt-body { grid-template-columns: 1fr; } }

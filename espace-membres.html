@@ -359,14 +359,41 @@
             <span>Merci de votre soutien à l'association.</span></div>
           </div>`;
         } else {
-          el.innerHTML = `<div class="coti-card coti-due">
-            <div class="coti-txt"><strong>Cotisation ${d.annee}</strong>
-            <span>Réglez votre cotisation annuelle de ${euros} € par carte bancaire.</span></div>
-            <button class="btn btn-primary" id="pay-coti-btn" onclick="payCotisation()">Payer ${euros} € par carte →</button>
+          el.innerHTML = `
+          <div class="coti-card coti-due">
+            <div class="coti-txt"><strong>Cotisation ${d.annee} — ${euros} €</strong>
+            <span>Réglez votre cotisation annuelle. Choisissez le moyen qui vous convient.</span></div>
+            <button class="btn btn-primary" id="pay-coti-btn" onclick="payCotisation()">💳 Payer par carte <em style="font-style:normal;opacity:.75">(recommandé)</em></button>
+          </div>
+          <div class="coti-alt">
+            <button type="button" class="coti-alt-toggle" id="coti-alt-btn" onclick="toggleCotiAlt()">Autres moyens de paiement (virement, chèque) ▾</button>
+            <div class="coti-alt-body" id="coti-alt-body" hidden>
+              <div class="coti-alt-method">
+                <strong>🏦 Virement bancaire</strong>
+                À l'ordre de <strong>Association de Défense des Investisseurs Arkéon A3DIA</strong><br>
+                IBAN : <code>FR35 2004 1000 0169 1995 8Z02 084</code><br>
+                BIC : <code>PSSTFRPPPAR</code> — La Banque Postale<br>
+                Référence : votre nom + prénom
+              </div>
+              <div class="coti-alt-method">
+                <strong>📮 Chèque</strong>
+                À l'ordre de <strong>A3DIA</strong>, à envoyer au :<br>
+                9 rue Anatole de La Forge, 75017 Paris
+              </div>
+              <p class="coti-alt-note">Après réception de votre virement ou chèque, l'association validera votre cotisation.</p>
+            </div>
           </div>`;
         }
         wrap.hidden = false;
       } catch { /* silencieux */ }
+    }
+
+    function toggleCotiAlt() {
+      const body = document.getElementById('coti-alt-body');
+      const btn = document.getElementById('coti-alt-btn');
+      const open = body.hidden;
+      body.hidden = !open;
+      btn.textContent = open ? 'Masquer les autres moyens ▴' : 'Autres moyens de paiement (virement, chèque) ▾';
     }
 
     async function payCotisation() {

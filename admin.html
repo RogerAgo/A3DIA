@@ -561,34 +561,10 @@
       <div id="approve-modal-msg" class="admin-form-msg" hidden></div>
       <p id="approve-modal-name" style="font-weight:600;margin:0 0 20px;color:var(--ink-900)"></p>
       <input type="hidden" id="approve-request-id" />
-      <div class="field" style="margin-bottom:20px">
-        <label style="font-weight:600;margin-bottom:10px;display:block">Méthode de paiement</label>
-        <div class="pay-method-options">
-          <label class="pay-method-opt">
-            <input type="radio" name="approve-method" value="stripe" />
-            <div class="pay-method-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              <span>Carte bancaire</span>
-              <small>Lien Stripe sécurisé</small>
-            </div>
-          </label>
-          <label class="pay-method-opt">
-            <input type="radio" name="approve-method" value="virement" checked />
-            <div class="pay-method-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-              <span>Virement bancaire</span>
-              <small>Confirmation manuelle</small>
-            </div>
-          </label>
-          <label class="pay-method-opt">
-            <input type="radio" name="approve-method" value="cheque" />
-            <div class="pay-method-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-              <span>Chèque</span>
-              <small>Confirmation manuelle</small>
-            </div>
-          </label>
-        </div>
+      <div class="info-box info-box-blue" style="margin-bottom:20px">
+        À l'approbation, l'adhérent reçoit un <strong>email de bienvenue</strong> pour créer son mot de passe,
+        puis choisit lui-même son moyen de paiement depuis son espace :
+        <strong>carte bancaire (recommandé)</strong>, virement ou chèque.
       </div>
       <div class="field" style="margin-bottom:20px">
         <label for="approve-notes">Notes internes (optionnel)</label>
@@ -1016,7 +992,6 @@
 
     async function doApproveRequest() {
       const id = document.getElementById('approve-request-id').value;
-      const method = document.querySelector('input[name="approve-method"]:checked')?.value || 'virement';
       const notes = document.getElementById('approve-notes').value.trim();
       const btn = document.getElementById('approve-confirm-btn');
       const msgBox = document.getElementById('approve-modal-msg');
@@ -1027,7 +1002,7 @@
         const res = await fetch('/api/admin/requests', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, action: 'approuver', paymentMethod: method, notes })
+          body: JSON.stringify({ id, action: 'approuver', notes })
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
@@ -1035,7 +1010,7 @@
         closeModal('approve-modal');
         await Promise.all([loadRequests(), loadMembers(), loadPayments(), loadStats()]);
 
-        showApproveResult(data.request, method);
+        showApproveResult(data.request);
       } catch (err) {
         msgBox.textContent = err.message || 'Erreur lors de l\'approbation.';
         msgBox.className = 'admin-form-msg admin-form-msg-error';
@@ -1045,36 +1020,27 @@
       }
     }
 
-    function showApproveResult(request, method) {
+    function showApproveResult(request) {
       const body = document.getElementById('approve-result-body');
-      const ibanInfo = `<div class="info-box info-box-blue">
-        <strong>Instructions virement à communiquer :</strong><br/>
-        IBAN : <code>${escHtml(window.VIREMENT_IBAN || 'FR35 2004 1000 0169 1995 8Z02 084')}</code><br/>
-        BIC : <code>${escHtml(window.VIREMENT_BIC || 'PSSTFRPPPAR')}</code><br/>
-        Référence : <code>${escHtml(request.paymentId ? 'voir onglet Paiements' : '—')}</code>
-      </div>`;
-      const chequeInfo = `<div class="info-box info-box-blue">
-        <strong>Instructions chèque à communiquer :</strong><br/>
-        À l'ordre de : <strong>A3DIA</strong><br/>
-        À adresser au : 9 rue Anatole de La Forge, 75017 Paris
-      </div>`;
-      const stripeInfo = `<div class="info-box info-box-green">
-        <strong>Paiement en ligne :</strong> Allez dans l'onglet Paiements, trouvez ce paiement et cliquez "Lien Stripe" pour générer l'URL de paiement sécurisé à envoyer à l'adhérent.
-      </div>`;
+      const emailNote = request.welcomeEmailSent
+        ? `<div class="info-box info-box-green" style="margin-bottom:16px">
+             📧 Un <strong>email de bienvenue</strong> a été envoyé à <strong>${escHtml(request.email)}</strong> pour créer son mot de passe.
+           </div>`
+        : `<div class="info-box info-box-blue" style="margin-bottom:16px">
+             ⚠️ Le compte est créé, mais l'email de bienvenue n'a pas pu être envoyé. Tu pourras le renvoyer depuis l'onglet Membres.
+           </div>`;
 
       body.innerHTML = `
         <div class="info-box info-box-green" style="margin-bottom:16px">
           Compte créé pour <strong>${escHtml(request.prenom)} ${escHtml(request.nom)}</strong> (${escHtml(request.email)}).
-          Le compte est <strong>inactif</strong> jusqu'à confirmation du paiement.
         </div>
-        <div class="cred-box" style="margin-bottom:16px">
-          <div class="cred-row"><span>Email :</span><code>${escHtml(request.email)}</code></div>
-          <div class="cred-row"><span>Mot de passe temporaire :</span><code id="tmp-pw">${escHtml(request.tempPassword || '—')}</code>
-            <button class="btn-copy" onclick="copyText('${escHtml(request.tempPassword || '')}', this)">Copier</button>
-          </div>
-        </div>
-        ${method === 'virement' ? ibanInfo : method === 'cheque' ? chequeInfo : stripeInfo}
-        <p style="color:var(--ink-500);font-size:0.8rem;margin-top:12px">Notez le mot de passe temporaire — il ne sera plus affiché.</p>
+        ${emailNote}
+        <p style="color:var(--ink-600);font-size:0.85rem;margin-top:4px;line-height:1.6">
+          L'adhérent choisira son moyen de paiement depuis son espace :
+          <strong>carte bancaire (recommandé)</strong>, virement ou chèque.
+          La cotisation par carte est confirmée automatiquement ; pour un virement ou chèque,
+          tu la valideras dans l'onglet <strong>Paiements</strong> à réception.
+        </p>
       `;
       openModal('approve-result-modal');
     }

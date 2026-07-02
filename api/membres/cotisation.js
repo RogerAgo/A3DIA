@@ -91,7 +91,7 @@ export default async function handler(req, res) {
       cancel_url: `${baseUrl}/espace-membres?cotisation=cancel`
     });
 
-    await kv.set(`payment:${payId}`, { ...payment, stripeSessionId: session.id, updatedAt: now });
+    await kv.set(`payment:${payId}`, { ...payment, type: 'stripe', stripeSessionId: session.id, updatedAt: now });
     return res.status(200).json({ success: true, url: session.url });
   }
 
