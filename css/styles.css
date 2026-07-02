@@ -3178,3 +3178,172 @@ body {
 .legal-content li { margin-bottom: 6px; }
 .legal-content a { color: var(--navy-600, #2d3d7a); text-decoration: underline; }
 .legal-content code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+
+/* ═══════════════════════════════════════════════════════════════
+   COUCHE ÉDITORIALE — caractère institutionnel
+   Serif Fraunces pour les titres, papier chaud, hairlines, or discret
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --paper-warm: #FAF9F5;
+  --hairline: rgba(26, 41, 97, 0.10);
+  --radius-glass: 16px;
+}
+
+/* Papier chaud, moins « app », plus « imprimé » */
+body { background-color: var(--paper-warm); }
+
+/* ── Titres : serif éditorial (jamais dans l'admin) ── */
+body:not(.admin-body) h1,
+body:not(.admin-body) h2,
+body:not(.admin-body) .price,
+body:not(.admin-body) .post-modal-content h2 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  letter-spacing: -0.012em;
+}
+body:not(.admin-body) .post-card h3,
+body:not(.admin-body) .coti-txt strong,
+body:not(.admin-body) .info-card h3 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  letter-spacing: -0.008em;
+}
+
+/* ── Hero : grande composition serif, sous-titre italique ── */
+.hero-title { font-family: var(--font-serif); }
+.hero-title .line-1 {
+  font-weight: 580;
+  letter-spacing: -0.022em;
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
+}
+.hero-title .line-2 {
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+.hero-title .line-2 em {
+  font-style: italic;
+  font-weight: 540;
+  color: var(--gold);
+}
+.hero-title .line-2 em::after { display: none; }
+
+/* Chiffres de confiance : serif */
+.hero-trust strong {
+  font-family: var(--font-serif);
+  font-weight: 580;
+  font-variant-numeric: lining-nums;
+}
+
+/* ── Étiquettes : overline typographiée au lieu de la pastille ── */
+.section-head .label,
+.membre-hero-text .label,
+.hero-eyebrow {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+/* Contextes centrés : double filet or de part et d'autre */
+.section-head .label::before, .section-head .label::after,
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 14px;
+  transform: translateY(-1px);
+}
+.section-head .label { color: var(--navy-600); }
+.hero-eyebrow { color: rgba(255, 255, 255, 0.82); }
+.hero-eyebrow .dot { display: none; }
+/* Contexte aligné à gauche : filet simple à gauche */
+.membre-hero-text .label {
+  color: rgba(255, 255, 255, 0.75);
+  padding-left: 34px;
+  position: relative;
+}
+.membre-hero-text .label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* ── Titres de section : plus grands, mieux rythmés ── */
+.section-head h2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  line-height: 1.18;
+  margin-top: 14px;
+}
+.section-head { margin-bottom: 64px; }
+
+/* ── page-title (adhésion, légal) : serif calibré ── */
+.page-title h1 {
+  font-size: clamp(2rem, 4.5vw, 3.1rem);
+  font-weight: 540;
+}
+
+/* ── Cartes : hairline navy plutôt que bordure blanche générique ── */
+.post-card, .coti-card, .coti-alt-method, .login-card,
+.info-card, .form-card, .annuaire-card, .pay-option-card, .posts-empty {
+  border-color: var(--hairline);
+  border-radius: var(--radius-glass);
+}
+
+/* ── Boutons et champs : géométrie plus sobre ── */
+.btn { border-radius: 10px; }
+.coti-card .btn { border-radius: 12px; }
+.newsletter-form input[type="email"],
+.newsletter-form button { border-radius: 12px; }
+.posts-filters { border-radius: 14px; }
+.filter-btn { border-radius: 10px; }
+
+/* ── Footer : colonnes en capitales espacées ── */
+.footer-col h5 {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Login : carte éditoriale ── */
+.login-card h1 { font-size: 1.65rem; }
+.login-subtitle { font-size: 0.9rem; }
+
+/* ── Modal communiqué : titre serif large ── */
+.post-modal-content h2 { font-size: 1.5rem; line-height: 1.25; }
+
+/* ── Légal : titres calibrés + filet ── */
+.legal-content h2 {
+  font-size: 1.3rem;
+  font-weight: 560;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* ── Overlines compactes sur petit écran (une seule ligne) ── */
+@media (max-width: 480px) {
+  .hero-eyebrow, .section-head .label {
+    font-size: 0.64rem;
+    letter-spacing: 0.15em;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after,
+  .section-head .label::before, .section-head .label::after {
+    width: 14px;
+    margin: 0 8px;
+  }
+}
