@@ -3098,11 +3098,12 @@ body {
 }
 .newsletter-form button { border-radius: 999px; min-height: 48px; }
 
-/* ── Hero espace membre : halo doux ── */
+/* ── Hero espace membre : halos doux PAR-DESSUS le dégradé navy d'origine ── */
 .membre-hero {
   background-image:
-    radial-gradient(34rem 20rem at 80% 0%, rgba(197, 165, 90, 0.14), transparent 60%),
-    radial-gradient(30rem 22rem at 8% 100%, rgba(59, 91, 219, 0.18), transparent 55%);
+    radial-gradient(34rem 20rem at 80% 0%, rgba(197, 165, 90, 0.16), transparent 60%),
+    radial-gradient(30rem 22rem at 8% 100%, rgba(99, 131, 255, 0.2), transparent 55%),
+    linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
 }
 .membre-hero-badge {
   background: rgba(255, 255, 255, 0.09);
