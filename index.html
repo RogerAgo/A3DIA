@@ -82,18 +82,26 @@
       </h1>
 
       <div class="x-hero-row">
-        <p class="x-hero-lede" data-a style="--d:.45s">
-          Depuis la liquidation d'Arkéon Finance en 2016, des milliers de porteurs se retrouvent
-          seuls face à leurs participations. <strong>A3DIA les réunit</strong> pour suivre,
-          valoriser et défendre leurs titres — d'une seule voix.
-        </p>
-        <div class="x-hero-actions" data-a style="--d:.55s">
-          <a href="adhesion.html" class="x-btn">
-            Adhérer
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#mandat" class="x-link">Notre mandat</a>
+        <div class="x-hero-left">
+          <p class="x-hero-lede" data-a style="--d:.45s">
+            Depuis la liquidation d'Arkéon Finance en 2016, des milliers de porteurs se retrouvent
+            seuls face à leurs participations. <strong>A3DIA les réunit</strong> pour suivre,
+            valoriser et défendre leurs titres — d'une seule voix.
+          </p>
+          <div class="x-hero-actions" data-a style="--d:.55s">
+            <a href="adhesion.html" class="x-btn">
+              Adhérer
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#mandat" class="x-link">Notre mandat</a>
+          </div>
         </div>
+        <a class="x-hero-card" href="actualites.html" data-a style="--d:.65s">
+          <span class="tag"><span class="dot" aria-hidden="true"></span>Dernière opération — avril 2026</span>
+          <h3>Xandrie</h3>
+          <p>Offre de rachat des actions ouverte du 23 avril au 5 juin 2026.</p>
+          <span class="more">Voir le détail →</span>
+        </a>
       </div>
 
       <!-- Bandeau des sociétés suivies -->
@@ -220,18 +228,20 @@
 
     <!-- APPEL -->
     <section class="x-call">
-      <p class="x-eyebrow" data-a>Rejoindre le collectif <span class="num">(04)</span></p>
-      <h2 data-a style="--d:.1s">Vous détenez encore des titres Arkéon ? <span class="it">Ne restez pas seul.</span></h2>
-      <p data-a style="--d:.2s">
-        Rejoignez une structure indépendante, animée par des investisseurs comme vous,
-        pour assurer un suivi dans la durée et défendre vos droits.
-      </p>
-      <div data-a style="--d:.3s">
-        <a href="adhesion.html" class="x-btn x-btn--gold">
-          Adhérer à l'association
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <span class="x-price">Cotisation annuelle — 50 €</span>
+      <div class="x-call-panel" data-a>
+        <p class="x-eyebrow">Rejoindre le collectif <span class="num">(04)</span></p>
+        <h2>Vous détenez encore des titres Arkéon ? <span class="it">Ne restez pas seul.</span></h2>
+        <p>
+          Rejoignez une structure indépendante, animée par des investisseurs comme vous,
+          pour assurer un suivi dans la durée et défendre vos droits.
+        </p>
+        <div>
+          <a href="adhesion.html" class="x-btn">
+            Adhérer à l'association
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <span class="x-price">Cotisation annuelle — 50 €</span>
+        </div>
       </div>
     </section>
 
@@ -348,6 +358,24 @@
         });
       }, { threshold: 0.6 });
       document.querySelectorAll('[data-count]').forEach(el => ioCount.observe(el));
+
+      /* Filet : si l'IntersectionObserver est throttlé (onglet chargé en
+         arrière-plan), on révèle et on compte ce qui est déjà à l'écran. */
+      const inView = el => {
+        const r = el.getBoundingClientRect();
+        return r.top < innerHeight && r.bottom > 0;
+      };
+      setTimeout(() => {
+        document.querySelectorAll('[data-a]:not(.in), .x-hero:not(.in)').forEach(el => {
+          if (inView(el)) el.classList.add('in');
+        });
+        document.querySelectorAll('[data-count]').forEach(el => {
+          if (el.textContent.trim() === '0' && inView(el)) {
+            ioCount.unobserve(el);
+            animCount(el);
+          }
+        });
+      }, 1500);
 
       /* Newsletter */
       const form = document.getElementById('x-news-form');

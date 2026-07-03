@@ -1,46 +1,72 @@
 /* ═══════════════════════════════════════════════════════════════════
    A3DIA — Shell partagé (pages intérieures)
-   Décline la DA « L'avis de collectif » : topbar wordmark, menu
-   overlay, footer statement, titres de page éditoriaux.
+   DA « Minuit institutionnel » : champ navy profond à auroras + grain,
+   panneaux de verre dépoli iOS, Fraunces ivoire, or en signature.
    Se charge APRÈS styles.css ; composants préfixés .x-, sans reset.
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --x-ivory: #F5F3EC;
-  --x-ivory-2: #EFECE2;
+  --x-abyss: #0B1233;
+  --x-abyss-2: #131E4E;
+  --x-ivory: #F4F3FA;
+  --x-ivory-60: rgba(233, 235, 252, 0.66);
+  --x-ivory-40: rgba(233, 235, 252, 0.42);
   --x-ink: #131629;
-  --x-ink-60: rgba(19, 22, 41, 0.62);
-  --x-ink-40: rgba(19, 22, 41, 0.42);
+  --x-ink-60: rgba(19, 22, 41, 0.64);
   --x-navy: #1A2961;
   --x-navy-deep: #101A45;
-  --x-gold: #B98D2F;
-  --x-gold-soft: #C5A55A;
-  --x-line: rgba(19, 22, 41, 0.16);
-  --x-line-soft: rgba(19, 22, 41, 0.09);
+  --x-gold: #C5A55A;
+  --x-gold-deep: #B98D2F;
+  --x-line: rgba(255, 255, 255, 0.15);
+  --x-line-soft: rgba(255, 255, 255, 0.09);
+  --x-glass-w: rgba(255, 255, 255, 0.86);
+  --x-glass-w-border: rgba(255, 255, 255, 0.55);
+  --x-glass-d: rgba(16, 26, 69, 0.5);
   --x-serif: 'Fraunces', Georgia, serif;
   --x-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --x-pad: clamp(20px, 4.5vw, 72px);
+  --x-r: 22px;
 }
 
+/* ── Champ : minuit + auroras + grain ───────────────────────────── */
 body.x-shell {
-  background: var(--x-ivory);
+  background-color: var(--x-abyss);
   background-image: none;
   padding-top: 68px;
+  color: var(--x-ivory);
+  position: relative;
 }
+body.x-shell::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -2;
+  background:
+    radial-gradient(58rem 40rem at 82% -12%, rgba(197, 165, 90, 0.15), transparent 62%),
+    radial-gradient(50rem 38rem at -12% 22%, rgba(88, 118, 255, 0.22), transparent 58%),
+    radial-gradient(44rem 34rem at 105% 78%, rgba(64, 92, 214, 0.18), transparent 60%),
+    linear-gradient(168deg, var(--x-abyss) 0%, var(--x-abyss-2) 52%, var(--x-abyss) 100%);
+}
+body.x-shell::after {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body.x-shell ::selection { background: var(--x-gold); color: var(--x-abyss); }
 
-/* ── Topbar ─────────────────────────────────────────────────────── */
+/* ── Topbar : verre sombre ──────────────────────────────────────── */
 body.x-shell .x-topbar {
   position: fixed; inset: 0 0 auto 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--x-pad);
   height: 68px;
-  background: color-mix(in srgb, var(--x-ivory) 82%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
+  background: var(--x-glass-d);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
   border-bottom: 1px solid var(--x-line-soft);
 }
 @supports not (backdrop-filter: blur(1px)) {
-  body.x-shell .x-topbar { background: var(--x-ivory); }
+  body.x-shell .x-topbar { background: var(--x-navy-deep); }
 }
 
 .x-brand { display: inline-flex; align-items: center; text-decoration: none; }
@@ -49,7 +75,7 @@ body.x-shell .x-topbar {
   font-weight: 600;
   font-size: 1.5rem;
   letter-spacing: 0.02em;
-  color: var(--x-ink);
+  color: var(--x-ivory);
   transition: color 0.3s;
 }
 .x-brand-word i { font-style: normal; color: var(--x-gold); }
@@ -62,7 +88,7 @@ body.x-shell .x-topbar {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--x-ink-60);
+  color: var(--x-ivory-60);
   padding: 6px 0;
   position: relative;
   background: none; border: none; cursor: pointer;
@@ -74,17 +100,18 @@ body.x-shell .x-topbar {
   transform: scaleX(0); transform-origin: right;
   transition: transform 0.35s var(--x-ease);
 }
-.x-nav a:hover, .x-nav button:hover { color: var(--x-ink); }
+.x-nav a:hover, .x-nav button:hover { color: var(--x-ivory); }
 .x-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
 .x-nav .x-nav-cta {
-  color: var(--x-ink);
+  color: var(--x-ivory);
   border: 1px solid var(--x-line);
   padding: 11px 22px;
   border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 .x-nav .x-nav-cta::after { display: none; }
-.x-nav .x-nav-cta:hover { background: var(--x-navy); border-color: var(--x-navy); color: #fff; }
+.x-nav .x-nav-cta:hover { background: var(--x-ivory); border-color: var(--x-ivory); color: var(--x-navy-deep); }
 
 .x-burger {
   display: none;
@@ -95,17 +122,19 @@ body.x-shell .x-topbar {
 }
 .x-burger span {
   display: block; width: 24px; height: 1.5px;
-  background: var(--x-ink);
+  background: var(--x-ivory);
   transition: transform 0.35s var(--x-ease), opacity 0.25s;
 }
 body.x-menu-open .x-burger span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
 body.x-menu-open .x-burger span:nth-child(2) { opacity: 0; }
 body.x-menu-open .x-burger span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-/* ── Menu overlay ───────────────────────────────────────────────── */
+/* ── Menu overlay : verre profond ───────────────────────────────── */
 .x-menu {
   position: fixed; inset: 0; z-index: 90;
-  background: var(--x-navy-deep);
+  background: rgba(8, 13, 38, 0.86);
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  backdrop-filter: blur(26px) saturate(1.5);
   color: var(--x-ivory);
   display: flex; flex-direction: column; justify-content: center;
   padding: 0 var(--x-pad);
@@ -113,12 +142,11 @@ body.x-menu-open .x-burger span:nth-child(3) { transform: translateY(-7.5px) rot
   transition: clip-path 0.6s var(--x-ease);
   visibility: hidden;
 }
+@supports not (backdrop-filter: blur(1px)) { .x-menu { background: #080D26; } }
 body.x-menu-open .x-menu { clip-path: inset(0 0 0% 0); visibility: visible; }
 body.x-menu-open { overflow: hidden; }
-body.x-menu-open .x-topbar { background: transparent; border-color: rgba(255,255,255,0.12); }
+body.x-menu-open .x-topbar { background: transparent; border-color: rgba(255,255,255,0.12); -webkit-backdrop-filter: none; backdrop-filter: none; }
 body.x-menu-open .x-topbar .x-nav { visibility: hidden; }
-body.x-menu-open .x-burger span { background: var(--x-ivory); }
-body.x-menu-open .x-brand-word { color: var(--x-ivory); }
 
 .x-menu ul { list-style: none; margin: 0; padding: 0; }
 .x-menu li { border-bottom: 1px solid rgba(255,255,255,0.10); }
@@ -141,21 +169,21 @@ body.x-menu-open .x-menu li:nth-child(2) a { transition-delay: 0.22s; }
 body.x-menu-open .x-menu li:nth-child(3) a { transition-delay: 0.28s; }
 body.x-menu-open .x-menu li:nth-child(4) a { transition-delay: 0.34s; }
 body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
-.x-menu li a:hover { color: var(--x-gold-soft); }
+.x-menu li a:hover { color: var(--x-gold); }
 .x-menu li a i {
   font-family: 'Inter', sans-serif; font-style: normal;
   font-size: 0.72rem; font-weight: 500;
-  letter-spacing: 0.18em; color: var(--x-gold-soft);
+  letter-spacing: 0.18em; color: var(--x-gold);
 }
 .x-menu-meta {
   margin: 6vh 0 0;
   font-size: 0.8rem; letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.5);
+  color: var(--x-ivory-40);
   text-transform: uppercase;
 }
 .x-menu-meta a { color: var(--x-ivory); text-decoration: none; border-bottom: 1px solid var(--x-gold); }
 
-/* ── Titres de page éditoriaux ──────────────────────────────────── */
+/* ── Titres de page : ivoire sur champ ──────────────────────────── */
 body.x-shell .page-title {
   background: transparent;
   text-align: left;
@@ -164,27 +192,137 @@ body.x-shell .page-title {
 }
 body.x-shell .page-title h1 {
   font-family: var(--x-serif);
-  font-weight: 470;
+  font-weight: 460;
   font-size: clamp(2.5rem, 6.2vw, 4.8rem);
   letter-spacing: -0.022em;
   line-height: 1.03;
-  color: var(--x-ink);
+  color: var(--x-ivory);
   margin-bottom: 16px;
+  text-shadow: 0 2px 30px rgba(8, 13, 38, 0.4);
 }
 body.x-shell .page-title p {
   margin: 0;
   max-width: 60ch;
-  color: var(--x-ink-60);
+  color: var(--x-ivory-60);
 }
 
-/* ── Footer statement ───────────────────────────────────────────── */
+/* ── Panneaux de verre blanc (contenu hérité de styles.css) ─────── */
+body.x-shell .form-card,
+body.x-shell .info-card,
+body.x-shell .login-card,
+body.x-shell .post-card,
+body.x-shell .coti-card,
+body.x-shell .coti-alt-method,
+body.x-shell .pay-option-card,
+body.x-shell .annuaire-card,
+body.x-shell .posts-empty {
+  background: var(--x-glass-w);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--x-glass-w-border);
+  border-radius: var(--x-r);
+  box-shadow: 0 24px 60px rgba(5, 9, 28, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  body.x-shell .form-card, body.x-shell .info-card, body.x-shell .login-card,
+  body.x-shell .post-card, body.x-shell .coti-card, body.x-shell .coti-alt-method,
+  body.x-shell .pay-option-card, body.x-shell .annuaire-card, body.x-shell .posts-empty { background: #fff; }
+}
+body.x-shell .post-card:hover, body.x-shell .post-card:focus-visible {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 30px 70px rgba(5, 9, 28, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Sections de contenu : textes posés directement sur le champ */
+body.x-shell .section-head .label { color: var(--x-gold); }
+body.x-shell .section-head h2 { color: var(--x-ivory); }
+body.x-shell .section-head p { color: var(--x-ivory-60); }
+body.x-shell .posts-loading { color: var(--x-ivory-60); }
+body.x-shell .posts-loading p { color: var(--x-ivory-60); }
+body.x-shell .coti-alt-toggle { color: var(--x-gold); }
+body.x-shell .coti-alt-note { color: var(--x-ivory-60); }
+body.x-shell .pay-count, body.x-shell #pay-count-label { color: var(--x-ivory-60); }
+
+/* Légal : feuille de verre */
+body.x-shell .legal-content {
+  background: var(--x-glass-w);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--x-glass-w-border);
+  border-radius: var(--x-r);
+  box-shadow: 0 24px 60px rgba(5, 9, 28, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding: clamp(26px, 4vw, 56px);
+}
+@supports not (backdrop-filter: blur(1px)) { body.x-shell .legal-content { background: #fff; } }
+
+/* Filtres (espace membre) : pilules de verre sombre */
+body.x-shell .posts-filters {
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid var(--x-line);
+  box-shadow: 0 14px 34px rgba(5, 9, 28, 0.3);
+}
+body.x-shell .filter-btn { color: var(--x-ivory-60); }
+body.x-shell .filter-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--x-ivory); }
+body.x-shell .filter-btn.active {
+  background: var(--x-ivory);
+  color: var(--x-navy-deep);
+  box-shadow: 0 4px 14px rgba(5, 9, 28, 0.4);
+}
+
+/* Hero espace membre : fondu dans le champ */
+body.x-shell .membre-hero {
+  background: transparent;
+  background-image: none;
+  border-bottom: 1px solid var(--x-line);
+}
+
+/* Modal communiqué : verre épais */
+body.x-shell .post-modal-content {
+  background: var(--x-glass-w);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid var(--x-glass-w-border);
+}
+@supports not (backdrop-filter: blur(1px)) { body.x-shell .post-modal-content { background: #fff; } }
+body.x-shell .post-modal-backdrop {
+  background: rgba(5, 9, 28, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Newsletter héritée : fondu champ + filet */
+body.x-shell .newsletter {
+  background: transparent;
+  border-top: 1px solid var(--x-line);
+}
+body.x-shell .newsletter::before, body.x-shell .newsletter::after { display: none; }
+body.x-shell .newsletter h2 { font-family: var(--x-serif); font-weight: 470; color: var(--x-ivory); }
+body.x-shell .newsletter p { color: var(--x-ivory-60); }
+
+/* Formulaire : la section hérite du champ */
+body.x-shell .form-section { background: transparent; }
+body.x-shell .form-section::before, body.x-shell .form-section::after { display: none; }
+
+/* Connexion : le champ remplace le fond dédié */
+body.x-shell.login-body { background-color: var(--x-abyss); }
+body.x-shell .login-section { background: transparent; }
+
+/* ── Footer statement : verre profond ───────────────────────────── */
 .x-footer {
-  background: var(--x-navy-deep);
+  background: rgba(6, 10, 30, 0.75);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--x-line-soft);
   color: var(--x-ivory);
   padding: clamp(70px, 10vh, 110px) var(--x-pad) 34px;
   overflow: hidden;
   margin-top: clamp(60px, 10vh, 110px);
 }
+@supports not (backdrop-filter: blur(1px)) { .x-footer { background: #080D26; } }
 .x-footer-grid {
   display: grid;
   grid-template-columns: 1.4fr repeat(3, 1fr);
@@ -194,13 +332,13 @@ body.x-shell .page-title p {
 .x-footer-brand p {
   margin: 18px 0 0;
   font-size: 0.88rem; line-height: 1.7;
-  color: rgba(255,255,255,0.55);
+  color: var(--x-ivory-40);
   max-width: 34ch;
 }
 .x-footer h5 {
   font-size: 0.68rem; font-weight: 600;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  color: var(--x-ivory-40);
   margin: 0 0 18px;
 }
 .x-footer ul { list-style: none; margin: 0; padding: 0; }
@@ -209,10 +347,10 @@ body.x-shell .page-title p {
   padding: 5px 0;
   text-decoration: none;
   font-size: 0.92rem;
-  color: rgba(255,255,255,0.78);
+  color: var(--x-ivory-60);
   transition: color 0.25s;
 }
-.x-footer ul a:hover { color: var(--x-gold-soft); }
+.x-footer ul a:hover { color: var(--x-gold); }
 .x-footer-word {
   font-family: var(--x-serif);
   font-weight: 500;
@@ -220,7 +358,7 @@ body.x-shell .page-title p {
   line-height: 0.9;
   letter-spacing: 0.01em;
   text-align: center;
-  color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.06);
   user-select: none;
   margin-bottom: 30px;
 }
@@ -229,19 +367,17 @@ body.x-shell .page-title p {
   border-top: 1px solid rgba(255,255,255,0.12);
   padding-top: 24px;
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
+  color: var(--x-ivory-40);
 }
-.x-footer-legal a { color: rgba(255,255,255,0.65); text-decoration: none; }
-.x-footer-legal a:hover { color: var(--x-gold-soft); }
+.x-footer-legal a { color: var(--x-ivory-60); text-decoration: none; }
+.x-footer-legal a:hover { color: var(--x-gold); }
 
-/* Variante compacte (login, création de mot de passe) */
 .x-footer--slim { padding: 26px var(--x-pad); margin-top: 0; }
 .x-footer--slim .x-footer-legal { border-top: none; padding-top: 0; }
 
 /* ── Mobile ─────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .x-nav { display: none; }
-  /* Garde le CTA visible à côté du burger */
   .x-nav.x-keep-cta { display: flex; }
   .x-nav.x-keep-cta > *:not(.x-nav-cta) { display: none; }
   .x-burger { display: flex; }
@@ -255,26 +391,61 @@ body.x-shell .page-title p {
   .x-menu, .x-menu li a { transition: none !important; }
 }
 
-/* ── Harmonisation DA des blocs hérités ─────────────────────────── */
-/* Formulaire : fond ivoire profond au lieu du dégradé lavande */
-body.x-shell .form-section::before,
-body.x-shell .form-section::after { display: none; }
-body.x-shell .form-section { background: var(--x-ivory-2); }
-
-/* Newsletter : navy pur, sans photo de stock */
-body.x-shell .newsletter::before,
-body.x-shell .newsletter::after { display: none; }
-body.x-shell .newsletter {
-  background:
-    radial-gradient(46rem 26rem at 85% -10%, rgba(197, 165, 90, 0.14), transparent 60%),
-    var(--x-navy-deep);
+/* ── Actualités : table des AG sur verre ────────────────────────── */
+body.x-shell .ag-section h2 { color: var(--x-ivory); }
+body.x-shell .ag-intro { color: var(--x-ivory-60); }
+body.x-shell .ag-intro strong { color: var(--x-ivory); }
+body.x-shell .ag-table-wrap {
+  background: var(--x-glass-w);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--x-glass-w-border);
+  border-radius: var(--x-r);
+  box-shadow: 0 24px 60px rgba(5, 9, 28, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  overflow-x: auto;
 }
-body.x-shell .newsletter h2 { font-family: var(--x-serif); font-weight: 480; }
+@supports not (backdrop-filter: blur(1px)) { body.x-shell .ag-table-wrap { background: #fff; } }
 
-/* Hero espace membre : raccord navy profond */
-body.x-shell .membre-hero {
-  background-image:
-    radial-gradient(34rem 20rem at 80% 0%, rgba(197, 165, 90, 0.16), transparent 60%),
-    radial-gradient(30rem 22rem at 8% 100%, rgba(99, 131, 255, 0.2), transparent 55%),
-    linear-gradient(135deg, var(--x-navy-deep) 0%, var(--x-navy) 100%);
+/* ── Contact : cartes de verre ──────────────────────────────────── */
+body.x-shell .contact-form-card,
+body.x-shell .contact-info {
+  background: var(--x-glass-w);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--x-glass-w-border);
+  border-radius: var(--x-r);
+  box-shadow: 0 24px 60px rgba(5, 9, 28, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  body.x-shell .contact-form-card, body.x-shell .contact-info { background: #fff; }
+}
+
+/* ── Correctifs revue : contrastes sur verre blanc ──────────────── */
+body.x-shell .posts-empty { color: var(--x-ink-60); }
+body.x-shell .posts-empty svg { color: var(--x-ink-60); }
+body.x-shell .posts-empty p { color: var(--x-ink-60); }
+body.x-shell .posts-empty strong { color: var(--x-ink); }
+body.x-shell .post-date { color: var(--x-ink-60); }
+
+/* ── Perf mobile : le champ derrière les panneaux est fixe et lisse,
+     le blur par frame n'apporte rien → on le coupe et on compense
+     l'opacité ; seule la topbar (68px) garde un petit blur ─────── */
+@media (max-width: 900px) {
+  body.x-shell .form-card, body.x-shell .info-card, body.x-shell .login-card,
+  body.x-shell .post-card, body.x-shell .coti-card, body.x-shell .coti-alt-method,
+  body.x-shell .pay-option-card, body.x-shell .annuaire-card, body.x-shell .posts-empty,
+  body.x-shell .legal-content, body.x-shell .ag-table-wrap,
+  body.x-shell .contact-form-card, body.x-shell .contact-info,
+  body.x-shell .post-modal-content {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.96);
+  }
+  body.x-shell .posts-filters {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(30, 42, 92, 0.85);
+  }
+  .x-footer { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(8, 13, 38, 0.94); }
+  body.x-shell .x-topbar { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 }
