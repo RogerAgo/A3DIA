@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/membres/doc.js": {
+      "includeFiles": "api/_docs/**"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

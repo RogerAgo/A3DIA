@@ -36,3 +36,4 @@ data-backup/
 
 # Config locale Claude Code
 .claude/
+.env*
