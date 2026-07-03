@@ -416,6 +416,10 @@ body.x-shell .contact-info {
   border-radius: var(--x-r);
   box-shadow: 0 24px 60px rgba(5, 9, 28, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
+/* La colonne info devient une carte : il lui faut son propre padding */
+body.x-shell .contact-info { padding: clamp(28px, 3.4vw, 40px); }
+/* Le page-title assure la respiration du haut → on allège la section */
+body.x-shell .form-section { padding-top: clamp(40px, 6vh, 64px); }
 @supports not (backdrop-filter: blur(1px)) {
   body.x-shell .contact-form-card, body.x-shell .contact-info { background: #fff; }
 }
