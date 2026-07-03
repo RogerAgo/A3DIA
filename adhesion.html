@@ -99,6 +99,7 @@
       <!-- Formulaire (masqué après soumission) -->
       <div id="adhesion-form-wrap">
         <form class="form-card reveal" id="adhesion-form" novalidate>
+          <input type="text" id="hp_check" name="hp_check" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
           <h2>Formulaire d'adhésion</h2>
           <p class="form-intro">
             Les champs marqués d'un astérisque (<span style="color: var(--gold);">*</span>) sont obligatoires.<br />
@@ -296,7 +297,8 @@
         adresse: document.getElementById('adresse').value.trim(),
         cp: document.getElementById('cp').value.trim(),
         ville: document.getElementById('ville').value.trim(),
-        tel: document.getElementById('tel-mobile').value.trim()
+        tel: document.getElementById('tel-mobile').value.trim(),
+        hp_check: document.getElementById('hp_check').value
       };
 
       try {

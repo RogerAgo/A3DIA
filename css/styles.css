@@ -1723,9 +1723,14 @@ body {
 }
 .password-toggle {
   position: absolute;
-  right: 12px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--ink-300);
   transition: color 0.2s;
 }
@@ -1855,7 +1860,7 @@ body {
 /* Posts grid */
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 24px;
 }
 

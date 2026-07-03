@@ -2,8 +2,32 @@ import { getDB } from '../_lib/db.js';
 
 const MONTANT_COTISATION = 5000; // 50 € en centimes
 
+// Rate-limit IP en mémoire (par instance) : 1 demande / 30 s
+const ipHits = new Map();
+function rateLimited(ip) {
+  const now = Date.now();
+  const last = ipHits.get(ip);
+  if (last && now - last < 30_000) return true;
+  ipHits.set(ip, now);
+  if (ipHits.size > 1000) {
+    for (const [k, t] of ipHits) { if (now - t > 60_000) ipHits.delete(k); }
+  }
+  return false;
+}
+const cap = (s, n = 200) => String(s ?? '').trim().slice(0, n);
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+
+  // Honeypot : un bot remplit ce champ caché → on simule un succès sans rien créer
+  if (String(req.body?.hp_check ?? '').trim()) {
+    return res.status(201).json({ success: true, id: 'ok', email: '' });
+  }
+
+  const ip = (req.headers['x-forwarded-for']?.toString().split(',')[0].trim()) || 'unknown';
+  if (rateLimited(ip)) {
+    return res.status(429).json({ success: false, error: 'Veuillez patienter avant de renvoyer une demande.' });
+  }
 
   let kv;
   try { kv = getDB(); } catch (e) {
@@ -14,6 +38,9 @@ export default async function handler(req, res) {
 
   if (!prenom?.trim() || !nom?.trim() || !email?.trim()) {
     return res.status(400).json({ success: false, error: 'Prénom, nom et email sont requis.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) || email.trim().length > 254) {
+    return res.status(400).json({ success: false, error: 'Adresse email invalide.' });
   }
 
   const emailNorm = email.toLowerCase().trim();
@@ -34,15 +61,15 @@ export default async function handler(req, res) {
   const now = new Date().toISOString();
   const request = {
     id,
-    civilite: civilite || '',
-    prenom: prenom.trim(),
-    nom: nom.trim(),
+    civilite: cap(civilite, 10),
+    prenom: cap(prenom, 80),
+    nom: cap(nom, 80),
     email: emailNorm,
-    tel: tel?.trim() || '',
-    societe: societe?.trim() || '',
-    adresse: adresse?.trim() || '',
-    cp: cp?.trim() || '',
-    ville: ville?.trim() || '',
+    tel: cap(tel, 30),
+    societe: cap(societe, 120),
+    adresse: cap(adresse, 200),
+    cp: cap(cp, 12),
+    ville: cap(ville, 80),
     status: 'en_attente',
     paymentMethod: null,
     montant: MONTANT_COTISATION,

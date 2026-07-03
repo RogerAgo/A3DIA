@@ -380,14 +380,14 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 @keyframes x-scroll { to { transform: translateX(-50%); } }
 
 /* ── Sections (clair) ───────────────────────────────────────────── */
-.x-section { padding: clamp(84px, 13vh, 150px) var(--pad); position: relative; }
+.x-section { padding: clamp(54px, 7.5vh, 100px) var(--pad); position: relative; }
 .x-section--alt { background: var(--x-paper-2); }
 .x-eyebrow {
   display: flex; align-items: center; gap: 14px;
   font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--x-ink-60);
-  margin-bottom: clamp(28px, 5vh, 52px);
+  margin-bottom: clamp(20px, 3vh, 36px);
 }
 .x-eyebrow::before { content: ''; width: 34px; height: 1px; background: var(--x-gold-deep); }
 .x-eyebrow .num { margin-left: auto; font-family: var(--serif); font-style: italic; color: var(--x-gold-deep); font-size: 0.95rem; letter-spacing: 0; }
@@ -425,7 +425,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 /* ── Mandat ─────────────────────────────────────────────────────── */
 .x-mandat-head {
   max-width: 760px;
-  margin-bottom: clamp(40px, 7vh, 80px);
+  margin-bottom: clamp(26px, 4vh, 50px);
 }
 .x-mandat-head h2 {
   font-family: var(--serif);
@@ -450,7 +450,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
   grid-template-columns: 78px 1fr 1.1fr;
   gap: clamp(16px, 3vw, 48px);
   align-items: baseline;
-  padding: clamp(26px, 4.5vh, 44px) clamp(4px, 1vw, 14px);
+  padding: clamp(18px, 2.6vh, 28px) clamp(4px, 1vw, 14px);
   border-bottom: 1px solid var(--x-line-ink);
   position: relative;
 }
@@ -504,8 +504,9 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 
 .x-ops-track {
   display: flex;
+  align-items: flex-start;
   gap: clamp(16px, 2vw, 24px);
-  margin-top: clamp(28px, 5vh, 48px);
+  margin-top: clamp(22px, 3vh, 36px);
   padding-bottom: 6px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -534,7 +535,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 }
 .x-op-card-top {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; margin-bottom: clamp(28px, 5vh, 52px);
+  gap: 12px; margin-bottom: clamp(16px, 2.4vh, 28px);
 }
 .x-op-type {
   font-size: 0.64rem; font-weight: 700;
@@ -561,10 +562,9 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 .x-op-card p {
   font-size: 0.92rem; line-height: 1.6;
   color: var(--x-ink-60);
-  flex: 1 1 auto;
 }
 .x-op-more {
-  margin-top: 22px;
+  margin-top: 18px;
   font-size: 0.74rem; font-weight: 600;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--x-ink);
@@ -575,7 +575,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 .x-ops-foot { margin-top: clamp(30px, 5vh, 48px); }
 
 /* ── Appel : bloc sombre ancre sur fond clair ───────────────────── */
-.x-call { padding: clamp(90px, 14vh, 170px) var(--pad); }
+.x-call { padding: clamp(58px, 8vh, 110px) var(--pad); }
 .x-call-panel {
   position: relative;
   overflow: hidden;
@@ -584,7 +584,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
     var(--x-char);
   border-radius: calc(var(--r) + 8px);
   box-shadow: 0 40px 90px rgba(19, 22, 41, 0.28);
-  padding: clamp(56px, 10vh, 110px) clamp(26px, 5vw, 90px);
+  padding: clamp(42px, 6.5vh, 80px) clamp(26px, 5vw, 80px);
   text-align: center;
   color: var(--x-ivory);
 }
@@ -621,7 +621,7 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 .x-section .x-link:hover, .x-news .x-link:hover { color: var(--x-gold-deep); }
 
 /* ── Newsletter : filet sur fond clair ──────────────────────────── */
-.x-news { padding: clamp(60px, 9vh, 110px) var(--pad); }
+.x-news { padding: clamp(44px, 6vh, 80px) var(--pad); }
 .x-news-row {
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 40px;
@@ -665,14 +665,14 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 .x-footer {
   background: var(--x-char);
   color: var(--x-ivory);
-  padding: clamp(70px, 10vh, 110px) var(--pad) 34px;
+  padding: clamp(52px, 7vh, 88px) var(--pad) 30px;
   overflow: hidden;
 }
 .x-footer-grid {
   display: grid;
   grid-template-columns: 1.4fr repeat(3, 1fr);
   gap: clamp(28px, 4vw, 60px);
-  padding-bottom: clamp(50px, 8vh, 90px);
+  padding-bottom: clamp(38px, 5.5vh, 66px);
 }
 .x-footer-brand p {
   margin-top: 18px;
@@ -746,6 +746,24 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
   .x-hero-trust b { font-size: 1.35rem; }
   .x-hero-trust span { font-size: 0.6rem; letter-spacing: 0.1em; }
   .x-footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Rythme vertical serré en responsive : l'écart devient la norme ── */
+@media (max-width: 700px) {
+  .x-section { padding-top: 46px; padding-bottom: 46px; }
+  .x-call { padding-top: 44px; padding-bottom: 44px; }
+  .x-call-panel { padding: 40px 22px; }
+  .x-news { padding-top: 40px; padding-bottom: 40px; }
+  .x-eyebrow { margin-bottom: 22px; }
+  .x-mandat-head { margin-bottom: 24px; }
+  .x-mandat-head p { margin-top: 16px; }
+  .x-mandat-item { padding-top: 18px; padding-bottom: 18px; row-gap: 6px; }
+  .x-ops-track { margin-top: 20px; }
+  .x-op-card-top { margin-bottom: 18px; }
+  .x-stats > div { padding-top: 20px; padding-bottom: 20px; }
+  .x-news-row { padding-top: 24px; }
+  .x-footer { padding-top: 48px; }
+  .x-footer-grid { padding-bottom: 40px; gap: 30px; }
 }
 
 /* ── Confort ────────────────────────────────────────────────────── */

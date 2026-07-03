@@ -35,12 +35,34 @@ function omit(obj, keys) {
   return Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k)));
 }
 
+// Assainit le HTML riche des communiqués (rendu via innerHTML côté membre) :
+// retire scripts/iframes/etc., les gestionnaires d'événements on*, et les URLs
+// javascript:/data:. Conserve la mise en forme (p, strong, a, ul, h2…).
+function sanitizeHtml(html) {
+  if (typeof html !== 'string') return '';
+  return html
+    .replace(/<\s*(script|style|iframe|object|embed|link|meta|svg)[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
+    .replace(/<\s*(script|style|iframe|object|embed|link|meta|svg)[^>]*\/?>/gi, '')
+    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
+    .replace(/(href|src)\s*=\s*"\s*(javascript:|data:)[^"]*"/gi, '$1="#"')
+    .replace(/(href|src)\s*=\s*'\s*(javascript:|data:)[^']*'/gi, "$1='#'");
+}
+
 // ─── setup ──────────────────────────────────────────────────────────────────
 async function setup(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   try {
     const kv = getDB();
+
+    // Verrou permanent : le setup ne peut être joué qu'une seule fois,
+    // même si le compte admin est supprimé ensuite (l'index email serait libéré).
+    if (await kv.get('setup_done')) {
+      return res.status(403).json({ success: false, error: 'Setup déjà effectué (verrouillé).' });
+    }
+
     const email = process.env.ADMIN_EMAIL;
     const password = process.env.ADMIN_PASSWORD;
 
@@ -75,6 +97,7 @@ async function setup(req, res) {
     await kv.set(`user:${id}`, user);
     await kv.set(`idx:email:${email.toLowerCase()}`, id);
     await kv.sadd('users', id);
+    await kv.set('setup_done', true); // verrouille définitivement la route
 
     return res.status(201).json({
       success: true,
@@ -152,7 +175,13 @@ async function membersUpdate(kv, req, res) {
   if (civilite !== undefined) updates.civilite = civilite;
   if (tel !== undefined) updates.tel = tel;
   if (societe !== undefined) updates.societe = societe;
-  if (role !== undefined && ['membre', 'admin'].includes(role)) updates.role = role;
+  if (role !== undefined && ['membre', 'admin'].includes(role)) {
+    // Empêche de rétrograder le dernier administrateur
+    if (user.role === 'admin' && role !== 'admin' && (await countAdmins(kv)) <= 1) {
+      return res.status(409).json({ success: false, error: 'Impossible de rétrograder le dernier administrateur.' });
+    }
+    updates.role = role;
+  }
   if (actif !== undefined) updates.actif = Boolean(actif);
   if (password) updates.passwordHash = await bcrypt.hash(password, 10);
 
@@ -162,6 +191,12 @@ async function membersUpdate(kv, req, res) {
   return res.status(200).json({ success: true, member: omit(updated, ['passwordHash']) });
 }
 
+async function countAdmins(kv) {
+  const ids = (await kv.smembers('users')) ?? [];
+  const rows = await Promise.all(ids.map(i => kv.get(`user:${i}`)));
+  return rows.filter(u => u && u.role === 'admin').length;
+}
+
 async function membersDelete(kv, req, res) {
   const { id } = req.body ?? {};
   if (!id) return res.status(400).json({ success: false, error: 'id requis' });
@@ -169,11 +204,27 @@ async function membersDelete(kv, req, res) {
   const user = await kv.get(`user:${id}`);
   if (!user) return res.status(404).json({ success: false, error: 'Membre introuvable' });
 
+  // Ne jamais supprimer le dernier administrateur (sinon plus aucun accès admin)
+  if (user.role === 'admin' && (await countAdmins(kv)) <= 1) {
+    return res.status(409).json({ success: false, error: 'Impossible de supprimer le dernier administrateur.' });
+  }
+
+  // Nettoie les enregistrements liés (évite les orphelins dans la trésorerie)
+  const payIds = (await kv.smembers('payments')) ?? [];
+  const pays = await Promise.all(payIds.map(pid => kv.get(`payment:${pid}`)));
+  const ownPayIds = pays.filter(p => p && p.memberId === id).map(p => p.id);
+
   await Promise.all([
     kv.del(`user:${id}`),
     kv.del(`idx:email:${user.email}`),
-    kv.srem('users', id)
+    kv.srem('users', id),
+    ...ownPayIds.flatMap(pid => [kv.del(`payment:${pid}`), kv.srem('payments', pid)]),
   ]);
+
+  const yr = new Date().getFullYear();
+  for (let y = yr; y >= yr - 5; y--) {
+    await Promise.all([kv.del(`cotisation:${id}:${y}`), kv.del(`cotisation_pending:${id}:${y}`)]);
+  }
 
   return res.status(200).json({ success: true });
 }
@@ -314,7 +365,7 @@ async function postsCreate(kv, req, res) {
   const id = `post_${crypto.randomUUID().replace(/-/g, '').slice(0, 16)}`;
   const now = new Date().toISOString();
   const post = {
-    id, titre, contenu, societe,
+    id, titre, contenu: sanitizeHtml(contenu), societe,
     type: POST_TYPES.includes(type) ? type : 'Communiqué',
     datePublication: datePublication || now.split('T')[0],
     createdAt: now, updatedAt: now
@@ -335,7 +386,7 @@ async function postsUpdate(kv, req, res) {
 
   const updates = { updatedAt: new Date().toISOString() };
   if (titre !== undefined) updates.titre = titre;
-  if (contenu !== undefined) updates.contenu = contenu;
+  if (contenu !== undefined) updates.contenu = sanitizeHtml(contenu);
   if (societe !== undefined) updates.societe = societe;
   if (type !== undefined && POST_TYPES.includes(type)) updates.type = type;
   if (datePublication !== undefined) updates.datePublication = datePublication;

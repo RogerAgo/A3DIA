@@ -449,3 +449,43 @@ body.x-shell .post-date { color: var(--x-ink-60); }
   .x-footer { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(8, 13, 38, 0.94); }
   body.x-shell .x-topbar { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 }
+
+/* ── Correctifs audit : éléments hérités hors-charte sur le champ sombre ── */
+/* Boutons primaires en or (au lieu du navy vif de styles.css) */
+body.x-shell .btn,
+body.x-shell .btn-primary,
+body.x-shell .form-submit .btn,
+body.x-shell .newsletter-form button {
+  background: var(--x-gold);
+  color: var(--x-abyss);
+  box-shadow: 0 10px 30px rgba(197, 165, 90, 0.25);
+}
+body.x-shell .btn:hover,
+body.x-shell .btn-primary:hover,
+body.x-shell .form-submit .btn:hover,
+body.x-shell .newsletter-form button:hover {
+  background: #D5B76C;
+  box-shadow: 0 16px 40px rgba(197, 165, 90, 0.35);
+}
+/* Newsletter : pilule blanche → filet or sur le champ */
+body.x-shell .newsletter-form {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid var(--x-line);
+  border-radius: 0;
+  padding: 0;
+}
+body.x-shell .newsletter-form input,
+body.x-shell .newsletter-form input[type="email"] {
+  background: transparent;
+  color: var(--x-ivory);
+  border-radius: 0;
+}
+body.x-shell .newsletter-form input::placeholder { color: var(--x-ivory-60); }
+body.x-shell .newsletter-form button { border-radius: 0; }
+/* Spinner de chargement en or */
+body.x-shell .loading-spinner {
+  border-color: var(--x-line);
+  border-top-color: var(--x-gold);
+}
