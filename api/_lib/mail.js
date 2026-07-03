@@ -127,3 +127,52 @@ export async function sendWelcomeSetPassword({ to, prenom, nom, setUrl, baseUrl 
     text: `Bonjour ${prenom} ${nom},\n\nL'association A3DIA a lancé son nouveau site adhérents. Votre compte a été créé.\n\nCréez votre mot de passe ici (lien valable 14 jours) :\n${setUrl}\n\nA3DIA`
   });
 }
+
+// Email de réinitialisation de mot de passe (lien à usage unique, 2 h).
+export async function sendPasswordReset({ to, prenom, nom, setUrl, baseUrl }) {
+  const mailer = getMailer();
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Inter,Arial,sans-serif">
+  <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.08)">
+    <div style="background:#1a2961;padding:28px 32px;text-align:center">
+      <img src="${baseUrl}/assets/images/logo-a3dia-white.png" alt="A3DIA" height="40" style="height:40px" />
+    </div>
+    <div style="padding:32px">
+      <h1 style="margin:0 0 8px;font-size:1.25rem;color:#0f172a">Réinitialisation de votre mot de passe</h1>
+      <p style="margin:0 0 24px;color:#475569;font-size:0.95rem">
+        Bonjour ${prenom} ${nom},<br><br>
+        Vous avez demandé à réinitialiser le mot de passe de votre espace adhérent A3DIA.
+        Cliquez sur le bouton ci-dessous pour en choisir un nouveau.
+      </p>
+      <div style="text-align:center;margin-bottom:28px">
+        <a href="${setUrl}" style="display:inline-block;background:#1a2961;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.95rem">
+          Choisir un nouveau mot de passe →
+        </a>
+      </div>
+      <p style="margin:0 0 20px;color:#94a3b8;font-size:0.8rem">
+        Ce lien est valable 2 heures. Si vous n'êtes pas à l'origine de cette demande,
+        ignorez simplement cet email : votre mot de passe actuel reste inchangé.<br><br>
+        Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br>
+        <span style="color:#1a2961;word-break:break-all">${setUrl}</span>
+      </p>
+      <hr style="border:none;border-top:1px solid #e2e8f0;margin:0 0 20px">
+      <p style="margin:0;font-size:0.8rem;color:#94a3b8;text-align:center">
+        A3DIA — Association de Défense des Investisseurs Arkéon<br>
+        9 rue Anatole de La Forge, 75017 Paris
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await mailer.sendMail({
+    from: fromAddress(),
+    to,
+    subject: 'Réinitialisation de votre mot de passe A3DIA',
+    html,
+    text: `Bonjour ${prenom} ${nom},\n\nPour choisir un nouveau mot de passe (lien valable 2 h) :\n${setUrl}\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez cet email.\n\nA3DIA`
+  });
+}

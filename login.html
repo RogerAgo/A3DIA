@@ -106,6 +106,11 @@
           </button>
         </form>
 
+        <p class="login-help" style="margin-top: 18px;">
+          <a href="#" id="forgot-link">Mot de passe oublié ?</a>
+        </p>
+        <p class="login-help" id="forgot-msg" hidden style="font-size:0.85rem;"></p>
+
         <p class="login-help">
           Vous n'avez pas encore de compte ? <a href="adhesion.html">Adhérez à l'association</a>.
         </p>
@@ -185,6 +190,36 @@
         btn.querySelector('.eye-off-icon').hidden = !isPassword;
         btn.setAttribute('aria-label', isPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
       });
+    });
+
+    // Mot de passe oublié
+    const forgotLink = document.getElementById('forgot-link');
+    const forgotMsg = document.getElementById('forgot-msg');
+    forgotLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      forgotMsg.hidden = false;
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        forgotMsg.textContent = 'Saisissez d\'abord votre adresse email ci-dessus, puis recliquez sur « Mot de passe oublié ? ».';
+        form.email.focus();
+        return;
+      }
+
+      forgotMsg.textContent = 'Envoi en cours…';
+      try {
+        const res = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const d = await res.json();
+        forgotMsg.textContent = d.success
+          ? '📬 ' + (d.message || 'Email envoyé. Vérifiez votre boîte de réception (et vos spams).')
+          : (d.error || 'Erreur. Réessayez dans quelques instants.');
+      } catch {
+        forgotMsg.textContent = 'Problème de connexion. Réessayez.';
+      }
     });
   </script>
   <script src="js/shell.js"></script>
