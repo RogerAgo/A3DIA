@@ -12,29 +12,39 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..650;1,9..144,400..650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/shell.css" />
 </head>
-<body>
+<body class="x-shell">
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="logo" aria-label="A3DIA — Accueil">
-        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" />
-      </a>
-      <nav class="nav" aria-label="Navigation principale">
-        <ul class="nav-list">
-          <li><a href="/" class="nav-link">Accueil</a></li>
-          <li><a href="adhesion.html" class="nav-link">Adhésion</a></li>
-          <li><a href="actualites.html" class="nav-link">Actualités</a></li>
-          <li><a href="contact.html" class="nav-link">Contact</a></li>
-          <li><a href="login.html" class="nav-link nav-link-cta">Connexion</a></li>
-        </ul>
-        <a href="login.html" class="nav-cta">Connexion</a>
-      </nav>
-      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-        <span class="bar"></span>
-      </button>
-    </div>
+  <!-- TOPBAR -->
+  <header class="x-topbar">
+    <a href="/" class="x-brand" aria-label="A3DIA — Accueil">
+      <span class="x-brand-word">A3DIA<i>.</i></span>
+    </a>
+    <nav class="x-nav x-keep-cta" aria-label="Navigation principale">
+      <a href="adhesion.html">Adhésion</a>
+      <a href="actualites.html">Actualités</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" class="x-nav-cta">Espace adhérents</a>
+    </nav>
+    <button class="x-burger" id="x-burger" aria-label="Menu" aria-expanded="false" aria-controls="x-menu">
+      <span></span><span></span><span></span>
+    </button>
   </header>
+
+  <!-- MENU OVERLAY -->
+  <div class="x-menu" id="x-menu" aria-hidden="true">
+    <nav aria-label="Menu">
+      <ul>
+        <li><a href="/"><i>01</i>Accueil</a></li>
+        <li><a href="adhesion.html"><i>02</i>Adhésion</a></li>
+        <li><a href="actualites.html"><i>03</i>Actualités</a></li>
+        <li><a href="login.html"><i>04</i>Espace adhérents</a></li>
+        <li><a href="contact.html"><i>05</i>Contact</a></li>
+      </ul>
+    </nav>
+    <p class="x-menu-meta">Association loi 1901 · Paris — <a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></p>
+  </div>
 
   <section class="page-title">
     <div class="container">
@@ -91,15 +101,48 @@
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
-        <span>Copyright © 2026 A3DIA</span>
-        <span><a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="contact.html">Contact</a></span>
+  <!-- FOOTER -->
+  <footer class="x-footer">
+    <div class="x-footer-grid">
+      <div class="x-footer-brand">
+        <img src="assets/images/logo-a3dia-white.png" alt="A3DIA" height="30" style="height:30px;width:auto" />
+        <p>Association de Défense des Investisseurs Arkéon.<br />
+        9 rue Anatole de La Forge, 75017 Paris · RCS 838 794 550.</p>
       </div>
+      <div>
+        <h5>Navigation</h5>
+        <ul>
+          <li><a href="/">Accueil</a></li>
+          <li><a href="adhesion.html">Adhésion</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Adhérents</h5>
+        <ul>
+          <li><a href="login.html">Connexion</a></li>
+          <li><a href="espace-membres.html">Espace adhérents</a></li>
+          <li><a href="adhesion.html">Cotisation 50 €/an</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Légal</h5>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mailto:contact@a3dia-info.org">contact@a3dia-info.org</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="x-footer-word" aria-hidden="true">A3DIA</div>
+    <div class="x-footer-legal">
+      <span>© 2026 A3DIA — Tous droits réservés</span>
+      <span>Association loi 1901 · Paris</span>
     </div>
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/shell.js"></script>
 </body>
 </html>
