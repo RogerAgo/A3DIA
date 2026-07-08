@@ -1336,6 +1336,9 @@
             <button class="action-btn" title="Modifier" onclick="openMemberModal('${m.id}')">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
+            <button class="action-btn" title="Envoyer l'email de bienvenue (lien de création de mot de passe)" onclick="resendWelcome('${esc(m.email)}', '${esc(m.prenom)} ${esc(m.nom)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </button>
             <button class="action-btn action-btn-toggle" title="${m.actif ? 'Désactiver' : 'Activer'}" onclick="toggleMember('${m.id}', ${!m.actif})">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
                 ${m.actif ? '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>' : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
@@ -1421,6 +1424,23 @@
         body: JSON.stringify({ id, actif })
       });
       await Promise.all([loadMembers(), loadStats()]);
+    }
+
+    async function resendWelcome(email, name) {
+      if (!confirm(`Envoyer l'email de bienvenue à « ${name} » (${email}) ?\nIl contiendra un lien à usage unique (14 j) pour créer son mot de passe.`)) return;
+      try {
+        const res = await fetch('/api/admin/send-welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ emails: [email] })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.error || 'Échec de l\'envoi.');
+        const r = (data.results || [])[0] || {};
+        if (r.status === 'envoyé') alert(`✅ Email de bienvenue envoyé à ${email}.`);
+        else if (r.status === 'introuvable') alert(`⚠️ Aucun compte trouvé pour ${email}.`);
+        else alert(`⚠️ Envoi non abouti (${r.status || 'inconnu'})${r.error ? ' — ' + r.error : ''}.`);
+      } catch (err) { alert('Erreur : ' + err.message); }
     }
 
     function confirmDeleteMember(id, name) {
