@@ -1,0 +1,534 @@
+<title>Colorimétrie ameli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+
+<style>
+  /* ───────────────────────────────────────────────────────────────
+     ameli — charte graphique / colorimétrie
+     Monde visuel unique et assumé : le fond ivoire EST une couleur
+     de la charte. Aucune bascule sombre : les pastilles sont le
+     contenu, les inverser fausserait la lecture. Tout est peint.
+     ─────────────────────────────────────────────────────────────── */
+  :root {
+    --ivoire:  #FFF9F1;
+    --bleu:    #CFDEFF;
+    --encre:   #0A0A05;
+    --taupe:   #8E837D;
+    --taupe-txt: #6E6864;
+    --nude:    #D0B09B;
+    --greige:  #E7E3D8;
+    --orange:  #FFAF5E;
+    --peche:   #FFC09F;
+    --lilas:   #DAA7E2;
+    --filet:   rgba(10, 10, 5, 0.14);
+    --filet-clair: rgba(10, 10, 5, 0.07);
+    --sans:    "Outfit", "Helvetica Neue", Arial, sans-serif;
+    --data:    "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --serif:   "Instrument Serif", Georgia, "Times New Roman", serif;
+    color-scheme: only light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, p, figure, table { margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ivoire);
+    color: var(--encre);
+    font-family: var(--data);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+    padding: 40px 24px 96px;
+  }
+
+  /* ── mise à l'échelle de la planche 1920×1080 ─────────────────── */
+  .planche-cadre { width: 100%; max-width: 1920px; }
+  .planche-piste { position: relative; width: 100%; overflow: hidden; }
+  .planche {
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+    transform: scale(var(--s, 1));
+    background: var(--ivoire);
+    padding: 56px 80px 48px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 40px rgba(10, 10, 5, 0.07);
+  }
+
+  /* ── en-tête ──────────────────────────────────────────────────── */
+  .tete {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--filet);
+  }
+  .marque {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+  }
+  .mot {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 46px;
+    letter-spacing: -0.028em;
+    line-height: 1;
+  }
+  .signature {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 27px;
+    color: var(--taupe);
+    letter-spacing: 0.005em;
+  }
+  .rubrique {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+  }
+  .rubrique span { color: var(--taupe-txt); }
+
+  /* ── corps : cartes primaires + panneau ───────────────────────── */
+  .corps {
+    display: grid;
+    grid-template-columns: 1fr 668px;
+    gap: 32px;
+    margin-top: 34px;
+    height: 620px;
+  }
+  .primaires { display: grid; grid-template-rows: repeat(3, 1fr); gap: 16px; }
+
+  .carte {
+    border-radius: 32px;
+    padding: 26px 34px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--fond);
+    color: var(--sur);
+    box-shadow: inset 0 0 0 1px var(--liseré, transparent);
+  }
+  .carte-tete { display: flex; align-items: baseline; gap: 18px; }
+  .carte-nom {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 38px;
+    letter-spacing: -0.022em;
+    line-height: 1;
+  }
+  .carte-role {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.62;
+  }
+
+  .specs {
+    display: grid;
+    grid-template-columns: 320px 168px 244px 1fr;
+    align-items: end;
+  }
+  .spec-cle {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 7px;
+  }
+  .spec-val {
+    display: block;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .spec-note {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── panneau bleu signature ───────────────────────────────────── */
+  .panneau {
+    border-radius: 32px;
+    background: var(--bleu);
+    color: var(--encre);
+    padding: 34px 40px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  .panneau-mot {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 40px;
+    letter-spacing: -0.028em;
+    line-height: 1;
+  }
+  .rosace { flex: 1; display: grid; place-items: center; min-height: 0; }
+  .rosace svg { width: 490px; height: 490px; display: block; }
+  .rosace ellipse { fill: none; stroke: var(--ivoire); stroke-width: 2.4; }
+  .rosace text {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 27px;
+    letter-spacing: -0.012em;
+    fill: var(--encre);
+    text-anchor: middle;
+  }
+  .panneau-pied {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    opacity: 0.66;
+  }
+
+  /* ── bandeau secondaire ───────────────────────────────────────── */
+  .bandeau { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .famille-cle {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--taupe-txt);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--filet-clair);
+  }
+  .famille-jeu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pastille-bloc {
+    height: 84px;
+    border-radius: 20px;
+    background: var(--fond);
+    box-shadow: inset 0 0 0 1px var(--liseré, transparent);
+    margin-bottom: 12px;
+  }
+  .pastille-nom {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 21px;
+    letter-spacing: -0.014em;
+    line-height: 1.1;
+  }
+  .pastille-ligne {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--taupe-txt);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── pied de planche ──────────────────────────────────────────── */
+  .pied {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--filet-clair);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--taupe-txt);
+  }
+
+  /* ── annexe technique (hors planche, masquée à l'export) ──────── */
+  .annexe {
+    width: 100%;
+    max-width: 1080px;
+    font-size: 15px;
+    line-height: 1.62;
+    color: var(--encre);
+  }
+  .annexe h2 {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .annexe .chapo { color: var(--taupe-txt); max-width: 62ch; margin: 0 0 26px; }
+  .annexe-table { width: 100%; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 11px 14px 11px 0; border-bottom: 1px solid var(--filet-clair); }
+  th {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--taupe-txt);
+    border-bottom-color: var(--filet);
+  }
+  td:first-child { white-space: nowrap; }
+  .puce {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+    margin-right: 11px;
+    vertical-align: -2px;
+    box-shadow: inset 0 0 0 1px var(--filet);
+  }
+  .notes { margin-top: 30px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .note { border-top: 2px solid var(--encre); padding-top: 12px; }
+  .note h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    margin: 0 0 7px;
+  }
+  .note p { margin: 0; color: var(--taupe-txt); font-size: 14px; line-height: 1.6; }
+
+  @media print {
+    body { gap: 0; padding: 0; }
+    .annexe { display: none; }
+    .planche { box-shadow: none; transform: none; }
+    .planche-piste { height: auto !important; }
+  }
+</style>
+
+<div class="planche-cadre">
+  <div class="planche-piste" id="piste">
+    <section class="planche" id="planche" aria-label="Planche colorimétrie ameli">
+
+      <header class="tete">
+        <div class="marque">
+          <span class="mot">ameli</span>
+          <span class="signature">fitness &amp; wellness</span>
+        </div>
+        <div class="rubrique">colorimétrie <span>· 9 références</span></div>
+      </header>
+
+      <div class="corps">
+        <div class="primaires">
+
+          <article class="carte" style="--fond:#FFF9F1; --sur:#0A0A05; --liseré:rgba(10,10,5,.13)">
+            <div class="carte-tete">
+              <h2 class="carte-nom">Ivoire ameli</h2>
+              <span class="carte-role">fond de marque</span>
+            </div>
+            <div class="specs">
+              <div>
+                <span class="spec-cle">Pantone</span>
+                <span class="spec-val">9184 C</span>
+                <span class="spec-note">ΔE₀₀ 2,7</span>
+              </div>
+              <div><span class="spec-cle">Hex</span><span class="spec-val">#FFF9F1</span></div>
+              <div><span class="spec-cle">CMJN</span><span class="spec-val">0 / 2 / 5 / 0</span></div>
+              <div><span class="spec-cle">RVB</span><span class="spec-val">255 / 249 / 241</span></div>
+            </div>
+          </article>
+
+          <article class="carte" style="--fond:#CFDEFF; --sur:#0A0A05">
+            <div class="carte-tete">
+              <h2 class="carte-nom">Bleu ameli</h2>
+              <span class="carte-role">couleur signature</span>
+            </div>
+            <div class="specs">
+              <div>
+                <span class="spec-cle">Pantone</span>
+                <span class="spec-val">2717 C · trame 65 %</span>
+                <span class="spec-note">ΔE₀₀ 3,7 — en aplat : 2707 C</span>
+              </div>
+              <div><span class="spec-cle">Hex</span><span class="spec-val">#CFDEFF</span></div>
+              <div><span class="spec-cle">CMJN</span><span class="spec-val">19 / 13 / 0 / 0</span></div>
+              <div><span class="spec-cle">RVB</span><span class="spec-val">207 / 222 / 255</span></div>
+            </div>
+          </article>
+
+          <article class="carte" style="--fond:#0A0A05; --sur:#FFF9F1">
+            <div class="carte-tete">
+              <h2 class="carte-nom">Encre</h2>
+              <span class="carte-role">typographie &amp; logotype</span>
+            </div>
+            <div class="specs">
+              <div>
+                <span class="spec-cle">Pantone</span>
+                <span class="spec-val">419 C</span>
+                <span class="spec-note">ΔE₀₀ 2,7 — quadri : noir riche</span>
+              </div>
+              <div><span class="spec-cle">Hex</span><span class="spec-val">#0A0A05</span></div>
+              <div><span class="spec-cle">CMJN</span><span class="spec-val">60 / 50 / 40 / 100</span></div>
+              <div><span class="spec-cle">RVB</span><span class="spec-val">10 / 10 / 5</span></div>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="panneau">
+          <div class="panneau-mot">ameli</div>
+          <div class="rosace">
+            <svg viewBox="0 0 560 560" role="img" aria-label="Rosace ameli : reset, équilibre, énergie, légèreté">
+              <ellipse cx="280" cy="176" rx="112" ry="134"></ellipse>
+              <ellipse cx="184" cy="292" rx="134" ry="112"></ellipse>
+              <ellipse cx="376" cy="292" rx="134" ry="112"></ellipse>
+              <ellipse cx="280" cy="408" rx="112" ry="134"></ellipse>
+              <text x="280" y="128">reset</text>
+              <text x="150" y="300">équilibre</text>
+              <text x="410" y="300">énergie</text>
+              <text x="280" y="466">légèreté</text>
+            </svg>
+          </div>
+          <div class="panneau-pied">
+            <span>ameli.fitness&amp;wellness</span>
+            <span>Pantone 2717 C</span>
+          </div>
+        </aside>
+      </div>
+
+      <div class="bandeau">
+        <section>
+          <h3 class="famille-cle">Neutres — surfaces, textures, photographie</h3>
+          <div class="famille-jeu">
+            <article>
+              <div class="pastille-bloc" style="--fond:#E7E3D8"></div>
+              <div class="pastille-nom">Greige sable</div>
+              <div class="pastille-ligne"><span>PANTONE 9083 C</span><span aria-hidden="true">·</span><span>#E7E3D8</span></div>
+            </article>
+            <article>
+              <div class="pastille-bloc" style="--fond:#D0B09B"></div>
+              <div class="pastille-nom">Nude terracotta</div>
+              <div class="pastille-ligne"><span>PANTONE 480 C</span><span aria-hidden="true">·</span><span>#D0B09B</span></div>
+            </article>
+            <article>
+              <div class="pastille-bloc" style="--fond:#8E837D"></div>
+              <div class="pastille-nom">Taupe chaud</div>
+              <div class="pastille-ligne"><span>PANTONE 409 C</span><span aria-hidden="true">·</span><span>#8E837D</span></div>
+            </article>
+          </div>
+        </section>
+        <section>
+          <h3 class="famille-cle">Accents — signalétique, réseaux, éditions courtes</h3>
+          <div class="famille-jeu">
+            <article>
+              <div class="pastille-bloc" style="--fond:#FFAF5E"></div>
+              <div class="pastille-nom">Orange solaire</div>
+              <div class="pastille-ligne"><span>PANTONE 1485 C</span><span aria-hidden="true">·</span><span>#FFAF5E</span></div>
+            </article>
+            <article>
+              <div class="pastille-bloc" style="--fond:#FFC09F"></div>
+              <div class="pastille-nom">Pêche</div>
+              <div class="pastille-ligne"><span>PANTONE 162 C</span><span aria-hidden="true">·</span><span>#FFC09F</span></div>
+            </article>
+            <article>
+              <div class="pastille-bloc" style="--fond:#DAA7E2"></div>
+              <div class="pastille-nom">Lilas</div>
+              <div class="pastille-ligne"><span>PANTONE 251 C</span><span aria-hidden="true">·</span><span>#DAA7E2</span></div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <footer class="pied">
+        <span>Références Pantone Solid Coated — à valider sur nuancier physique, sur le papier retenu.</span>
+        <span>CMJN indicatif ISO Coated v2 · ©2026 ameli</span>
+      </footer>
+
+    </section>
+  </div>
+</div>
+
+<section class="annexe">
+  <h2>Comment cette palette a été établie</h2>
+  <p class="chapo">
+    Les neuf valeurs ci-dessous sont relevées directement dans le dossier graphique
+    (planche palette, moodboard, logotype, pages de fin), puis rapprochées du nuancier
+    Pantone Solid Coated par calcul d’écart colorimétrique CIEDE2000 en espace Lab.
+    L’écart ΔE₀₀ indique la fidélité du rapprochement : sous 2, l’œil ne fait pas la
+    différence ; sous 4, l’écart reste acceptable en production.
+  </p>
+
+  <div class="annexe-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Couleur</th><th>Hex</th><th>Pantone</th><th>ΔE₀₀</th><th>Rôle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="puce" style="background:#FFF9F1"></span>Ivoire ameli</td><td>#FFF9F1</td><td>9184 C</td><td>2,7</td><td>Fond dominant, papier</td></tr>
+        <tr><td><span class="puce" style="background:#CFDEFF"></span>Bleu ameli</td><td>#CFDEFF</td><td>2717 C à 65 %</td><td>3,7</td><td>Signature, aplats, packaging</td></tr>
+        <tr><td><span class="puce" style="background:#0A0A05"></span>Encre</td><td>#0A0A05</td><td>419 C</td><td>2,7</td><td>Logotype et typographie</td></tr>
+        <tr><td><span class="puce" style="background:#E7E3D8"></span>Greige sable</td><td>#E7E3D8</td><td>9083 C</td><td>1,4</td><td>Surfaces secondaires, filets</td></tr>
+        <tr><td><span class="puce" style="background:#D0B09B"></span>Nude terracotta</td><td>#D0B09B</td><td>480 C</td><td>2,6</td><td>Rappel matière (studio, tapis)</td></tr>
+        <tr><td><span class="puce" style="background:#8E837D"></span>Taupe chaud</td><td>#8E837D</td><td>409 C</td><td>1,0</td><td>Texte secondaire ≥ 18 px</td></tr>
+        <tr><td><span class="puce" style="background:#FFAF5E"></span>Orange solaire</td><td>#FFAF5E</td><td>1485 C</td><td>1,2</td><td>Accent d’énergie, signalétique</td></tr>
+        <tr><td><span class="puce" style="background:#FFC09F"></span>Pêche</td><td>#FFC09F</td><td>162 C</td><td>3,4</td><td>Accent doux, réseaux sociaux</td></tr>
+        <tr><td><span class="puce" style="background:#DAA7E2"></span>Lilas</td><td>#DAA7E2</td><td>251 C</td><td>2,7</td><td>Accent ponctuel, éditions courtes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h3>Le bleu, seul point dur</h3>
+      <p>
+        Aucune encre Pantone en aplat n’atteint ce bleu à la fois très clair et franchement
+        violacé : le meilleur aplat, 2707 C, reste à ΔE₀₀ 6,2 et tire vers le cyan.
+        Passer par une trame à 65 % du 2717 C ramène l’écart à 3,7 et conserve la nuance
+        périwinkle. C’est la solution à retenir dès qu’un tramage est possible.
+      </p>
+    </div>
+    <div class="note">
+      <h3>Le noir se compose</h3>
+      <p>
+        Le noir du logotype est quasi pur. En Pantone, 419 C le rend fidèlement ; en quadri,
+        un noir 100 % seul paraîtra délavé sur aplat : composer 60 / 50 / 40 / 100 pour
+        retrouver la densité, en réservant le 100 % noir seul aux petits textes.
+      </p>
+    </div>
+    <div class="note">
+      <h3>Lisibilité vérifiée</h3>
+      <p>
+        L’encre sur ivoire donne 18,96:1 et sur bleu ameli 14,69:1 — largement au-delà du
+        seuil AAA. En revanche l’ivoire sur bleu tombe à 1,29:1 : sur les aplats bleus,
+        écrire toujours en encre, jamais en blanc. Réserver l’ivoire aux filets et tracés. Le taupe, à 3,5:1 sur ivoire, ne convient qu’au texte de 18 px et plus.
+      </p>
+    </div>
+    <div class="note">
+      <h3>Hiérarchie d’emploi</h3>
+      <p>
+        Trois primaires portent la marque et suffisent à la reconnaître. Les neutres
+        prolongent la photographie sans jamais dominer. Les accents restent des ponctuations :
+        un seul par support, sur moins d’un dixième de la surface.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var piste = document.getElementById('piste');
+    var planche = document.getElementById('planche');
+    if (!piste || !planche) return;
+    function ajuster() {
+      var s = Math.min(1, piste.clientWidth / 1920);
+      planche.style.setProperty('--s', s);
+      piste.style.height = (1080 * s) + 'px';
+    }
+    ajuster();
+    if (window.ResizeObserver) new ResizeObserver(ajuster).observe(piste);
+    window.addEventListener('resize', ajuster);
+  })();
+</script>
