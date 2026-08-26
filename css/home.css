@@ -293,30 +293,6 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
   gap: 26px; flex-wrap: wrap;
 }
 
-/* Preuve légère — une ligne, filets de séparation */
-.x-hero-trust {
-  list-style: none;
-  display: flex; align-items: center;
-  margin-top: clamp(6px, 1.6vh, 16px);
-}
-.x-hero-trust li {
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 2px clamp(18px, 3vw, 40px);
-}
-.x-hero-trust li + li { border-left: 1px solid var(--x-line); }
-.x-hero-trust b {
-  font-family: var(--serif); font-weight: 480;
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  line-height: 1;
-  color: var(--x-ivory); letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-}
-.x-hero-trust span {
-  font-size: 0.66rem; font-weight: 500;
-  letter-spacing: 0.13em; text-transform: uppercase;
-  color: var(--x-ivory-40);
-}
-
 .x-btn--gold { background: var(--x-gold); color: var(--x-abyss); }
 
 .x-btn {
@@ -742,9 +718,6 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
   .x-call-panel { padding: 44px 22px; }
 }
 @media (max-width: 520px) {
-  .x-hero-trust li { padding: 2px clamp(12px, 4vw, 26px); }
-  .x-hero-trust b { font-size: 1.35rem; }
-  .x-hero-trust span { font-size: 0.6rem; letter-spacing: 0.1em; }
   .x-footer-grid { grid-template-columns: 1fr; }
 }
 

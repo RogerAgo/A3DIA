@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.classList.add('js-reveal');
   initMobileNav();
   initCarousel();
+  initActuFilters();
   initForms();
   initReveal();
   initActiveLink();
@@ -68,6 +69,35 @@ function initCarousel() {
   });
   next.addEventListener('click', () => {
     track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+  });
+}
+
+/* -------- Fil d'actualités : filtres par type d'opération -------- */
+function initActuFilters() {
+  const grid = document.getElementById('actu-grid');
+  if (!grid) return;
+  const buttons = document.querySelectorAll('.actu-filter');
+  const cards = Array.from(grid.querySelectorAll('.actu-card'));
+  const empty = document.getElementById('actu-empty');
+  if (!buttons.length || !cards.length) return;
+
+  const typeOf = card => {
+    const badge = card.querySelector('.badge');
+    return badge ? badge.textContent.trim() : '';
+  };
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach(b => b.classList.toggle('is-active', b === btn));
+      let shown = 0;
+      cards.forEach(card => {
+        const match = filter === '*' || typeOf(card) === filter;
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+    });
   });
 }
 
