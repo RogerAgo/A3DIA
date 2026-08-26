@@ -73,10 +73,17 @@
       <div class="x-hero-inner">
         <p class="x-hero-eyebrow" data-a><span>Association loi 1901 — depuis 2017</span></p>
 
-        <h1 class="x-hero-title">
-          <span class="x-line-mask" style="--d:.06s"><span>Reprenez</span></span>
-          <span class="x-line-mask" style="--d:.16s"><span>le <em>contrôle</em>.</span></span>
-        </h1>
+        <div class="x-hero-titlewrap">
+          <!-- Les stickers sont injectés ici par JS, et uniquement si leurs
+               visuels se chargent : tant que les fichiers sont absents, le hero
+               reste strictement inchangé (aucune image cassée). -->
+          <div class="x-sticker-layer" id="x-sticker-layer" aria-hidden="true"></div>
+
+          <h1 class="x-hero-title">
+            <span class="x-line-mask" style="--d:.06s"><span>Reprenez</span></span>
+            <span class="x-line-mask" style="--d:.16s"><span>le <em>contrôle</em>.</span></span>
+          </h1>
+        </div>
 
         <p class="x-hero-sub" data-a style="--d:.42s">
           Vos participations Arkéon, suivies, valorisées et défendues —
@@ -321,6 +328,56 @@
         };
         window.addEventListener('scroll', onScrollTop, { passive: true });
         onScrollTop();
+      }
+
+      /* Stickers du hero : posés autour du titre, coin décollé, ils se
+         recollent au fil du scroll. Deux en desktop, un seul en mobile
+         (le second est masqué en CSS). Ils ne sont injectés que si leur
+         visuel se charge : fichiers absents = hero inchangé. */
+      const STICKERS = [
+        { src: 'assets/images/stickers/sticker-1.png', cls: 'x-sticker--1' },
+        { src: 'assets/images/stickers/sticker-2.png', cls: 'x-sticker--2' },
+      ];
+      const stickerLayer = document.getElementById('x-sticker-layer');
+      if (stickerLayer && heroEl) {
+        const mount = ({ src, cls }) => new Promise(resolve => {
+          const probe = new Image();
+          probe.onload = () => {
+            const el = document.createElement('div');
+            el.className = 'x-sticker ' + cls;
+            el.innerHTML =
+              '<div class="x-sticker-body" style="background-image:url(\'' + src + '\')"></div>' +
+              '<div class="x-sticker-sheen"></div>';
+            stickerLayer.appendChild(el);
+            resolve(el);
+          };
+          probe.onerror = () => resolve(null);
+          probe.src = src;
+        });
+
+        Promise.all(STICKERS.map(mount)).then(mounted => {
+          const els = mounted.filter(Boolean);
+          if (!els.length) return;
+          if (reduced) return;   /* le CSS les pose déjà à plat */
+
+          /* Recollage progressif : 0 en haut du hero, 1 lorsqu'on en a
+             parcouru 28 % — course calée pour que le sticker soit à plat
+             tant qu'il est encore à l'écran, pas au moment où il en sort. */
+          let ticking = false;
+          const apply = () => {
+            ticking = false;
+            const span = heroEl.offsetHeight * 0.28;
+            const p = span > 0 ? Math.min(Math.max(window.scrollY / span, 0), 1) : 1;
+            const eased = 1 - Math.pow(1 - p, 1.7);
+            els.forEach(el => el.style.setProperty('--stick', eased.toFixed(4)));
+          };
+          const onScroll = () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+          };
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll);
+          apply();
+        });
       }
 
       /* Duplication du ticker pour la boucle infinie */

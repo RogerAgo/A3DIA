@@ -280,6 +280,77 @@ body.x-menu-open .x-menu li:nth-child(5) a { transition-delay: 0.40s; }
 }
 .x-hero-title em { font-style: italic; font-weight: 400; color: var(--x-gold); }
 
+/* ── Stickers du hero ────────────────────────────────────────────
+   Posés autour du titre, partiellement décollés au repos, ils se
+   recollent au fil du scroll : --stick va de 0 (décollé) à 1 (à plat).
+   C'est la seule variable pilotée par le JS, tout le reste en découle.
+   Le décollement est un basculement 3D charnière sur le bord haut : il
+   fonctionne quelle que soit la forme du visuel (carré, rond, découpe).
+   Deux stickers au maximum en desktop, un seul en mobile.            */
+.x-hero-titlewrap {
+  position: relative;
+  display: flex; justify-content: center;
+  width: 100%;
+}
+.x-sticker-layer {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.x-sticker {
+  --stick: 0;          /* 0 = décollé, 1 = collé */
+  --lift: 42deg;       /* amplitude du décollement au repos */
+  --tilt: -7deg;       /* inclinaison du sticker sur la page */
+  position: absolute;
+  width: clamp(84px, 9vw, 132px);
+  aspect-ratio: 1;
+  perspective: 520px;
+  transform: rotate(calc(var(--tilt) * (1 - var(--stick) * 0.65)));
+  will-change: transform;
+}
+/* Le visuel bascule vers le lecteur, charnière sur son bord haut. */
+.x-sticker-body {
+  position: absolute; inset: 0;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform-origin: 50% 0%;
+  transform: rotateX(calc(var(--lift) * (1 - var(--stick))));
+  filter: drop-shadow(
+    calc(3px * (1 - var(--stick)))
+    calc(14px * (1 - var(--stick)) + 2px)
+    calc(18px * (1 - var(--stick)) + 3px)
+    rgba(6, 10, 30, calc(0.18 + 0.3 * (1 - var(--stick)))));
+  will-change: transform, filter;
+}
+/* La lumière accroche la partie relevée : le voile s'efface une fois collé. */
+.x-sticker-sheen {
+  position: absolute; inset: 0;
+  transform-origin: 50% 0%;
+  transform: rotateX(calc(var(--lift) * (1 - var(--stick))));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 34%,
+    rgba(255, 255, 255, 0.32) 78%,
+    rgba(255, 255, 255, 0.5) 100%);
+  opacity: calc(1 - var(--stick));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+/* Position : de part et d'autre du titre. */
+.x-sticker--1 { top: -6%;  left: 2%; }
+.x-sticker--2 { --tilt: 9deg; bottom: -8%; right: 3%; }
+
+@media (max-width: 860px) {
+  /* Un seul sticker en mobile. */
+  .x-sticker--2 { display: none; }
+  .x-sticker--1 { top: -9%; left: -1%; width: clamp(64px, 17vw, 92px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Pas d'animation au scroll : les stickers sont posés à plat. */
+  .x-sticker { --stick: 1; }
+}
+
 .x-hero-sub {
   max-width: 42ch;
   font-size: clamp(1.02rem, 1.5vw, 1.25rem);
