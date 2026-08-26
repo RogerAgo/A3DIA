@@ -72,12 +72,109 @@
     </div>
   </section>
 
+  <!-- FIL D'ACTUALITÉS -->
+  <section class="actualites-section" style="padding: 8px 0 72px;">
+    <div class="container">
+      <div class="actu-feed-head reveal">
+        <h2>Opérations sur les participations</h2>
+        <p>OPA, OPRA, offres de rachat, dividendes et augmentations de capital
+        concernant les sociétés issues des placements Arkéon. Les documents complets
+        sont accessibles depuis l'<a href="espace-membres.html">espace adhérents</a>.</p>
+      </div>
+
+      <div class="actu-filters reveal" role="group" aria-label="Filtrer par type d'opération">
+        <button type="button" class="actu-filter is-active" data-filter="*">Tout</button>
+        <button type="button" class="actu-filter" data-filter="Rachat">Rachat</button>
+        <button type="button" class="actu-filter" data-filter="OPRA">OPRA</button>
+        <button type="button" class="actu-filter" data-filter="OVR">OVR</button>
+        <button type="button" class="actu-filter" data-filter="OPA">OPA</button>
+        <button type="button" class="actu-filter" data-filter="Augmentation de capital">Augmentation de capital</button>
+        <button type="button" class="actu-filter" data-filter="Dividende">Dividende</button>
+      </div>
+
+      <div class="actu-grid" id="actu-grid">
+          <article class="actu-card reveal" id="actu-xandrie">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/xandrie.jpg')" role="img" aria-label="Xandrie">
+              <span class="badge">Rachat</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2026-04-23">Avril 2026</time>
+              <h4>Xandrie</h4>
+              <p>Offre de rachat des actions ouverte du 23 avril au 5 juin 2026.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-uv-germi">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/uv-germi.jpg')" role="img" aria-label="UV Germi">
+              <span class="badge">OPRA</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2026-02-01">Février 2026</time>
+              <h4>UV Germi</h4>
+              <p>Lancement d'une offre publique de rachat de ses propres actions.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-tourisme">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/tourisme.jpg')" role="img" aria-label="Tourisme Participations">
+              <span class="badge">Rachat</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2025-04-01">Avril 2025</time>
+              <h4>Tourisme Participations</h4>
+              <p>Offre de rachat finalisée à 60 € par action et remboursement aux porteurs.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-infoclip">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/infoclip.jpg')" role="img" aria-label="Infoclip">
+              <span class="badge">OVR</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2025-04-01">Avril 2025</time>
+              <h4>Infoclip</h4>
+              <p>Offre Volontaire de Rachat en cours à 2 € par action.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-eurobio">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/eurobio.jpg')" role="img" aria-label="Eurobio Scientific">
+              <span class="badge">OPA</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2024-12-01">Décembre 2024</time>
+              <h4>Eurobio Scientific</h4>
+              <p>Résultat de l'offre publique d'achat à 25,30 € par action.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-colipays">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/colipays.jpg')" role="img" aria-label="Colipays">
+              <span class="badge">Augmentation de capital</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2024-06-01">Juin 2024</time>
+              <h4>Colipays</h4>
+              <p>Augmentation de capital avec maintien du droit préférentiel de souscription.</p>
+            </div>
+          </article>
+          <article class="actu-card reveal" id="actu-magillem">
+            <div class="actu-card-media" style="background-image:url('assets/images/actu/magillem.jpg')" role="img" aria-label="Magillem">
+              <span class="badge">Dividende</span>
+            </div>
+            <div class="actu-card-body">
+              <time datetime="2023-12-01">Décembre 2023</time>
+              <h4>Magillem</h4>
+              <p>Distribution d'un dividende brut de 15,13 € par action.</p>
+            </div>
+          </article>
+      </div>
+
+      <p class="actu-empty" id="actu-empty" hidden>Aucune opération pour ce filtre.</p>
+    </div>
+  </section>
+
   <!-- AG TABLE -->
   <section style="padding-bottom: 80px;">
     <div class="container">
       <div class="ag-section">
-        <h2 class="reveal">Dates des Assemblées Générales</h2>
-        <p class="ag-intro reveal">Pour consulter tous les documents correspondants à ces AG, rendez-vous dans la rubrique <strong>Actualités</strong> située en haut de la page.</p>
+        <h2 class="reveal">Dates des assemblées générales</h2>
+        <p class="ag-intro reveal">Les documents correspondant à chaque assemblée générale (convocations, rapports, procès-verbaux) sont mis à disposition dans l'<a href="espace-membres.html"><strong>espace adhérents</strong></a>.</p>
 
         <div class="ag-table-wrap reveal">
           <table class="ag-table">
@@ -140,8 +237,8 @@
   <section class="newsletter">
     <div class="container">
       <div class="newsletter-inner reveal">
-        <h2>Souscrivez à notre newsletter</h2>
-        <p>Découvrez les secrets d'une gestion de patrimoine réussie. Recevez régulièrement nos analyses, les actualités des participations et des conseils pratiques pour optimiser votre patrimoine.</p>
+        <h2>Recevez les actualités en premier</h2>
+        <p>Soyez informé en premier des opérations en cours sur les participations Arkéon — OPA, offres de rachat, dividendes, retraits de cotation — et des convocations aux assemblées générales.</p>
         <form class="newsletter-form" data-form="newsletter" action="/api/newsletter" novalidate>
           <input type="email" name="email" placeholder="Entrez votre email" required aria-label="Email" />
           <button type="submit">Envoyer</button>
